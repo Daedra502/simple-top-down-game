@@ -17,11 +17,18 @@ default, so a v1 save still loads in a v2 build.
 """
 import json
 import os
+import shutil
 
 from src.items.item import Item, ItemRarity, ItemSlot
 
 SAVE_VERSION = 2
 _SAVE_DIR = os.path.join(os.path.dirname(__file__), "..", "..", "saves")
+
+# Hidden slot reserved for the test suite. It is a string id (not 0..4), so the
+# save UI -- which only ever scans the numeric player slots -- never lists it and
+# `latest_slot()` never selects it. Tests run against a *copy* of real save data
+# in this slot so they can never clobber a player's actual saves.
+TEST_SLOT = "test"
 
 
 def slot_path(slot=0):
@@ -255,3 +262,25 @@ def latest_slot(count=5):
             if t > best_t:
                 best, best_t = i, t
     return best
+
+
+def seed_test_slot():
+    """Prime the hidden test slot with a copy of the most recent real save.
+
+    Copies the latest player slot (0..4) into ``TEST_SLOT`` so the suite runs
+    against realistic data without ever reading or writing a real slot. If no
+    player save exists yet, the test slot is simply left absent (round-trip
+    tests write their own data into it). Returns ``TEST_SLOT``.
+    """
+    src = latest_slot()
+    if src is not None:
+        os.makedirs(_SAVE_DIR, exist_ok=True)
+        shutil.copyfile(slot_path(src), slot_path(TEST_SLOT))
+    return TEST_SLOT
+
+
+def clear_test_slot():
+    """Delete the hidden test-slot file if present (suite cleanup)."""
+    path = slot_path(TEST_SLOT)
+    if os.path.exists(path):
+        os.remove(path)

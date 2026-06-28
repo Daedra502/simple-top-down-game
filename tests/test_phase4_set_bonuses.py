@@ -4,9 +4,7 @@ Phase 4 Systems Test Suite - Set Bonus Calculation
 Tests set bonus tracking, calculation, and application
 """
 
-import sys
 import os
-sys.path.insert(0, 'd:\\Coding Projects\\Claude\\simple top down game')
 
 # Initialize Pygame display
 import pygame
@@ -250,42 +248,3 @@ def test_set_bonus_progression():
             print(f"  (No set bonuses yet)")
     
     print()
-
-
-def main():
-    """Run all tests."""
-    print("\n")
-    print("=" * 60)
-    print("PHASE 4: SET BONUS CALCULATION TEST SUITE".center(60))
-    print("=" * 60)
-    print()
-    
-    try:
-        test_set_bonus_calculation()
-        test_set_bonus_tracking()
-        test_set_bonus_aggregation()
-        test_set_bonus_with_item_manager()
-        test_set_bonus_summary()
-        test_empty_set_bonus()
-        test_set_bonus_progression()
-        
-        print("=" * 60)
-        print("ALL SET BONUS TESTS PASSED (7/7)".center(60))
-        print("=" * 60)
-        print("\nSet bonus system fully functional!")
-        print("Ready for UI integration and Phase 4 completion.")
-        
-    except AssertionError as e:
-        print(f"\nTEST FAILED: {e}")
-        import traceback
-        traceback.print_exc()
-        sys.exit(1)
-    except Exception as e:
-        print(f"\nTEST ERROR: {e}")
-        import traceback
-        traceback.print_exc()
-        sys.exit(1)
-
-
-if __name__ == "__main__":
-    main()

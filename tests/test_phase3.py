@@ -4,9 +4,7 @@ Phase 3 Systems Test Suite
 Tests: Gem integration, Elemental combat, Character sheet UI
 """
 
-import sys
 import os
-sys.path.insert(0, 'd:\\Coding Projects\\Claude\\simple top down game')
 
 # Initialize Pygame display (needed for font rendering)
 import pygame
@@ -203,35 +201,3 @@ def test_full_integration():
     
     print(f"\n[OK] All Phase 3 systems integrated successfully!")
     print()
-
-
-def main():
-    """Run all tests."""
-    print("\n")
-    print("+" + "=" * 58 + "+")
-    print("|" + " PHASE 3 SYSTEMS TEST SUITE ".center(58) + "|")
-    print("+" + "=" * 58 + "+")
-    print()
-    
-    try:
-        test_gem_spell_integration()
-        test_elemental_combat()
-        test_spell_projectile_gems()
-        test_character_sheet()
-        test_full_integration()
-        
-        print("=" * 60)
-        print("[PASS] ALL PHASE 3 TESTS PASSED")
-        print("=" * 60)
-        print("\nPhase 3 systems are working correctly!")
-        print("Ready for gameplay testing and Phase 4 development.")
-        
-    except Exception as e:
-        print(f"\n[FAIL] TEST FAILED: {e}")
-        import traceback
-        traceback.print_exc()
-        sys.exit(1)
-
-
-if __name__ == "__main__":
-    main()

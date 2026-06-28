@@ -112,24 +112,39 @@ Each map contains 2-3 treasure chests with rewards.
 simple top down game/
 ├── main.py                 # Main game loop and entry point
 ├── requirements.txt        # Python dependencies
+├── pytest.ini              # Test suite configuration
 ├── README.md              # This file
-├── .github/
-│   └── copilot-instructions.md
-└── src/
-    ├── __init__.py
-    ├── entities/          # Game entities
-    │   ├── player.py      # Player with leveling and wallet
-    │   ├── enemy.py       # 8 enemy types with AI
-    │   └── chest.py       # Chest/treasure system
-    ├── systems/           # Core game systems
-    │   ├── combat.py      # Combat mechanics
-    │   └── collision.py   # Collision detection
-    ├── spells/            # Spell system
-    │   ├── spells.py      # Spell definitions
-    │   └── skill_tree.py  # Skill tree with 11 nodes
-    └── maps/              # Level management
-        └── map_manager.py # 8 maps with chests
+├── src/
+│   ├── __init__.py
+│   ├── entities/          # Game entities (player, enemy, boss, minion, chest)
+│   ├── core/              # Stats, damage, save/load, data loading
+│   ├── systems/           # Combat, rifts, world streaming, spawn director, quests
+│   ├── spells/            # Skills, skill tree, gems, runes, keystones, elements
+│   ├── items/             # Items, affixes, inventory, set bonuses
+│   ├── progression/       # Ascendancy and atlas
+│   ├── maps/              # Map/layout management
+│   ├── ui/                # HUD, character sheet, tooltips, health bars
+│   └── audio/             # Synthesized sound effects
+└── tests/                 # pytest suite (see "Running Tests" below)
+    ├── conftest.py        # Shared setup: sys.path + headless SDL
+    └── test_phase*.py     # One module per development phase
 ```
+
+## Running Tests
+
+The test suite lives in `tests/` and runs under [pytest](https://docs.pytest.org/):
+
+```bash
+pip install pytest          # if not already installed
+pytest                      # run the whole suite
+pytest tests/test_phase10_save.py   # run a single module
+pytest -k save              # run tests matching a keyword
+```
+
+`tests/conftest.py` puts the project root on `sys.path` and forces headless
+SDL drivers, so tests run without opening a window or audio device and can be
+invoked from any directory. Add new tests as `tests/test_*.py` with
+`def test_*()` functions using plain `assert`.
 
 ## Extending the Game
 

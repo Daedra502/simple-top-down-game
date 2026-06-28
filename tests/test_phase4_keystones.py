@@ -4,9 +4,7 @@ Phase 4 Systems Test Suite - Keystone Mechanics
 Tests keystone allocation, effects, and player integration
 """
 
-import sys
 import os
-sys.path.insert(0, 'd:\\Coding Projects\\Claude\\simple top down game')
 
 # Initialize Pygame display
 import pygame
@@ -292,44 +290,3 @@ def test_multiple_keystones():
     assert player.elemental_focus_active == True
     
     print(f"[OK] Multiple keystones can be active\n")
-
-
-def main():
-    """Run all tests."""
-    print("\n")
-    print("=" * 60)
-    print("PHASE 4: KEYSTONE MECHANICS TEST SUITE".center(60))
-    print("=" * 60)
-    print()
-    
-    try:
-        test_keystone_registration()
-        test_keystone_node_mapping()
-        test_keystone_effects()
-        test_skill_tree_keystone_tracking()
-        test_player_keystone_application()
-        test_spell_echo_keystone()
-        test_omnivamp_keystone()
-        test_projectile_mastery_keystone()
-        test_multiple_keystones()
-        
-        print("=" * 60)
-        print("[PASS] ALL KEYSTONE TESTS PASSED (9/9)")
-        print("=" * 60)
-        print("\nKeystone system fully functional!")
-        print("Ready for combat integration and Phase 4 completion.")
-        
-    except AssertionError as e:
-        print(f"\n[FAIL] TEST FAILED: {e}")
-        import traceback
-        traceback.print_exc()
-        sys.exit(1)
-    except Exception as e:
-        print(f"\n[FAIL] TEST ERROR: {e}")
-        import traceback
-        traceback.print_exc()
-        sys.exit(1)
-
-
-if __name__ == "__main__":
-    main()
