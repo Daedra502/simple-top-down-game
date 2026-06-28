@@ -1,0 +1,22 @@
+{
+  "open_plains": {
+    "name": "Open Plains", "prop_density": 0.6, "prop_color": [70, 96, 60],
+    "prop_shape": "rock", "prop_size": 14, "density_mult": 1.0, "pylon_every": 10
+  },
+  "cramped_caverns": {
+    "name": "Cramped Caverns", "prop_density": 2.4, "prop_color": [74, 70, 82],
+    "prop_shape": "rock", "prop_size": 20, "density_mult": 1.2, "pylon_every": 8
+  },
+  "twisting_corridors": {
+    "name": "Twisting Corridors", "prop_density": 1.8, "prop_color": [96, 90, 70],
+    "prop_shape": "pillar", "prop_size": 16, "density_mult": 1.1, "pylon_every": 9
+  },
+  "grand_arena": {
+    "name": "Grand Arena", "prop_density": 0.3, "prop_color": [110, 96, 70],
+    "prop_shape": "pillar", "prop_size": 18, "density_mult": 1.4, "pylon_every": 12
+  },
+  "shattered_maze": {
+    "name": "Shattered Maze", "prop_density": 2.0, "prop_color": [70, 96, 110],
+    "prop_shape": "crystal", "prop_size": 17, "density_mult": 1.15, "pylon_every": 8
+  }
+}

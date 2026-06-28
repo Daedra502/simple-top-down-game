@@ -1,0 +1,10 @@
+{
+  "goblin":      { "name": "Goblin",      "width": 16, "height": 16, "color": [100, 200, 100], "max_health": 20,  "damage": 3,  "speed": 2.0, "xp_reward": 25,  "money": { "copper": 5,  "silver": 0, "gold": 0, "diamond": 0 }, "progress_value": 1, "is_boss": false },
+  "orc":         { "name": "Orc",         "width": 24, "height": 24, "color": [150, 100, 50],  "max_health": 50,  "damage": 8,  "speed": 1.5, "xp_reward": 50,  "money": { "copper": 0,  "silver": 1, "gold": 0, "diamond": 0 }, "progress_value": 2, "is_boss": false },
+  "necromancer": { "name": "Necromancer", "width": 20, "height": 20, "color": [100, 50, 150],  "max_health": 40,  "damage": 6,  "speed": 1.8, "xp_reward": 60,  "money": { "copper": 5,  "silver": 1, "gold": 0, "diamond": 0 }, "progress_value": 2, "is_boss": false },
+  "skeleton":    { "name": "Skeleton",    "width": 18, "height": 18, "color": [200, 200, 200], "max_health": 30,  "damage": 5,  "speed": 2.2, "xp_reward": 35,  "money": { "copper": 8,  "silver": 0, "gold": 0, "diamond": 0 }, "progress_value": 1, "is_boss": false },
+  "demon":       { "name": "Demon",       "width": 28, "height": 28, "color": [255, 0, 0],     "max_health": 80,  "damage": 12, "speed": 1.2, "xp_reward": 100, "money": { "copper": 0,  "silver": 2, "gold": 1, "diamond": 0 }, "progress_value": 3, "is_boss": false },
+  "dragon":      { "name": "Dragon",      "width": 36, "height": 36, "color": [200, 100, 0],   "max_health": 150, "damage": 20, "speed": 1.0, "xp_reward": 200, "money": { "copper": 0,  "silver": 0, "gold": 3, "diamond": 1 }, "progress_value": 5, "is_boss": false },
+  "vampire":     { "name": "Vampire",     "width": 22, "height": 22, "color": [80, 20, 80],    "max_health": 60,  "damage": 10, "speed": 2.5, "xp_reward": 90,  "money": { "copper": 0,  "silver": 3, "gold": 0, "diamond": 0 }, "progress_value": 2, "is_boss": false },
+  "lich":        { "name": "Lich",        "width": 24, "height": 24, "color": [50, 100, 100],  "max_health": 100, "damage": 15, "speed": 1.3, "xp_reward": 150, "money": { "copper": 0,  "silver": 1, "gold": 2, "diamond": 0 }, "progress_value": 4, "is_boss": false }
+}

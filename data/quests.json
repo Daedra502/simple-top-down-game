@@ -1,0 +1,702 @@
+{
+  "q00_kill": {
+    "type": "kill",
+    "desc": "Slay 5 monsters",
+    "target": 5,
+    "reward_xp": 30,
+    "reward_copper": 20
+  },
+  "q01_kill": {
+    "type": "kill",
+    "desc": "Slay 8 monsters",
+    "target": 8,
+    "reward_xp": 48,
+    "reward_copper": 32
+  },
+  "q02_kill": {
+    "type": "kill",
+    "desc": "Slay 10 monsters",
+    "target": 10,
+    "reward_xp": 60,
+    "reward_copper": 40
+  },
+  "q03_kill": {
+    "type": "kill",
+    "desc": "Slay 15 monsters",
+    "target": 15,
+    "reward_xp": 90,
+    "reward_copper": 60
+  },
+  "q04_kill": {
+    "type": "kill",
+    "desc": "Slay 20 monsters",
+    "target": 20,
+    "reward_xp": 120,
+    "reward_copper": 80
+  },
+  "q05_kill": {
+    "type": "kill",
+    "desc": "Slay 25 monsters",
+    "target": 25,
+    "reward_xp": 150,
+    "reward_copper": 100
+  },
+  "q06_kill": {
+    "type": "kill",
+    "desc": "Slay 30 monsters",
+    "target": 30,
+    "reward_xp": 180,
+    "reward_copper": 120
+  },
+  "q07_kill": {
+    "type": "kill",
+    "desc": "Slay 40 monsters",
+    "target": 40,
+    "reward_xp": 240,
+    "reward_copper": 160
+  },
+  "q08_kill": {
+    "type": "kill",
+    "desc": "Slay 50 monsters",
+    "target": 50,
+    "reward_xp": 300,
+    "reward_copper": 200
+  },
+  "q09_kill": {
+    "type": "kill",
+    "desc": "Slay 60 monsters",
+    "target": 60,
+    "reward_xp": 360,
+    "reward_copper": 240
+  },
+  "q10_kill": {
+    "type": "kill",
+    "desc": "Slay 75 monsters",
+    "target": 75,
+    "reward_xp": 450,
+    "reward_copper": 300
+  },
+  "q11_kill": {
+    "type": "kill",
+    "desc": "Slay 100 monsters",
+    "target": 100,
+    "reward_xp": 600,
+    "reward_copper": 400
+  },
+  "q12_kill": {
+    "type": "kill",
+    "desc": "Slay 150 monsters",
+    "target": 150,
+    "reward_xp": 900,
+    "reward_copper": 600
+  },
+  "q13_kill_elite": {
+    "type": "kill_elite",
+    "desc": "Defeat 1 elite enemies",
+    "target": 1,
+    "reward_xp": 30,
+    "reward_copper": 20
+  },
+  "q14_kill_elite": {
+    "type": "kill_elite",
+    "desc": "Defeat 2 elite enemies",
+    "target": 2,
+    "reward_xp": 60,
+    "reward_copper": 40
+  },
+  "q15_kill_elite": {
+    "type": "kill_elite",
+    "desc": "Defeat 3 elite enemies",
+    "target": 3,
+    "reward_xp": 90,
+    "reward_copper": 60
+  },
+  "q16_kill_elite": {
+    "type": "kill_elite",
+    "desc": "Defeat 5 elite enemies",
+    "target": 5,
+    "reward_xp": 150,
+    "reward_copper": 100
+  },
+  "q17_kill_elite": {
+    "type": "kill_elite",
+    "desc": "Defeat 8 elite enemies",
+    "target": 8,
+    "reward_xp": 240,
+    "reward_copper": 160
+  },
+  "q18_kill_elite": {
+    "type": "kill_elite",
+    "desc": "Defeat 10 elite enemies",
+    "target": 10,
+    "reward_xp": 300,
+    "reward_copper": 200
+  },
+  "q19_kill_elite": {
+    "type": "kill_elite",
+    "desc": "Defeat 15 elite enemies",
+    "target": 15,
+    "reward_xp": 450,
+    "reward_copper": 300
+  },
+  "q20_kill_boss": {
+    "type": "kill_boss",
+    "desc": "Vanquish 1 rift boss",
+    "target": 1,
+    "reward_xp": 120,
+    "reward_copper": 80
+  },
+  "q21_kill_boss": {
+    "type": "kill_boss",
+    "desc": "Vanquish 2 rift bosses",
+    "target": 2,
+    "reward_xp": 240,
+    "reward_copper": 160
+  },
+  "q22_kill_boss": {
+    "type": "kill_boss",
+    "desc": "Vanquish 3 rift bosses",
+    "target": 3,
+    "reward_xp": 360,
+    "reward_copper": 240
+  },
+  "q23_kill_boss": {
+    "type": "kill_boss",
+    "desc": "Vanquish 5 rift bosses",
+    "target": 5,
+    "reward_xp": 600,
+    "reward_copper": 400
+  },
+  "q24_earn_gold": {
+    "type": "earn_gold",
+    "desc": "Amass 50 copper",
+    "target": 50,
+    "reward_xp": 25,
+    "reward_copper": 12
+  },
+  "q25_earn_gold": {
+    "type": "earn_gold",
+    "desc": "Amass 100 copper",
+    "target": 100,
+    "reward_xp": 50,
+    "reward_copper": 25
+  },
+  "q26_earn_gold": {
+    "type": "earn_gold",
+    "desc": "Amass 200 copper",
+    "target": 200,
+    "reward_xp": 100,
+    "reward_copper": 50
+  },
+  "q27_earn_gold": {
+    "type": "earn_gold",
+    "desc": "Amass 350 copper",
+    "target": 350,
+    "reward_xp": 175,
+    "reward_copper": 87
+  },
+  "q28_earn_gold": {
+    "type": "earn_gold",
+    "desc": "Amass 500 copper",
+    "target": 500,
+    "reward_xp": 250,
+    "reward_copper": 125
+  },
+  "q29_earn_gold": {
+    "type": "earn_gold",
+    "desc": "Amass 800 copper",
+    "target": 800,
+    "reward_xp": 400,
+    "reward_copper": 200
+  },
+  "q30_open_chest": {
+    "type": "open_chest",
+    "desc": "Open 1 treasure chest",
+    "target": 1,
+    "reward_xp": 25,
+    "reward_copper": 30
+  },
+  "q31_open_chest": {
+    "type": "open_chest",
+    "desc": "Open 2 treasure chests",
+    "target": 2,
+    "reward_xp": 50,
+    "reward_copper": 60
+  },
+  "q32_open_chest": {
+    "type": "open_chest",
+    "desc": "Open 3 treasure chests",
+    "target": 3,
+    "reward_xp": 75,
+    "reward_copper": 90
+  },
+  "q33_open_chest": {
+    "type": "open_chest",
+    "desc": "Open 5 treasure chests",
+    "target": 5,
+    "reward_xp": 125,
+    "reward_copper": 150
+  },
+  "q34_open_chest": {
+    "type": "open_chest",
+    "desc": "Open 8 treasure chests",
+    "target": 8,
+    "reward_xp": 200,
+    "reward_copper": 240
+  },
+  "q35_open_chest": {
+    "type": "open_chest",
+    "desc": "Open 12 treasure chests",
+    "target": 12,
+    "reward_xp": 300,
+    "reward_copper": 360
+  },
+  "q36_level_up": {
+    "type": "level_up",
+    "desc": "Gain 1 character level",
+    "target": 1,
+    "reward_xp": 40,
+    "reward_copper": 60
+  },
+  "q37_level_up": {
+    "type": "level_up",
+    "desc": "Gain 2 character levels",
+    "target": 2,
+    "reward_xp": 80,
+    "reward_copper": 120
+  },
+  "q38_level_up": {
+    "type": "level_up",
+    "desc": "Gain 3 character levels",
+    "target": 3,
+    "reward_xp": 120,
+    "reward_copper": 180
+  },
+  "q39_level_up": {
+    "type": "level_up",
+    "desc": "Gain 5 character levels",
+    "target": 5,
+    "reward_xp": 200,
+    "reward_copper": 300
+  },
+  "q40_travel": {
+    "type": "travel",
+    "desc": "Explore 3 regions",
+    "target": 3,
+    "reward_xp": 45,
+    "reward_copper": 30
+  },
+  "q41_travel": {
+    "type": "travel",
+    "desc": "Explore 5 regions",
+    "target": 5,
+    "reward_xp": 75,
+    "reward_copper": 50
+  },
+  "q42_travel": {
+    "type": "travel",
+    "desc": "Explore 8 regions",
+    "target": 8,
+    "reward_xp": 120,
+    "reward_copper": 80
+  },
+  "q43_travel": {
+    "type": "travel",
+    "desc": "Explore 12 regions",
+    "target": 12,
+    "reward_xp": 180,
+    "reward_copper": 120
+  },
+  "q44_travel": {
+    "type": "travel",
+    "desc": "Explore 20 regions",
+    "target": 20,
+    "reward_xp": 300,
+    "reward_copper": 200
+  },
+  "q45_collect_loot": {
+    "type": "collect_loot",
+    "desc": "Collect 3 pieces of loot",
+    "target": 3,
+    "reward_xp": 36,
+    "reward_copper": 36
+  },
+  "q46_collect_loot": {
+    "type": "collect_loot",
+    "desc": "Collect 5 pieces of loot",
+    "target": 5,
+    "reward_xp": 60,
+    "reward_copper": 60
+  },
+  "q47_collect_loot": {
+    "type": "collect_loot",
+    "desc": "Collect 10 pieces of loot",
+    "target": 10,
+    "reward_xp": 120,
+    "reward_copper": 120
+  },
+  "q48_collect_loot": {
+    "type": "collect_loot",
+    "desc": "Collect 15 pieces of loot",
+    "target": 15,
+    "reward_xp": 180,
+    "reward_copper": 180
+  },
+  "q49_collect_loot": {
+    "type": "collect_loot",
+    "desc": "Collect 25 pieces of loot",
+    "target": 25,
+    "reward_xp": 300,
+    "reward_copper": 300
+  },
+  "q50_kill": {
+    "type": "kill",
+    "desc": "Cull a horde of 80 monsters",
+    "target": 80,
+    "reward_xp": 1280,
+    "reward_copper": 1120
+  },
+  "q51_kill": {
+    "type": "kill",
+    "desc": "Cull a horde of 120 monsters",
+    "target": 120,
+    "reward_xp": 1920,
+    "reward_copper": 1680
+  },
+  "q52_kill": {
+    "type": "kill",
+    "desc": "Cull a horde of 160 monsters",
+    "target": 160,
+    "reward_xp": 2560,
+    "reward_copper": 2240
+  },
+  "q53_kill": {
+    "type": "kill",
+    "desc": "Cull a horde of 200 monsters",
+    "target": 200,
+    "reward_xp": 3200,
+    "reward_copper": 2800
+  },
+  "q54_kill": {
+    "type": "kill",
+    "desc": "Cull a horde of 250 monsters",
+    "target": 250,
+    "reward_xp": 4000,
+    "reward_copper": 3500
+  },
+  "q55_kill": {
+    "type": "kill",
+    "desc": "Cull a horde of 300 monsters",
+    "target": 300,
+    "reward_xp": 4800,
+    "reward_copper": 4200
+  },
+  "q56_kill": {
+    "type": "kill",
+    "desc": "Cull a horde of 400 monsters",
+    "target": 400,
+    "reward_xp": 6400,
+    "reward_copper": 5600
+  },
+  "q57_kill": {
+    "type": "kill",
+    "desc": "Cull a horde of 500 monsters",
+    "target": 500,
+    "reward_xp": 8000,
+    "reward_copper": 7000
+  },
+  "q58_kill": {
+    "type": "kill",
+    "desc": "Cull a horde of 650 monsters",
+    "target": 650,
+    "reward_xp": 10400,
+    "reward_copper": 9100
+  },
+  "q59_kill": {
+    "type": "kill",
+    "desc": "Cull a horde of 800 monsters",
+    "target": 800,
+    "reward_xp": 12800,
+    "reward_copper": 11200
+  },
+  "q60_kill_elite": {
+    "type": "kill_elite",
+    "desc": "Hunt down 12 elite enemies",
+    "target": 12,
+    "reward_xp": 1080,
+    "reward_copper": 840
+  },
+  "q61_kill_elite": {
+    "type": "kill_elite",
+    "desc": "Hunt down 18 elite enemies",
+    "target": 18,
+    "reward_xp": 1620,
+    "reward_copper": 1260
+  },
+  "q62_kill_elite": {
+    "type": "kill_elite",
+    "desc": "Hunt down 25 elite enemies",
+    "target": 25,
+    "reward_xp": 2250,
+    "reward_copper": 1750
+  },
+  "q63_kill_elite": {
+    "type": "kill_elite",
+    "desc": "Hunt down 35 elite enemies",
+    "target": 35,
+    "reward_xp": 3150,
+    "reward_copper": 2450
+  },
+  "q64_kill_elite": {
+    "type": "kill_elite",
+    "desc": "Hunt down 50 elite enemies",
+    "target": 50,
+    "reward_xp": 4500,
+    "reward_copper": 3500
+  },
+  "q65_kill_elite": {
+    "type": "kill_elite",
+    "desc": "Hunt down 70 elite enemies",
+    "target": 70,
+    "reward_xp": 6300,
+    "reward_copper": 4900
+  },
+  "q66_kill_boss": {
+    "type": "kill_boss",
+    "desc": "Topple 4 rift bosses",
+    "target": 4,
+    "reward_xp": 1400,
+    "reward_copper": 1040
+  },
+  "q67_kill_boss": {
+    "type": "kill_boss",
+    "desc": "Topple 6 rift bosses",
+    "target": 6,
+    "reward_xp": 2100,
+    "reward_copper": 1560
+  },
+  "q68_kill_boss": {
+    "type": "kill_boss",
+    "desc": "Topple 8 rift bosses",
+    "target": 8,
+    "reward_xp": 2800,
+    "reward_copper": 2080
+  },
+  "q69_kill_boss": {
+    "type": "kill_boss",
+    "desc": "Topple 10 rift bosses",
+    "target": 10,
+    "reward_xp": 3500,
+    "reward_copper": 2600
+  },
+  "q70_kill_boss": {
+    "type": "kill_boss",
+    "desc": "Topple 14 rift bosses",
+    "target": 14,
+    "reward_xp": 4900,
+    "reward_copper": 3640
+  },
+  "q71_kill_boss": {
+    "type": "kill_boss",
+    "desc": "Topple 20 rift bosses",
+    "target": 20,
+    "reward_xp": 7000,
+    "reward_copper": 5200
+  },
+  "q72_earn_gold": {
+    "type": "earn_gold",
+    "desc": "Hoard 1200 copper",
+    "target": 1200,
+    "reward_xp": 2400,
+    "reward_copper": 600
+  },
+  "q73_earn_gold": {
+    "type": "earn_gold",
+    "desc": "Hoard 2000 copper",
+    "target": 2000,
+    "reward_xp": 4000,
+    "reward_copper": 1000
+  },
+  "q74_earn_gold": {
+    "type": "earn_gold",
+    "desc": "Hoard 3500 copper",
+    "target": 3500,
+    "reward_xp": 7000,
+    "reward_copper": 1750
+  },
+  "q75_earn_gold": {
+    "type": "earn_gold",
+    "desc": "Hoard 5000 copper",
+    "target": 5000,
+    "reward_xp": 10000,
+    "reward_copper": 2500
+  },
+  "q76_earn_gold": {
+    "type": "earn_gold",
+    "desc": "Hoard 8000 copper",
+    "target": 8000,
+    "reward_xp": 16000,
+    "reward_copper": 4000
+  },
+  "q77_earn_gold": {
+    "type": "earn_gold",
+    "desc": "Hoard 12000 copper",
+    "target": 12000,
+    "reward_xp": 24000,
+    "reward_copper": 6000
+  },
+  "q78_open_chest": {
+    "type": "open_chest",
+    "desc": "Plunder 15 treasure chests",
+    "target": 15,
+    "reward_xp": 1800,
+    "reward_copper": 2250
+  },
+  "q79_open_chest": {
+    "type": "open_chest",
+    "desc": "Plunder 20 treasure chests",
+    "target": 20,
+    "reward_xp": 2400,
+    "reward_copper": 3000
+  },
+  "q80_open_chest": {
+    "type": "open_chest",
+    "desc": "Plunder 30 treasure chests",
+    "target": 30,
+    "reward_xp": 3600,
+    "reward_copper": 4500
+  },
+  "q81_open_chest": {
+    "type": "open_chest",
+    "desc": "Plunder 45 treasure chests",
+    "target": 45,
+    "reward_xp": 5400,
+    "reward_copper": 6750
+  },
+  "q82_open_chest": {
+    "type": "open_chest",
+    "desc": "Plunder 60 treasure chests",
+    "target": 60,
+    "reward_xp": 7200,
+    "reward_copper": 9000
+  },
+  "q83_level_up": {
+    "type": "level_up",
+    "desc": "Ascend 4 character levels",
+    "target": 4,
+    "reward_xp": 880,
+    "reward_copper": 1280
+  },
+  "q84_level_up": {
+    "type": "level_up",
+    "desc": "Ascend 6 character levels",
+    "target": 6,
+    "reward_xp": 1320,
+    "reward_copper": 1920
+  },
+  "q85_level_up": {
+    "type": "level_up",
+    "desc": "Ascend 8 character levels",
+    "target": 8,
+    "reward_xp": 1760,
+    "reward_copper": 2560
+  },
+  "q86_level_up": {
+    "type": "level_up",
+    "desc": "Ascend 10 character levels",
+    "target": 10,
+    "reward_xp": 2200,
+    "reward_copper": 3200
+  },
+  "q87_level_up": {
+    "type": "level_up",
+    "desc": "Ascend 15 character levels",
+    "target": 15,
+    "reward_xp": 3300,
+    "reward_copper": 4800
+  },
+  "q88_level_up": {
+    "type": "level_up",
+    "desc": "Ascend 22 character levels",
+    "target": 22,
+    "reward_xp": 4840,
+    "reward_copper": 7040
+  },
+  "q89_travel": {
+    "type": "travel",
+    "desc": "Chart 25 distant regions",
+    "target": 25,
+    "reward_xp": 1750,
+    "reward_copper": 1500
+  },
+  "q90_travel": {
+    "type": "travel",
+    "desc": "Chart 35 distant regions",
+    "target": 35,
+    "reward_xp": 2450,
+    "reward_copper": 2100
+  },
+  "q91_travel": {
+    "type": "travel",
+    "desc": "Chart 50 distant regions",
+    "target": 50,
+    "reward_xp": 3500,
+    "reward_copper": 3000
+  },
+  "q92_travel": {
+    "type": "travel",
+    "desc": "Chart 75 distant regions",
+    "target": 75,
+    "reward_xp": 5250,
+    "reward_copper": 4500
+  },
+  "q93_travel": {
+    "type": "travel",
+    "desc": "Chart 100 distant regions",
+    "target": 100,
+    "reward_xp": 7000,
+    "reward_copper": 6000
+  },
+  "q94_collect_loot": {
+    "type": "collect_loot",
+    "desc": "Amass 30 pieces of treasure",
+    "target": 30,
+    "reward_xp": 1650,
+    "reward_copper": 1800
+  },
+  "q95_collect_loot": {
+    "type": "collect_loot",
+    "desc": "Amass 45 pieces of treasure",
+    "target": 45,
+    "reward_xp": 2475,
+    "reward_copper": 2700
+  },
+  "q96_collect_loot": {
+    "type": "collect_loot",
+    "desc": "Amass 60 pieces of treasure",
+    "target": 60,
+    "reward_xp": 3300,
+    "reward_copper": 3600
+  },
+  "q97_collect_loot": {
+    "type": "collect_loot",
+    "desc": "Amass 90 pieces of treasure",
+    "target": 90,
+    "reward_xp": 4950,
+    "reward_copper": 5400
+  },
+  "q98_collect_loot": {
+    "type": "collect_loot",
+    "desc": "Amass 120 pieces of treasure",
+    "target": 120,
+    "reward_xp": 6600,
+    "reward_copper": 7200
+  },
+  "q99_collect_loot": {
+    "type": "collect_loot",
+    "desc": "Amass 160 pieces of treasure",
+    "target": 160,
+    "reward_xp": 8800,
+    "reward_copper": 9600
+  }
+}

@@ -1,0 +1,7 @@
+{
+  "demon_invasion":  { "label": "Demon Invasion!",  "kind": "swarm",    "enemy": "demon",  "count": 6, "tier": "magic" },
+  "void_breach":     { "label": "Void Breach!",      "kind": "swarm",    "enemy": "lich",   "count": 4, "tier": "rare" },
+  "treasure_goblin": { "label": "Treasure Goblin!",  "kind": "goblin",   "enemy": "goblin", "tier": "magic", "loot_drops": 6 },
+  "ancient_guardian":{ "label": "Ancient Guardian",  "kind": "miniboss", "enemy": "dragon", "tier": "champion" },
+  "cursed_shrine":   { "label": "Cursed Shrine",     "kind": "curse" }
+}

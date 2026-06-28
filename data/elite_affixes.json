@@ -1,0 +1,12 @@
+{
+  "molten":       { "label": "Molten",       "hp": 1.2, "tint": [255, 90, 20],   "on_death": { "element": "fire",      "radius": 130, "damage_mult": 4.0 } },
+  "frozen":       { "label": "Frozen",        "hp": 1.1, "tint": [120, 200, 255],  "on_death": { "element": "cold",      "radius": 130, "damage_mult": 3.0 } },
+  "arcane":       { "label": "Arcane",        "hp": 1.1, "tint": [200, 90, 255],   "on_death": { "element": "chaos",     "radius": 120, "damage_mult": 3.5 } },
+  "explosive":    { "label": "Explosive",     "hp": 1.0, "tint": [255, 150, 30],   "on_death": { "element": "fire",      "radius": 170, "damage_mult": 5.0 } },
+  "stormcaller":  { "label": "Stormcaller",   "hp": 1.1, "tint": [255, 240, 80],   "on_death": { "element": "lightning", "radius": 150, "damage_mult": 3.5 } },
+  "regenerating": { "label": "Regenerating",  "hp": 1.4, "tint": [80, 255, 120],   "regen": 0.04 },
+  "vampiric":     { "label": "Vampiric",      "hp": 1.2, "tint": [160, 20, 60],    "lifesteal": 0.5 },
+  "juggernaut":   { "label": "Juggernaut",    "hp": 1.8, "tint": [180, 180, 180],  "cc_immune": true },
+  "teleporting":  { "label": "Teleporting",   "hp": 1.0, "tint": [120, 120, 255],  "teleport": { "interval": 3.0, "range": 260 } },
+  "reflective":   { "label": "Reflective",    "hp": 1.1, "tint": [200, 200, 255],  "reflect": 0.2 }
+}

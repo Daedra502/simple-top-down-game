@@ -1,0 +1,100 @@
+"""Phase 10 tests: save/load round-trips a character identically.
+
+ASCII-only output. Run: python test_phase10_save.py
+"""
+import os
+os.environ.setdefault("SDL_VIDEODRIVER", "dummy")
+os.environ.setdefault("SDL_AUDIODRIVER", "dummy")
+
+from main import Game
+from src.items.item import ItemFactory, ItemRarity, ItemSlot
+from src.core import save as save_system
+
+SLOT = 99  # throwaway test slot
+
+passed = 0
+failed = 0
+
+
+def check(label, cond):
+    global passed, failed
+    if cond:
+        passed += 1
+        print("  [PASS] " + label)
+    else:
+        failed += 1
+        print("  [FAIL] " + label)
+
+
+def snapshot_state(g):
+    p = g.player
+    return dict(
+        level=p.level, sp=p.skill_points, xp=round(p.experience, 3),
+        xp_to_level=p.xp_to_level,
+        wallet=(p.copper, p.silver, p.gold, p.diamond),
+        highest_gr=p.highest_gr,
+        keystones=g.item_manager.keystone_count(),
+        inv=len(g.item_manager.inventory.items),
+        equipped=len(g.item_manager.equipment.get_all_equipped_items()),
+        nodes=sorted(n for n, on in g.skill_tree.allocations.items() if on),
+        resistances=dict(p.resistances),
+        stats=p.stats.snapshot(),
+    )
+
+
+print("PHASE 10 -- Save / Load")
+
+# Build a non-trivial character
+g = Game()
+p = g.player
+p.add_experience(50000)
+for nid in ["speed_1", "atk_1", "atk_2", "atk_notable", "move_1", "fire_1"]:
+    g.skill_tree.allocate_node(nid)
+p.add_money(copper=7, silver=3, gold=4, diamond=2)
+g.item_manager.add_keystone(3)
+for slot in (ItemSlot.CHEST, ItemSlot.RING_1, ItemSlot.HEAD):
+    g.item_manager.equipment.equip_item(ItemFactory.roll_item(slot, 60, ItemRarity.UNIQUE))
+g.player.highest_gr = 37
+g.recompute_player_stats()
+
+before = snapshot_state(g)
+saved_path = save_system.save_to_slot(g, SLOT)
+check("save file created", save_system.has_save(SLOT))
+
+# Load into a brand-new game
+g2 = Game()
+loaded = g2.load_game(SLOT)
+check("load returns success", loaded)
+after = snapshot_state(g2)
+
+check("level / xp / skill points identical",
+      (before["level"], before["xp"], before["sp"], before["xp_to_level"]) ==
+      (after["level"], after["xp"], after["sp"], after["xp_to_level"]))
+check("wallet identical", before["wallet"] == after["wallet"])
+check("highest GR identical", before["highest_gr"] == after["highest_gr"])
+check("keystone count identical", before["keystones"] == after["keystones"])
+check("inventory size identical", before["inv"] == after["inv"])
+check("equipped count identical", before["equipped"] == after["equipped"])
+check("allocated nodes identical", before["nodes"] == after["nodes"])
+check("resistances identical", before["resistances"] == after["resistances"])
+check("EFFECTIVE STATS identical (aggregation rebuilt)", before["stats"] == after["stats"])
+
+# Affix data survives the round-trip
+ring_before = next(it for it in g.item_manager.equipment.get_all_equipped_items()
+                   if it.slot in (ItemSlot.RING_1, ItemSlot.RING_2))
+ring_after = next(it for it in g2.item_manager.equipment.get_all_equipped_items()
+                  if it.slot in (ItemSlot.RING_1, ItemSlot.RING_2))
+check("affixes survive round-trip",
+      [(a["stat"], a["value"]) for a in ring_before.affixes] ==
+      [(a["stat"], a["value"]) for a in ring_after.affixes])
+
+# Missing slot loads gracefully
+g3 = Game()
+check("loading an empty slot returns False", g3.load_game(31337) is False)
+
+# Cleanup the throwaway slot
+if save_system.has_save(SLOT):
+    os.remove(save_system.slot_path(SLOT))
+
+print("\n%d passed, %d failed" % (passed, failed))
+raise SystemExit(1 if failed else 0)

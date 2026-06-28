@@ -1,0 +1,66 @@
+{
+  "fireball": {
+    "name": "Fireball", "element": "fire", "kind": "projectile",
+    "mana_cost": 12, "cooldown": 0.5, "max_level": 20,
+    "base": { "damage": 25, "radius": 8, "speed": 7, "count": 1, "aoe_radius": 0, "duration": 0 },
+    "per_level": { "damage": 4, "radius": 0.15 },
+    "tags": ["fire", "projectile", "spell"],
+    "color": [255, 100, 0], "xp_curve": { "base": 60, "exp": 1.4 }, "mastery": "fireball"
+  },
+  "ice_shard": {
+    "name": "Ice Shard", "element": "cold", "kind": "projectile",
+    "mana_cost": 9, "cooldown": 0.35, "max_level": 20,
+    "base": { "damage": 16, "radius": 6, "speed": 9, "count": 1, "aoe_radius": 0, "duration": 0 },
+    "per_level": { "damage": 3, "radius": 0.1 },
+    "tags": ["cold", "projectile", "spell"],
+    "color": [120, 200, 255], "xp_curve": { "base": 55, "exp": 1.4 }, "mastery": "ice_shard"
+  },
+  "chain_lightning": {
+    "name": "Chain Lightning", "element": "lightning", "kind": "projectile",
+    "mana_cost": 14, "cooldown": 0.5, "max_level": 20,
+    "base": { "damage": 22, "radius": 5, "speed": 12, "count": 1, "aoe_radius": 0, "duration": 0, "fork": 2 },
+    "per_level": { "damage": 4 },
+    "tags": ["lightning", "projectile", "spell", "chain"],
+    "color": [255, 240, 90], "xp_curve": { "base": 60, "exp": 1.4 }, "mastery": "chain_lightning"
+  },
+  "arc_slash": {
+    "name": "Arc Slash", "element": "physical", "kind": "aoe", "aoe_at": "player",
+    "mana_cost": 8, "cooldown": 0.4, "max_level": 20,
+    "base": { "damage": 30, "aoe_radius": 80, "duration": 0 },
+    "per_level": { "damage": 5, "aoe_radius": 1.5 },
+    "tags": ["physical", "melee", "attack"],
+    "color": [220, 220, 220], "xp_curve": { "base": 55, "exp": 1.4 }, "mastery": "arc_slash"
+  },
+  "poison_nova": {
+    "name": "Poison Nova", "element": "chaos", "kind": "aoe", "aoe_at": "player",
+    "mana_cost": 16, "cooldown": 0.9, "max_level": 20,
+    "base": { "damage": 20, "aoe_radius": 140, "duration": 0 },
+    "per_level": { "damage": 4, "aoe_radius": 2.5 },
+    "tags": ["chaos", "aoe", "spell"],
+    "color": [120, 220, 60], "xp_curve": { "base": 65, "exp": 1.45 }, "mastery": "poison_nova"
+  },
+  "meteor": {
+    "name": "Meteor", "element": "fire", "kind": "aoe", "aoe_at": "target",
+    "mana_cost": 22, "cooldown": 1.2, "max_level": 20,
+    "base": { "damage": 55, "aoe_radius": 95, "duration": 0 },
+    "per_level": { "damage": 8, "aoe_radius": 2.0 },
+    "tags": ["fire", "aoe", "spell"],
+    "color": [255, 120, 30], "xp_curve": { "base": 70, "exp": 1.45 }, "mastery": "meteor"
+  },
+  "blink": {
+    "name": "Blink", "element": "physical", "kind": "blink",
+    "mana_cost": 10, "cooldown": 1.5, "max_level": 20,
+    "base": { "damage": 0, "range": 300, "duration": 0 },
+    "per_level": { "range": 6 },
+    "tags": ["movement", "utility"],
+    "color": [180, 180, 255], "xp_curve": { "base": 45, "exp": 1.4 }, "mastery": "blink"
+  },
+  "summon_skeleton": {
+    "name": "Summon Skeleton", "element": "physical", "kind": "summon",
+    "mana_cost": 20, "cooldown": 2.0, "max_level": 20,
+    "base": { "damage": 12, "count": 1, "duration": 14 },
+    "per_level": { "damage": 2 },
+    "tags": ["minion", "summon"],
+    "color": [220, 220, 200], "xp_curve": { "base": 65, "exp": 1.45 }, "mastery": "summon_skeleton"
+  }
+}

@@ -1,0 +1,750 @@
+Before you begin changing any code, please analyze the current project in it's entirety. 
+Remove any .md files that are no longer needed. Cleanup other project files as needed.
+
+
+
+ROLE
+
+You are an expert-level game developer with deep, shipped experience in Python
+game development (pygame / pygame-ce, with awareness of arcade and pyglet where
+relevant). You specialize in action RPGs and have a working designer's
+understanding of two reference titles:
+
+
+Path of Exile 2 — its large, interconnected passive skill tree, node
+clusters, allocation paths, stat-stacking build identity, and elemental
+ailments (burn, freeze, shock).
+Diablo 3 — its Rift and Greater Rift endgame loop, keystone-gated
+progression, player-chosen difficulty tiers, scaling rewards, and tight
+moment-to-moment combat feel.
+
+
+You think in systems first, code second. You favor clean separation of concerns,
+data-driven design (config/JSON over hardcoded values), and architecture that
+stays readable as it grows.
+
+HOW TO WORK: PHASES, IN ORDER
+
+This build is organized into 10 phases. Work through them chronologically,
+one at a time. Do not jump ahead. Each later phase assumes the earlier ones
+exist, so build foundations before features that depend on them.
+
+For every phase, deliver:
+
+
+Goal — one line on what the phase accomplishes.
+Dependencies — which earlier phases it builds on.
+Pseudocode — class skeletons and key method bodies in clear pseudocode
+(readable logic, not finished Python — this is a pseudocode pass).
+Data shapes — example data structures (node, item, enemy, rift, save, etc.).
+Integration points — exactly where this hooks into my existing project.
+Done when — a short checklist defining "this phase is complete."
+
+
+Stay data-driven throughout: stats, node bonuses, item affixes, scaling values,
+and ailment numbers live in data, not scattered literals.
+
+STEP 0 — ANALYZE THE EXISTING PROJECT FIRST (before Phase 1)
+
+I have attached my existing project file/structure. Before proposing anything:
+
+
+Read it fully and summarize what already exists: entry point, game loop,
+entity/player classes, rendering approach, input handling, asset loading,
+and any save mechanism.
+Identify the architectural style already in use (single-file vs. modular,
+OOP vs. ECS-ish, etc.) and commit to building on top of it rather than
+replacing it. Call out any pieces I'll need to refactor and why.
+List concrete extension points where each phase below will hook in.
+Flag anything in the current structure that will fight against an endless,
+save-driven ARPG (e.g., global state, no serialization seam, fixed maps).
+
+
+Do not skip this. Every phase must reference how it attaches to my code.
+
+
+THE 10 PHASES
+
+PHASE 1 — Foundation & Health Bars
+
+Goal: Player and enemy entities live inside my existing loop with working
+health bars.
+Dependencies: Step 0 analysis.
+Build:
+
+
+Player and enemy entities with hp / max_hp, position, and base combat stats.
+A reusable health bar that renders above any entity: a back bar, a fill bar
+scaled to hp / max_hp, and color feedback as it drops. The player's bar also
+renders in a fixed HUD position.
+Pseudocode for taking damage, dying, and firing an on_death hook (so later
+phases can attach XP, money, and loot to it).
+Done when: player and enemies render, move, take damage, die, and show
+correctly scaling health bars.
+
+
+PHASE 2 — Combat Core & Resources
+
+Goal: A real combat/resource model the rest of the game plugs into.
+Dependencies: Phase 1.
+Build:
+
+
+A damage pipeline: base damage → modifiers → resistances → final damage.
+Mana (mana / max_mana) and health/mana regeneration ticking per second.
+Attack speed as a stat that gates how often the player can attack.
+A money / gold currency tracked on the player.
+A central Stats object on the player that everything else reads and writes,
+so skill tree, gear, and ailments all funnel through one source of truth.
+Done when: attacking consumes mana, regen ticks work, attack speed throttles
+attacks, and gold can be gained/spent.
+
+
+PHASE 3 — Leveling & Progression
+
+Goal: Characters grow and earn skill points.
+Dependencies: Phase 2.
+Build:
+
+
+XP gain from kills, an XP curve xp_to_next(level), and level-up handling.
+On level-up: grant a passive skill point, raise core stats, raise/restore
+health and mana, and surface a clear feedback cue.
+Keep level / XP / skill-point state in one place the save system will read later.
+Done when: kills grant XP, leveling raises stats and awards skill points.
+
+
+PHASE 4 — PoE2-Style Passive Skill Tree
+
+Goal: A meaningful, path-based passive tree that defines build identity and modifies build stat values.
+Dependencies: Phase 3 (skill points), Phase 2 (Stats).
+Build:
+
+
+A graph of nodes (not a flat list): each node has an id, neighbor/edge list,
+render position, a type (minor / notable / keystone), cost, and stat bonuses.
+Path-based allocation (PoE2 rule): a node can only be allocated if it
+connects to an already-allocated node. Spend skill points to allocate.
+The tree must include nodes granting at minimum:
+
+Move speed increases
+Attack speed increases
+Attack damage increases
+Plus clustered/scaling versions (small nodes feeding a stronger notable).
+Skill modifications and synergistic bonuses
+Health regen increases
+Mana regen increases
+
+
+
+
+A StatAggregator that recomputes the player's effective stats by summing all
+allocated node bonuses on top of base + (later) gear + (later) ailments.
+Pseudocode for: building the tree from data, rendering it, hit-testing clicks,
+allocating, and recomputing aggregated stats.
+Done when: the player can spend points along connected paths and see move
+speed / attack speed / attack damage change accordingly.
+
+
+PHASE 5 — Rift & Greater Rift System  (the core endgame phase)
+
+Goal: The full Diablo 3-style endless engine: normal rifts that earn
+keystones, and player-chosen Greater Rifts that scale difficulty and reward.
+Dependencies: Phases 1–4.
+Build:
+
+
+Boss pool of 10: define 10 distinct boss enemies (data-driven: hp, damage,
+abilities, theme). At the end of every rift, one boss from the pool spawns
+and, on death, rewards the player a large amount of XP and money.
+Normal Rifts:
+
+Procedurally assembled, endless-feeling encounter areas with spawning enemies.
+A yellow progress bar that fills as enemies are killed — each enemy
+killed contributes to rift progression. When the bar fills, the rift boss spawns.
+Killing the normal rift boss rewards Rift Keystones (the gate to Greater Rifts).
+
+
+
+Rift Keystones: consumable items held in inventory; required to open a Greater Rift.
+Greater Rifts (GR):
+
+Opened only by consuming a Rift Keystone.
+The player chooses the GR level from 1 to 100 before opening, which
+dictates both difficulty and reward magnitude (higher level = tougher
+enemies + bigger XP/money/loot).
+A purple progress bar (vs. the normal rift's yellow) that fills as enemies
+are killed; filling it spawns the GR boss.
+Define clearly tunable scaling formulas: enemy hp, damage, density, and
+reward multipliers all as functions of GR level (1–100).
+
+
+
+Pseudocode for: generating a rift, spawning waves, the kill→progress→boss
+flow, the boss dropping keystones / XP / money, the inventory holding keystones,
+and the "choose GR level → consume keystone → open scaled GR" flow.
+Done when: the player clears a normal rift (yellow bar), kills its boss, gets
+a keystone, picks a GR level 1–100, opens a GR (purple bar), and the GR boss
+rewards XP/money scaled to the chosen level.
+
+
+PHASE 6 — Itemization: Armor & Jewelry
+
+Goal: Gear that stacks the stats players build around.
+Dependencies: Phase 2 (Stats), Phase 4 (StatAggregator).
+Build:
+
+
+Armor and jewelry item types with rolled affixes, dropped by enemies
+and bosses (drop rates scaling with rift / GR level).
+Affix pool covering all of these stats:
+
+Critical hit chance
+Critical hit damage
+Status effect radius
+Cooldown reduction
+Attack speed
+Attack damage
+Mana regeneration
+Health regeneration
+Increased health
+Increased mana
+Elemental resistances + physical resistance
+Increased Vulnerable damage (feeds Phase 7)
+
+
+
+Equip/unequip flow; the StatAggregator now sums base + skill tree + gear.
+Done when: equipping items changes the aggregated stats, and crit, cooldown,
+regen, resistances, etc. all read from gear correctly.
+
+
+PHASE 7 — Vulnerable Status System
+
+Goal: A debuff that rewards setup and feeds the loot loop.
+Dependencies: Phases 5 & 6.
+Build:
+
+
+Enemies can be afflicted with Vulnerable. While Vulnerable:
+
+They take an additional 15% damage (further increased by the player's
+Increased Vulnerable damage stat from gear).
+Their health bar turns purple to indicate the state.
+They have a chance to drop rift progress orbs that correspond to the
+current rift type (yellow orbs in normal rifts, purple orbs in greater rifts),
+pushing the appropriate progress bar forward when collected.
+
+
+
+Pseudocode for applying/refreshing/expiring Vulnerable, the damage hook that
+adds the 15% (+gear) multiplier, the health-bar color swap, and the orb drop/pickup.
+Done when: afflicted enemies show a purple bar, take extra damage, and can
+drop type-matched progress orbs.
+
+
+PHASE 8 — Elemental Skill Modifications I
+
+Goal: Skills gain elemental behavior that creates ailments.
+Dependencies: Phases 2, 4, 7.
+Build:
+
+
+A skill-modifier system so a skill can carry an element. Implement:
+
+Fire → Burn: applies a damage-over-time burn stack to the target.
+Ice → Slow & Freeze: slows movement/attack; enough buildup freezes
+(briefly stuns) the enemy.
+Shock → Static Chain: applies a static charge; lightning chains between
+affected (shocked) enemies, hitting nearby charged targets.
+
+
+
+Each ailment is data-driven (duration, magnitude, stack rules) and routes its
+damage through the Phase 2 damage pipeline (so resistances and Vulnerable apply).
+Done when: fire enemies burn over time, ice enemies slow/freeze, and shock
+arcs between shocked enemies.
+
+
+PHASE 9 — Elemental Skill Modifications II (Synergies & Depth)
+
+Goal: Build on the ailments so they interact and scale, deepening buildcraft.
+Dependencies: Phase 8 (and 4, 6, 7).
+Build:
+
+
+Tree + gear scaling of ailments: add passive nodes and affixes that boost
+burn damage, freeze threshold/duration, and shock chain count/range.
+Element interactions / combos, e.g.:
+
+Frozen enemies take bonus hit damage (shatter-style payoff).
+Burning + Vulnerable stacks multiply DoT.
+Shock chains spread Vulnerable or refresh ailments across the chain.
+
+
+
+Optional keystone-tier tree nodes that change how an element behaves (build-defining).
+Define every interaction as tunable data so balance stays adjustable.
+Done when: ailments scale off tree/gear, combo interactions fire, and distinct
+elemental builds feel meaningfully different.
+
+
+PHASE 10 — Save/Load, Endless Loop & Balance
+
+Goal: Persist everything and lock in the endless, enjoyable loop.
+Dependencies: All previous phases.
+Build:
+
+
+Save / Load to the project file. Serialize the full player state: level, XP,
+current stats, allocated skill-tree nodes (by id), inventory (incl. keystones),
+equipped gear, gold, and highest GR level cleared. Match my project's existing
+format/location, or recommend one (e.g., a JSON save slot) and justify it.
+Loading must rebuild the tree's allocated state and recompute aggregated stats
+so a loaded character is identical to the saved one.
+The endless loop, tied together: clear normal rift (yellow) → boss drops
+keystone + XP/money → choose GR level 1–100 → open GR (purple) → clear → bigger
+rewards + higher GR available → repeat, with leveling, gear, and ailment builds
+growing the whole way.
+Balance pass: centralize all tunable curves (XP, GR scaling, drop rates,
+ailment numbers, Vulnerable %) and note pacing levers that keep it fun, not grindy.
+Done when: a character can be saved and reloaded identically, and the full
+rift → keystone → greater rift → reward → escalation loop runs endlessly.
+
+
+
+OUTPUT FORMAT I WANT
+
+
+Step 0 project analysis first.
+Proposed module/file layout showing where each phase's systems live
+relative to my existing files.
+Phase-by-phase pseudocode, in order, each with Goal / Dependencies /
+Pseudocode / Data shapes / Integration points / Done-when.
+Data shape examples for: a skill-tree node, an armor and a jewelry affix
+roll, a boss (from the pool of 10), a rift keystone, a GR config (level 1–100),
+an ailment definition, and a save file.
+A build checklist confirming the phase order.
+
+
+CONSTRAINTS
+
+
+This is a pseudocode pass — readable logic and structure over runnable code.
+Build the phases strictly in order; finish one before the next.
+Stay data-driven — stats, affixes, scaling, and ailment values live in data.
+Build on my existing structure; don't silently rewrite it. If you must refactor,
+say so and explain the payoff.
+Keep it complete and comprehensive — over-specify system interactions rather
+than leave gaps. If my existing project is ambiguous, list assumptions and proceed.
+
+PHASE 11 — Endless Rift World Generation System
+Goal
+
+Replace isolated rift maps with an endlessly streaming procedural world.
+
+Dependencies
+Phases 1-10
+Core Design
+
+The rift is no longer a single map.
+
+The world is:
+
+Chunk
+Chunk
+Chunk
+Chunk
+Chunk
+Chunk
+
+generated infinitely as the player moves.
+The player never loads into a new map.
+
+Instead:
+Current Chunk
++
+Adjacent Chunks
+exist simultaneously.
+New chunks generate when approaching world boundaries.
+Old chunks unload when sufficiently far away.
+Chunk Architecture
+Each chunk contains:
+
+Chunk
+{
+    chunk_id
+    world_x
+    world_y
+    biome_id
+    tiles
+    enemies
+    events
+    portals
+    structures
+    discovered
+}
+Biome System
+
+Possible Rift Biomes:
+
+Void Wastes
+Burning Hellscape
+Frozen Tundra
+Corrupted Forest
+Lightning Fields
+Ancient Ruins
+Blood Marsh
+Crystal Caverns
+Shadow Realm
+Celestial Fracture
+
+Each biome modifies:
+
+enemy_pool
+spawn_density
+environmental_hazards
+loot_bonus
+boss_pool
+music
+World Streaming Manager
+
+Pseudocode:
+
+update_world():
+    current_chunk = get_player_chunk()
+    generate_neighbors(current_chunk)
+    unload_far_chunks()
+    save_chunk_state()
+Rift Progression
+
+Rather than filling a bar inside one map:
+
+kills += enemy.progress_value
+
+Once threshold reached:
+
+spawn_rift_boss_near_player()
+
+without changing maps.
+
+Done When
+World streams infinitely
+Chunks generate dynamically
+Multiple biomes appear
+No loading screens
+Rift progression continues indefinitely
+PHASE 12 — Enemy Ecosystem & Spawn Director
+Goal
+
+Create Diablo-style dynamic enemy populations.
+
+Dependencies
+
+Phase 11
+
+Enemy Families
+Undead
+Demons
+Constructs
+Beasts
+Cultists
+Elementals
+Voidborn
+Angels
+Mutants
+Ancients
+Enemy Tiers
+Normal
+Magic
+Rare
+Champion
+Elite
+Boss
+Rift Boss
+Spawn Director
+
+Controls:
+
+difficulty
+player_level
+rift_level
+chunk_biome
+time_alive
+kills_per_minute
+
+Director determines:
+
+pack size
+enemy tier
+elite frequency
+ambush frequency
+event frequency
+Elite Affixes
+
+Examples:
+
+Molten
+Frozen
+Arcane
+Explosive
+Regenerating
+Vampiric
+Stormcaller
+Juggernaut
+Teleporting
+Reflective
+Elite Data
+EliteEnemy
+{
+    base_enemy
+    affixes[]
+}
+Dynamic Events
+
+Examples:
+
+Demon Invasion
+Treasure Goblin
+Void Breach
+Cursed Shrine
+Ancient Guardian
+
+Director can trigger events randomly.
+
+Done When
+Enemy packs vary naturally
+Elite enemies appear
+Events spawn dynamically
+Difficulty feels alive
+PHASE 13 — Spell System & Active Skill Framework
+Goal
+
+Create a PoE-inspired active skill architecture.
+
+Dependencies
+
+Phases 2-12
+
+Active Skill Structure
+Skill
+{
+    id
+    name
+    level
+    xp
+    mana_cost
+    cooldown
+    tags[]
+    modifiers[]
+
+}
+Starter Skills
+
+Implement:
+
+Fireball
+Ice Shard
+Chain Lightning
+Arc Slash
+Poison Nova
+Meteor
+Blink
+Summon Skeleton
+Skill XP
+
+Skills gain XP separately.
+
+enemy_killed
+skill_used
+damage_dealt
+
+grants skill XP.
+
+Skill Levels
+
+Each level increases:
+
+damage
+radius
+duration
+effect strength
+Skill Trees
+
+Each skill has its own mastery path.
+
+Example:
+
+Fireball
+
+Split Projectile
+Explosion Radius
+Burn Duration
+Chain Explosion
+Meteor Conversion
+Done When
+Skills gain XP
+Skills level independently
+Skills become stronger over time
+PHASE 14 — Skill Modification & Rune System
+Goal
+
+Allow skills to evolve into completely different abilities.
+
+Dependencies
+
+Phase 13
+
+Modifier Types
+Projectile
++ Projectiles
+Pierce
+Fork
+Chain
+Return
+Boomerang
+Area
+Larger Radius
+Lingering Ground
+Shockwave
+Nova
+Element
+Fire → Ice
+Fire → Shock
+Physical → Poison
+Behavior
+Auto Target
+Orbit Player
+Triggered Cast
+Cast On Critical
+Cast On Kill
+Rune Data
+Rune
+{
+    id
+    modifier_type
+
+    rarity
+
+    effects
+}
+Example
+
+Fireball:
+
+Base:
+Fireball
+Runes:
+Fork+Chain+Meteor Conversion becomes Meteor Shower without needing separate skills.
+
+Done When
+Skills can transform
+Multiple rune combinations work
+Build diversity explodes
+PHASE 15 — Advanced Passive Atlas & Ascendancy System
+Goal
+
+Expand the passive tree into a true endgame build framework.
+
+Dependencies
+
+Phase 14
+Ascendancies
+
+At level milestones:
+20
+40
+60
+80
+
+player unlocks specialization.
+
+Example:
+Elementalist
+Burn
+Shock
+Freeze
+Mastery
+Berserker
+Attack Speed
+Life Leech
+Rage
+Necromancer
+Minions
+Corpses
+Summons
+Riftwalker
+Teleportation
+Void Damage
+Chunk Manipulation
+Atlas Progression
+
+Separate endgame tree:
+Atlas Passive Tree
+
+modifies:
+biome frequency
+boss frequency
+elite density
+loot quality
+event spawn rates
+Keystone Examples
+Glass Cannon
++100% Damage
+-50% Max HP
+Eternal Flame
+Burn never expires
+Cannot Freeze
+Overcharged
+Shock can stack infinitely
+Done When
+Character identity is permanent
+Endgame progression exists
+Atlas influences generated world
+ADDITIONAL DATA SHAPES TO INCLUDE
+
+Add these required data definitions to the prompt:
+
+ChunkDefinition
+BiomeDefinition
+EnemyFamilyDefinition
+EliteAffixDefinition
+SpawnDirectorConfig
+SkillDefinition
+SkillLevelDefinition
+SkillMasteryNode
+RuneDefinition
+AscendancyDefinition
+AtlasNodeDefinition
+RESULTING GAME LOOP
+
+With these additions, the final ARPG loop becomes:
+Spawn Character
+Explore Endless Generated Rift World
+Fight Dynamically Spawned Enemies
+Gain XP
+Gain Skill XP
+Level Character
+Level Skills
+Unlock Passive Tree Nodes
+Unlock Skill Masteries
+Equip Gear
+Modify Skills With Runes
+Encounter Rift Events
+Fill Rift Progress
+Spawn Rift Boss
+Earn Keystones
+Open Greater Rift
+Increase Difficulty
+Unlock Atlas Progression
+Continue Infinitely
+
+This transforms the design from a Diablo-style rift runner into something closer to a hybrid of:
+
+Path of Exile 2 passive complexity
+Diablo III rift progression
+Vampire Survivors density scaling
+Last Epoch skill specialization
+Chronicon endless procedural progression
+
+while preserving your requirement of a single continuously generated endless rift world rather than disconnected maps.

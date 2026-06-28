@@ -1,0 +1,59 @@
+{
+  "fireball": [
+    { "id": "fb_split",      "label": "Split Projectile", "effect": { "count": 1 } },
+    { "id": "fb_speed",      "label": "Swift Flames",     "effect": { "speed_mult": 0.4 } },
+    { "id": "fb_pierce",     "label": "Penetrating Flames","effect": { "pierce": 2 } },
+    { "id": "fb_power",      "label": "Empower",          "effect": { "damage_mult": 0.25 } },
+    { "id": "fb_power2",     "label": "Overpower",        "effect": { "damage_mult": 0.4 } },
+    { "id": "fb_explode",    "label": "Explosion",        "effect": { "explosion": 70 } },
+    { "id": "fb_radius",     "label": "Explosion Radius", "effect": { "explosion_radius": 45 } },
+    { "id": "fb_ignite",     "label": "Ignite",           "effect": { "burn_bonus": 0.4 } },
+    { "id": "fb_ignite_dmg", "label": "Ignite Mastery",   "effect": { "burn_bonus": 0.6 } },
+    { "id": "fb_chain",      "label": "Chain Explosion",  "effect": { "count": 1, "damage_mult": 0.15 } },
+    { "id": "fb_homing",     "label": "Seeking Flames",   "effect": { "homing": 1 } },
+    { "id": "fb_synergy",    "label": "Conflagration",    "effect": { "damage_mult": 0.2, "burn_bonus": 0.3 } },
+    { "id": "fb_meteor",     "label": "Meteor Conversion","effect": { "convert": "meteor" } }
+  ],
+  "ice_shard": [
+    { "id": "is_pierce",    "label": "Piercing Shards",  "effect": { "count": 1 } },
+    { "id": "is_count",     "label": "Splinter",         "effect": { "count": 1 } },
+    { "id": "is_count2",    "label": "Shard Storm",      "effect": { "count": 1 } },
+    { "id": "is_penetrate", "label": "Frozen Lance",     "effect": { "pierce": 2 } },
+    { "id": "is_speed",     "label": "Frozen Velocity",  "effect": { "speed_mult": 0.35 } },
+    { "id": "is_power",     "label": "Frigid Power",     "effect": { "damage_mult": 0.3 } },
+    { "id": "is_power2",    "label": "Absolute Zero",    "effect": { "damage_mult": 0.4 } },
+    { "id": "is_freeze",    "label": "Deep Chill",       "effect": { "extra_chill": 1 } },
+    { "id": "is_freeze_exp","label": "Freeze Explosion", "effect": { "freeze_explosion": 90 } },
+    { "id": "is_shatter",   "label": "Glacial Burst",    "effect": { "freeze_explosion": 50, "damage_mult": 0.1 } },
+    { "id": "is_homing",    "label": "Seeking Shards",   "effect": { "homing": 1 } },
+    { "id": "is_synergy",   "label": "Shatterstorm",     "effect": { "freeze_explosion": 40, "damage_mult": 0.15 } }
+  ],
+  "chain_lightning": [
+    { "id": "cl_forks",  "label": "Extra Forks",    "effect": { "count": 1 } },
+    { "id": "cl_count",  "label": "Split Bolt",     "effect": { "count": 1 } },
+    { "id": "cl_fork",   "label": "Forking Bolts",  "effect": { "fork": 2 } },
+    { "id": "cl_fork2",  "label": "Arc Web",        "effect": { "fork": 3 } },
+    { "id": "cl_pierce", "label": "Conductive",     "effect": { "pierce": 2 } },
+    { "id": "cl_speed",  "label": "Quickening",     "effect": { "speed_mult": 0.5 } },
+    { "id": "cl_shock",  "label": "Overcharge",     "effect": { "damage_mult": 0.2 } },
+    { "id": "cl_power",  "label": "High Voltage",   "effect": { "damage_mult": 0.3 } },
+    { "id": "cl_power2", "label": "Thunderlord",    "effect": { "damage_mult": 0.4 } },
+    { "id": "cl_homing", "label": "Seeking Bolts",  "effect": { "homing": 1 } },
+    { "id": "cl_synergy","label": "Storm Caller",   "effect": { "fork": 1, "damage_mult": 0.2 } }
+  ],
+  "arc_slash": [
+    { "id": "as_wide",    "label": "Wide Arc",           "effect": { "aoe_radius_add": 40 } }
+  ],
+  "poison_nova": [
+    { "id": "pn_wide",    "label": "Toxic Spread",       "effect": { "aoe_radius_add": 50 } }
+  ],
+  "meteor": [
+    { "id": "me_impact",  "label": "Greater Impact",     "effect": { "damage_mult": 0.3 } }
+  ],
+  "blink": [
+    { "id": "bl_range",   "label": "Far Step",           "effect": { "range_add": 120 } }
+  ],
+  "summon_skeleton": [
+    { "id": "ss_extra",   "label": "Extra Skeleton",     "effect": { "count": 1 } }
+  ]
+}

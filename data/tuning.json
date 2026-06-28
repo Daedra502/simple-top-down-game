@@ -1,0 +1,30 @@
+{
+  "xp": {
+    "base": 100,
+    "exponent": 1.3,
+    "max_level": 50
+  },
+  "per_level": {
+    "max_health": 10,
+    "max_mana": 5,
+    "damage": 1
+  },
+  "rift": {
+    "normal_threshold": 60,
+    "max_alive": 8,
+    "spawn_interval": 0.8,
+    "keystone_reward": 1,
+    "boss_loot_drops": 3,
+    "trash_drop_chance": 0.4,
+    "chunk_progress": 2.0,
+    "pylon_every_chunks": 10
+  },
+  "gr": {
+    "max_level": 100,
+    "hp_base": 1.07,
+    "dmg_base": 1.05,
+    "density_per_level": 0.04,
+    "reward_k": 0.25,
+    "threshold_per_level": 1
+  }
+}

@@ -1,0 +1,37 @@
+{
+  "vulnerable": {
+    "duration": 6.0,
+    "bonus_damage": 0.15,
+    "orb_drop_chance": 0.30,
+    "orb_value": 2
+  },
+  "burn": {
+    "element": "fire",
+    "duration": 3.0,
+    "tick": 0.5,
+    "dps": 10,
+    "max_stacks": 5,
+    "stackable": true
+  },
+  "freeze": {
+    "element": "cold",
+    "duration": 2.0,
+    "slow": 0.4,
+    "freeze_threshold": 3,
+    "freeze_duration": 5.0
+  },
+  "shock": {
+    "element": "lightning",
+    "duration": 4.0,
+    "amp_per_stack": 0.08,
+    "max_stacks": 5,
+    "chain_range": 160,
+    "chain_count": 3,
+    "chain_damage": 0.4
+  },
+  "combos": {
+    "shatter_bonus": 0.5,
+    "burn_vulnerable_mult": 1.5,
+    "shock_spreads_vulnerable": true
+  }
+}

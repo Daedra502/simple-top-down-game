@@ -1,0 +1,12 @@
+{
+  "undead":     { "name": "Undead",     "resistances": { "cold": 25, "chaos": -25 } },
+  "demons":     { "name": "Demons",     "resistances": { "fire": 30, "cold": -15 } },
+  "constructs": { "name": "Constructs", "resistances": { "physical": 25, "lightning": -25 } },
+  "beasts":     { "name": "Beasts",     "resistances": { "physical": 10 } },
+  "cultists":   { "name": "Cultists",   "resistances": { "chaos": 25 } },
+  "elementals": { "name": "Elementals", "resistances": { "fire": 20, "cold": 20, "lightning": 20 } },
+  "voidborn":   { "name": "Voidborn",   "resistances": { "chaos": 35, "physical": -15 } },
+  "angels":     { "name": "Angels",     "resistances": { "lightning": 25 } },
+  "mutants":    { "name": "Mutants",    "resistances": { "chaos": 15 } },
+  "ancients":   { "name": "Ancients",   "resistances": { "fire": 15, "cold": 15, "physical": 15 } }
+}

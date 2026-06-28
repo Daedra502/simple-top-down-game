@@ -1,0 +1,1642 @@
+{
+  "root": {
+    "name": "Life Force",
+    "pos": [
+      600,
+      400
+    ],
+    "tier": "minor",
+    "cost": 0,
+    "color": [
+      100,
+      255,
+      100
+    ],
+    "bonuses": {
+      "max_health": 50,
+      "max_mana": 20
+    },
+    "edges": [
+      "speed_1"
+    ]
+  },
+  "mana_1": {
+    "name": "Clarity",
+    "pos": [
+      600,
+      310
+    ],
+    "tier": "minor",
+    "cost": 1,
+    "color": [
+      120,
+      150,
+      255
+    ],
+    "bonuses": {
+      "max_mana": 25,
+      "mana_regen": 0.3
+    },
+    "edges": [
+      "mana_2",
+      "root"
+    ]
+  },
+  "mana_2": {
+    "name": "Meditation",
+    "pos": [
+      600,
+      235
+    ],
+    "tier": "minor",
+    "cost": 1,
+    "color": [
+      120,
+      150,
+      255
+    ],
+    "bonuses": {
+      "max_mana": 35,
+      "mana_regen": 0.5
+    },
+    "edges": [
+      "mana_3"
+    ]
+  },
+  "mana_3": {
+    "name": "Mana Fountain",
+    "pos": [
+      600,
+      160
+    ],
+    "tier": "keystone",
+    "cost": 1,
+    "color": [
+      100,
+      100,
+      255
+    ],
+    "bonuses": {
+      "max_mana": 50,
+      "mana_regen": 1.0
+    },
+    "edges": []
+  },
+  "dmg_1": {
+    "name": "Enhanced Spells",
+    "pos": [
+      510,
+      375
+    ],
+    "tier": "minor",
+    "cost": 1,
+    "color": [
+      230,
+      90,
+      200
+    ],
+    "bonuses": {
+      "spell_damage": 8,
+      "max_mana": 10
+    },
+    "edges": [
+      "dmg_2",
+      "hybrid_ld",
+      "root",
+      "arcane_1"
+    ]
+  },
+  "dmg_2": {
+    "name": "Spell Amplification",
+    "pos": [
+      440,
+      358
+    ],
+    "tier": "minor",
+    "cost": 1,
+    "color": [
+      230,
+      90,
+      200
+    ],
+    "bonuses": {
+      "spell_damage": 12,
+      "crit_chance": 0.02
+    },
+    "edges": [
+      "dmg_3",
+      "crit_1"
+    ]
+  },
+  "dmg_3": {
+    "name": "Arcane Mastery",
+    "pos": [
+      372,
+      342
+    ],
+    "tier": "keystone",
+    "cost": 2,
+    "color": [
+      200,
+      0,
+      200
+    ],
+    "bonuses": {
+      "spell_damage": 18,
+      "max_mana": 20
+    },
+    "edges": []
+  },
+  "arcane_1": {
+    "name": "Focus",
+    "pos": [
+      520,
+      318
+    ],
+    "tier": "minor",
+    "cost": 1,
+    "color": [
+      210,
+      120,
+      230
+    ],
+    "bonuses": {
+      "spell_damage": 8,
+      "max_mana": 15
+    },
+    "edges": [
+      "arcane_2",
+      "mana_4"
+    ]
+  },
+  "arcane_2": {
+    "name": "Channeling",
+    "pos": [
+      470,
+      295
+    ],
+    "tier": "minor",
+    "cost": 1,
+    "color": [
+      210,
+      120,
+      230
+    ],
+    "bonuses": {
+      "spell_damage": 10,
+      "mana_regen": 0.5
+    },
+    "edges": []
+  },
+  "mana_4": {
+    "name": "Insight",
+    "pos": [
+      555,
+      260
+    ],
+    "tier": "minor",
+    "cost": 1,
+    "color": [
+      120,
+      150,
+      255
+    ],
+    "bonuses": {
+      "max_mana": 30,
+      "spell_damage": 6
+    },
+    "edges": []
+  },
+  "crit_1": {
+    "name": "Precision",
+    "pos": [
+      455,
+      410
+    ],
+    "tier": "minor",
+    "cost": 1,
+    "color": [
+      255,
+      170,
+      90
+    ],
+    "bonuses": {
+      "crit_chance": 0.03,
+      "damage": 4
+    },
+    "edges": [
+      "crit_2"
+    ]
+  },
+  "crit_2": {
+    "name": "Deadly Aim",
+    "pos": [
+      400,
+      440
+    ],
+    "tier": "minor",
+    "cost": 1,
+    "color": [
+      255,
+      170,
+      90
+    ],
+    "bonuses": {
+      "crit_chance": 0.04,
+      "crit_damage": 0.15
+    },
+    "edges": [
+      "crit_notable"
+    ]
+  },
+  "crit_notable": {
+    "name": "Assassinate",
+    "pos": [
+      345,
+      468
+    ],
+    "tier": "notable",
+    "cost": 2,
+    "color": [
+      255,
+      140,
+      70
+    ],
+    "bonuses": {
+      "crit_chance": 0.05,
+      "crit_damage": 0.25
+    },
+    "edges": []
+  },
+  "fire_1": {
+    "name": "Flame Touch",
+    "pos": [
+      545,
+      335
+    ],
+    "tier": "minor",
+    "cost": 1,
+    "color": [
+      255,
+      110,
+      20
+    ],
+    "bonuses": {
+      "fireball_damage": 5,
+      "fire_damage": 4
+    },
+    "edges": [
+      "fire_2",
+      "hybrid_fs",
+      "root"
+    ]
+  },
+  "fire_2": {
+    "name": "Inferno",
+    "pos": [
+      495,
+      278
+    ],
+    "tier": "minor",
+    "cost": 1,
+    "color": [
+      255,
+      110,
+      20
+    ],
+    "bonuses": {
+      "fireball_damage": 8,
+      "fire_damage": 5
+    },
+    "edges": [
+      "fire_3",
+      "fire_cast"
+    ]
+  },
+  "fire_3": {
+    "name": "Combustion",
+    "pos": [
+      445,
+      221
+    ],
+    "tier": "minor",
+    "cost": 1,
+    "color": [
+      255,
+      60,
+      0
+    ],
+    "bonuses": {
+      "fireball_damage": 10,
+      "fire_damage": 8
+    },
+    "edges": [
+      "fire_key",
+      "ail_burn"
+    ]
+  },
+  "fire_key": {
+    "name": "Elemental Focus",
+    "pos": [
+      392,
+      170
+    ],
+    "tier": "keystone",
+    "cost": 2,
+    "color": [
+      200,
+      0,
+      200
+    ],
+    "bonuses": {
+      "spell_damage": 20,
+      "fire_damage": 15
+    },
+    "edges": []
+  },
+  "fire_cast": {
+    "name": "Pyromancy",
+    "pos": [
+      455,
+      320
+    ],
+    "tier": "minor",
+    "cost": 1,
+    "color": [
+      220,
+      200,
+      40
+    ],
+    "bonuses": {
+      "attack_speed": 0.15,
+      "fireball_damage": 5
+    },
+    "edges": [
+      "fire_4"
+    ]
+  },
+  "fire_4": {
+    "name": "Scorch",
+    "pos": [
+      415,
+      288
+    ],
+    "tier": "minor",
+    "cost": 1,
+    "color": [
+      255,
+      110,
+      20
+    ],
+    "bonuses": {
+      "fireball_damage": 8,
+      "fire_damage": 6
+    },
+    "edges": []
+  },
+  "ail_burn": {
+    "name": "Pyromania",
+    "pos": [
+      400,
+      250
+    ],
+    "tier": "notable",
+    "cost": 2,
+    "color": [
+      255,
+      120,
+      40
+    ],
+    "bonuses": {
+      "burn_damage_increase": 0.3,
+      "fire_damage": 8
+    },
+    "edges": []
+  },
+  "cold_1": {
+    "name": "Chill Aura",
+    "pos": [
+      670,
+      335
+    ],
+    "tier": "minor",
+    "cost": 1,
+    "color": [
+      80,
+      170,
+      255
+    ],
+    "bonuses": {
+      "max_health": 30,
+      "armor": 10
+    },
+    "edges": [
+      "cold_2",
+      "hybrid_cd",
+      "root"
+    ]
+  },
+  "cold_2": {
+    "name": "Frozen Path",
+    "pos": [
+      730,
+      285
+    ],
+    "tier": "minor",
+    "cost": 1,
+    "color": [
+      50,
+      150,
+      255
+    ],
+    "bonuses": {
+      "max_health": 40,
+      "armor": 15,
+      "frostbolt_damage": 5
+    },
+    "edges": [
+      "cold_3",
+      "cold_dmg",
+      "ail_freeze"
+    ]
+  },
+  "cold_3": {
+    "name": "Glacial Fortress",
+    "pos": [
+      795,
+      240
+    ],
+    "tier": "minor",
+    "cost": 1,
+    "color": [
+      0,
+      100,
+      200
+    ],
+    "bonuses": {
+      "max_health": 50,
+      "armor": 25
+    },
+    "edges": [
+      "cold_4"
+    ]
+  },
+  "cold_4": {
+    "name": "Permafrost",
+    "pos": [
+      855,
+      205
+    ],
+    "tier": "minor",
+    "cost": 1,
+    "color": [
+      80,
+      170,
+      255
+    ],
+    "bonuses": {
+      "frostbolt_damage": 8,
+      "armor": 15
+    },
+    "edges": []
+  },
+  "cold_dmg": {
+    "name": "Frostbolt Mastery",
+    "pos": [
+      690,
+      272
+    ],
+    "tier": "minor",
+    "cost": 1,
+    "color": [
+      80,
+      170,
+      255
+    ],
+    "bonuses": {
+      "frostbolt_damage": 10,
+      "spell_damage": 10
+    },
+    "edges": []
+  },
+  "ail_freeze": {
+    "name": "Deep Freeze",
+    "pos": [
+      800,
+      300
+    ],
+    "tier": "notable",
+    "cost": 2,
+    "color": [
+      120,
+      200,
+      255
+    ],
+    "bonuses": {
+      "freeze_duration_bonus": 0.6,
+      "freeze_threshold_reduction": 1
+    },
+    "edges": []
+  },
+  "hybrid_cd": {
+    "name": "Bastion",
+    "pos": [
+      700,
+      378
+    ],
+    "tier": "minor",
+    "cost": 1,
+    "color": [
+      100,
+      150,
+      200
+    ],
+    "bonuses": {
+      "frostbolt_damage": 5,
+      "armor": 20,
+      "max_health": 30
+    },
+    "edges": []
+  },
+  "def_1": {
+    "name": "Endurance",
+    "pos": [
+      690,
+      400
+    ],
+    "tier": "minor",
+    "cost": 1,
+    "color": [
+      120,
+      200,
+      120
+    ],
+    "bonuses": {
+      "max_health": 40,
+      "armor": 10
+    },
+    "edges": [
+      "def_2",
+      "hpregen_1",
+      "root",
+      "life_1"
+    ]
+  },
+  "def_2": {
+    "name": "Fortitude",
+    "pos": [
+      760,
+      422
+    ],
+    "tier": "minor",
+    "cost": 1,
+    "color": [
+      120,
+      200,
+      120
+    ],
+    "bonuses": {
+      "max_health": 60,
+      "armor": 15
+    },
+    "edges": [
+      "def_3",
+      "def_4"
+    ]
+  },
+  "def_3": {
+    "name": "Iron Skin",
+    "pos": [
+      825,
+      448
+    ],
+    "tier": "minor",
+    "cost": 1,
+    "color": [
+      50,
+      200,
+      50
+    ],
+    "bonuses": {
+      "max_health": 80,
+      "armor": 30
+    },
+    "edges": [
+      "def_5"
+    ]
+  },
+  "def_4": {
+    "name": "Bulwark",
+    "pos": [
+      770,
+      372
+    ],
+    "tier": "minor",
+    "cost": 1,
+    "color": [
+      120,
+      200,
+      120
+    ],
+    "bonuses": {
+      "max_health": 60,
+      "armor": 20
+    },
+    "edges": []
+  },
+  "def_5": {
+    "name": "Stoneskin",
+    "pos": [
+      835,
+      405
+    ],
+    "tier": "minor",
+    "cost": 1,
+    "color": [
+      120,
+      200,
+      120
+    ],
+    "bonuses": {
+      "armor": 30,
+      "health_regen": 1.5
+    },
+    "edges": []
+  },
+  "hpregen_1": {
+    "name": "Recovery",
+    "pos": [
+      700,
+      348
+    ],
+    "tier": "minor",
+    "cost": 1,
+    "color": [
+      110,
+      230,
+      110
+    ],
+    "bonuses": {
+      "health_regen": 1.5,
+      "max_health": 20
+    },
+    "edges": [
+      "hpregen_notable"
+    ]
+  },
+  "hpregen_notable": {
+    "name": "Regeneration",
+    "pos": [
+      760,
+      322
+    ],
+    "tier": "notable",
+    "cost": 2,
+    "color": [
+      90,
+      230,
+      90
+    ],
+    "bonuses": {
+      "health_regen": 4.0,
+      "max_health": 30
+    },
+    "edges": []
+  },
+  "life_1": {
+    "name": "Vitality",
+    "pos": [
+      700,
+      460
+    ],
+    "tier": "minor",
+    "cost": 1,
+    "color": [
+      110,
+      230,
+      110
+    ],
+    "bonuses": {
+      "max_health": 50,
+      "health_regen": 1.0
+    },
+    "edges": [
+      "life_notable"
+    ]
+  },
+  "life_notable": {
+    "name": "Vigor",
+    "pos": [
+      762,
+      505
+    ],
+    "tier": "notable",
+    "cost": 2,
+    "color": [
+      90,
+      230,
+      90
+    ],
+    "bonuses": {
+      "max_health": 90,
+      "health_regen": 3.0
+    },
+    "edges": []
+  },
+  "hybrid_ld": {
+    "name": "Voltage Surge",
+    "pos": [
+      662,
+      432
+    ],
+    "tier": "keystone",
+    "cost": 1,
+    "color": [
+      200,
+      200,
+      50
+    ],
+    "bonuses": {
+      "lightning_damage": 10,
+      "spell_damage": 8,
+      "attack_speed": 0.12
+    },
+    "edges": [
+      "lightning_1"
+    ]
+  },
+  "lightning_1": {
+    "name": "Spark",
+    "pos": [
+      662,
+      468
+    ],
+    "tier": "minor",
+    "cost": 1,
+    "color": [
+      255,
+      255,
+      0
+    ],
+    "bonuses": {
+      "attack_speed": 0.1,
+      "lightning_damage": 5
+    },
+    "edges": [
+      "lightning_2",
+      "root"
+    ]
+  },
+  "lightning_2": {
+    "name": "Electrocute",
+    "pos": [
+      722,
+      525
+    ],
+    "tier": "minor",
+    "cost": 1,
+    "color": [
+      255,
+      200,
+      0
+    ],
+    "bonuses": {
+      "attack_speed": 0.15,
+      "lightning_damage": 8
+    },
+    "edges": [
+      "lightning_3",
+      "ail_shock"
+    ]
+  },
+  "lightning_3": {
+    "name": "Lightning Lord",
+    "pos": [
+      782,
+      585
+    ],
+    "tier": "minor",
+    "cost": 1,
+    "color": [
+      200,
+      200,
+      0
+    ],
+    "bonuses": {
+      "lightning_damage": 15,
+      "spell_damage": 12
+    },
+    "edges": [
+      "light_4"
+    ]
+  },
+  "light_4": {
+    "name": "Static Field",
+    "pos": [
+      838,
+      620
+    ],
+    "tier": "minor",
+    "cost": 1,
+    "color": [
+      255,
+      225,
+      70
+    ],
+    "bonuses": {
+      "lightning_damage": 10,
+      "attack_speed": 0.08
+    },
+    "edges": []
+  },
+  "ail_shock": {
+    "name": "Conduction",
+    "pos": [
+      762,
+      572
+    ],
+    "tier": "notable",
+    "cost": 2,
+    "color": [
+      255,
+      230,
+      80
+    ],
+    "bonuses": {
+      "shock_chain_bonus": 1,
+      "shock_range_bonus": 40
+    },
+    "edges": []
+  },
+  "speed_1": {
+    "name": "Momentum",
+    "pos": [
+      540,
+      465
+    ],
+    "tier": "minor",
+    "cost": 1,
+    "color": [
+      245,
+      200,
+      60
+    ],
+    "bonuses": {
+      "attack_speed": 0.12,
+      "move_speed_increase": 0.03
+    },
+    "edges": [
+      "speed_2",
+      "move_1",
+      "atk_1",
+      "cdr_1"
+    ]
+  },
+  "speed_2": {
+    "name": "Haste",
+    "pos": [
+      490,
+      525
+    ],
+    "tier": "minor",
+    "cost": 1,
+    "color": [
+      255,
+      200,
+      0
+    ],
+    "bonuses": {
+      "attack_speed": 0.2,
+      "damage": 3
+    },
+    "edges": [
+      "speed_3",
+      "spd_4"
+    ]
+  },
+  "speed_3": {
+    "name": "Frenzy",
+    "pos": [
+      440,
+      585
+    ],
+    "tier": "minor",
+    "cost": 1,
+    "color": [
+      200,
+      100,
+      0
+    ],
+    "bonuses": {
+      "attack_speed": 0.3,
+      "max_health": 20
+    },
+    "edges": []
+  },
+  "spd_4": {
+    "name": "Adrenaline",
+    "pos": [
+      478,
+      562
+    ],
+    "tier": "minor",
+    "cost": 1,
+    "color": [
+      245,
+      200,
+      60
+    ],
+    "bonuses": {
+      "attack_speed": 0.12,
+      "move_speed_increase": 0.05
+    },
+    "edges": []
+  },
+  "cdr_1": {
+    "name": "Tempo",
+    "pos": [
+      575,
+      500
+    ],
+    "tier": "minor",
+    "cost": 1,
+    "color": [
+      230,
+      200,
+      120
+    ],
+    "bonuses": {
+      "cooldown_reduction": 0.06,
+      "attack_speed": 0.06
+    },
+    "edges": []
+  },
+  "hybrid_fs": {
+    "name": "Blaze Runner",
+    "pos": [
+      498,
+      440
+    ],
+    "tier": "minor",
+    "cost": 1,
+    "color": [
+      200,
+      100,
+      0
+    ],
+    "bonuses": {
+      "fireball_damage": 8,
+      "attack_speed": 0.1
+    },
+    "edges": [
+      "speed_1"
+    ]
+  },
+  "atk_1": {
+    "name": "Sharpened",
+    "pos": [
+      548,
+      520
+    ],
+    "tier": "minor",
+    "cost": 1,
+    "color": [
+      235,
+      120,
+      80
+    ],
+    "bonuses": {
+      "damage": 3,
+      "attack_speed": 0.03
+    },
+    "edges": [
+      "atk_2"
+    ]
+  },
+  "atk_2": {
+    "name": "Brutality",
+    "pos": [
+      532,
+      585
+    ],
+    "tier": "minor",
+    "cost": 1,
+    "color": [
+      235,
+      120,
+      80
+    ],
+    "bonuses": {
+      "damage": 5,
+      "crit_chance": 0.02
+    },
+    "edges": [
+      "atk_notable",
+      "proj_1"
+    ]
+  },
+  "atk_notable": {
+    "name": "Devastation",
+    "pos": [
+      518,
+      648
+    ],
+    "tier": "notable",
+    "cost": 2,
+    "color": [
+      250,
+      90,
+      60
+    ],
+    "bonuses": {
+      "damage": 10,
+      "attack_speed": 0.08
+    },
+    "edges": []
+  },
+  "proj_1": {
+    "name": "Pinpoint",
+    "pos": [
+      472,
+      618
+    ],
+    "tier": "minor",
+    "cost": 1,
+    "color": [
+      200,
+      140,
+      255
+    ],
+    "bonuses": {
+      "projectile_speed": 0.1,
+      "damage": 3
+    },
+    "edges": [
+      "proj_2"
+    ]
+  },
+  "proj_2": {
+    "name": "Barrage",
+    "pos": [
+      430,
+      660
+    ],
+    "tier": "minor",
+    "cost": 1,
+    "color": [
+      200,
+      140,
+      255
+    ],
+    "bonuses": {
+      "projectile_count": 1,
+      "spell_damage": 6
+    },
+    "edges": [
+      "proj_3",
+      "proj_multishot"
+    ]
+  },
+  "proj_3": {
+    "name": "Volley",
+    "pos": [
+      380,
+      688
+    ],
+    "tier": "minor",
+    "cost": 1,
+    "color": [
+      200,
+      140,
+      255
+    ],
+    "bonuses": {
+      "projectile_count": 1,
+      "projectile_speed": 0.1
+    },
+    "edges": [
+      "proj_velocity"
+    ]
+  },
+  "proj_velocity": {
+    "name": "Velocity",
+    "pos": [
+      328,
+      700
+    ],
+    "tier": "notable",
+    "cost": 2,
+    "color": [
+      170,
+      110,
+      235
+    ],
+    "bonuses": {
+      "projectile_speed": 0.25,
+      "attack_speed": 0.06
+    },
+    "edges": []
+  },
+  "proj_multishot": {
+    "name": "Multishot",
+    "pos": [
+      458,
+      705
+    ],
+    "tier": "notable",
+    "cost": 2,
+    "color": [
+      170,
+      110,
+      235
+    ],
+    "bonuses": {
+      "projectile_count": 1,
+      "projectile_speed": 0.12,
+      "spell_damage": 8
+    },
+    "edges": []
+  },
+  "move_1": {
+    "name": "Fleet Footed",
+    "pos": [
+      612,
+      492
+    ],
+    "tier": "minor",
+    "cost": 1,
+    "color": [
+      110,
+      220,
+      170
+    ],
+    "bonuses": {
+      "move_speed_increase": 0.06,
+      "attack_speed": 0.03
+    },
+    "edges": [
+      "move_2"
+    ]
+  },
+  "move_2": {
+    "name": "Swiftness",
+    "pos": [
+      628,
+      560
+    ],
+    "tier": "minor",
+    "cost": 1,
+    "color": [
+      110,
+      220,
+      170
+    ],
+    "bonuses": {
+      "move_speed_increase": 0.08,
+      "max_health": 15
+    },
+    "edges": [
+      "move_notable"
+    ]
+  },
+  "move_notable": {
+    "name": "Windrunner",
+    "pos": [
+      644,
+      628
+    ],
+    "tier": "notable",
+    "cost": 2,
+    "color": [
+      80,
+      240,
+      180
+    ],
+    "bonuses": {
+      "move_speed_increase": 0.15,
+      "attack_speed": 0.05
+    },
+    "edges": []
+  },
+  "mregen_a": {
+    "name": "Focus Flow",
+    "pos": [
+      540,
+      180
+    ],
+    "tier": "minor",
+    "cost": 1,
+    "color": [
+      120,
+      150,
+      255
+    ],
+    "bonuses": {
+      "mana_regen": 0.5,
+      "max_mana": 20
+    },
+    "edges": [
+      "mana_2"
+    ]
+  },
+  "mregen_b": {
+    "name": "Attunement",
+    "pos": [
+      485,
+      150
+    ],
+    "tier": "minor",
+    "cost": 1,
+    "color": [
+      120,
+      150,
+      255
+    ],
+    "bonuses": {
+      "mana_regen": 0.8,
+      "max_mana": 25
+    },
+    "edges": [
+      "mregen_a"
+    ]
+  },
+  "mregen_c": {
+    "name": "Mana Stream",
+    "pos": [
+      540,
+      120
+    ],
+    "tier": "minor",
+    "cost": 1,
+    "color": [
+      120,
+      150,
+      255
+    ],
+    "bonuses": {
+      "mana_regen": 1.0,
+      "max_mana": 30
+    },
+    "edges": [
+      "mregen_b"
+    ]
+  },
+  "mregen_d": {
+    "name": "Spring of Mana",
+    "pos": [
+      600,
+      100
+    ],
+    "tier": "minor",
+    "cost": 1,
+    "color": [
+      120,
+      150,
+      255
+    ],
+    "bonuses": {
+      "mana_regen": 1.5,
+      "max_mana": 20
+    },
+    "edges": [
+      "mana_3"
+    ]
+  },
+  "mpool_a": {
+    "name": "Deep Well",
+    "pos": [
+      660,
+      150
+    ],
+    "tier": "minor",
+    "cost": 1,
+    "color": [
+      120,
+      150,
+      255
+    ],
+    "bonuses": {
+      "max_mana": 40,
+      "mana_regen": 0.5
+    },
+    "edges": [
+      "mana_3"
+    ]
+  },
+  "mpool_b": {
+    "name": "Reservoir",
+    "pos": [
+      705,
+      118
+    ],
+    "tier": "minor",
+    "cost": 1,
+    "color": [
+      120,
+      150,
+      255
+    ],
+    "bonuses": {
+      "max_mana": 60,
+      "mana_regen": 0.5
+    },
+    "edges": [
+      "mpool_a"
+    ]
+  },
+  "mpool_c": {
+    "name": "Arcane Ocean",
+    "pos": [
+      660,
+      88
+    ],
+    "tier": "minor",
+    "cost": 1,
+    "color": [
+      120,
+      150,
+      255
+    ],
+    "bonuses": {
+      "max_mana": 80,
+      "mana_regen": 1.0
+    },
+    "edges": [
+      "mpool_b"
+    ]
+  },
+  "mregen_notable": {
+    "name": "Transcendence",
+    "pos": [
+      600,
+      52
+    ],
+    "tier": "notable",
+    "cost": 2,
+    "color": [
+      150,
+      150,
+      255
+    ],
+    "bonuses": {
+      "mana_regen": 2.5,
+      "max_mana": 60
+    },
+    "edges": [
+      "mregen_d"
+    ]
+  },
+  "hregen_a": {
+    "name": "Renewal",
+    "pos": [
+      820,
+      360
+    ],
+    "tier": "minor",
+    "cost": 1,
+    "color": [
+      110,
+      230,
+      110
+    ],
+    "bonuses": {
+      "health_regen": 1.5,
+      "max_health": 20
+    },
+    "edges": [
+      "hpregen_notable"
+    ]
+  },
+  "hregen_b": {
+    "name": "Mending",
+    "pos": [
+      875,
+      385
+    ],
+    "tier": "minor",
+    "cost": 1,
+    "color": [
+      110,
+      230,
+      110
+    ],
+    "bonuses": {
+      "health_regen": 2.0,
+      "max_health": 25
+    },
+    "edges": [
+      "hregen_a"
+    ]
+  },
+  "hregen_c": {
+    "name": "Bloodflow",
+    "pos": [
+      905,
+      432
+    ],
+    "tier": "minor",
+    "cost": 1,
+    "color": [
+      110,
+      230,
+      110
+    ],
+    "bonuses": {
+      "health_regen": 2.5,
+      "max_health": 30
+    },
+    "edges": [
+      "hregen_b"
+    ]
+  },
+  "hregen_d": {
+    "name": "Lifebloom",
+    "pos": [
+      832,
+      470
+    ],
+    "tier": "minor",
+    "cost": 1,
+    "color": [
+      110,
+      230,
+      110
+    ],
+    "bonuses": {
+      "health_regen": 3.0,
+      "armor": 10
+    },
+    "edges": [
+      "life_notable"
+    ]
+  },
+  "hpool_a": {
+    "name": "Hearty",
+    "pos": [
+      882,
+      500
+    ],
+    "tier": "minor",
+    "cost": 1,
+    "color": [
+      110,
+      230,
+      110
+    ],
+    "bonuses": {
+      "max_health": 60,
+      "health_regen": 1.0
+    },
+    "edges": [
+      "life_notable"
+    ]
+  },
+  "hpool_b": {
+    "name": "Robust",
+    "pos": [
+      922,
+      475
+    ],
+    "tier": "minor",
+    "cost": 1,
+    "color": [
+      110,
+      230,
+      110
+    ],
+    "bonuses": {
+      "max_health": 80,
+      "health_regen": 1.0
+    },
+    "edges": [
+      "hpool_a"
+    ]
+  },
+  "hpool_c": {
+    "name": "Titan Blood",
+    "pos": [
+      942,
+      520
+    ],
+    "tier": "minor",
+    "cost": 1,
+    "color": [
+      110,
+      230,
+      110
+    ],
+    "bonuses": {
+      "max_health": 100,
+      "health_regen": 1.5
+    },
+    "edges": [
+      "hpool_b"
+    ]
+  },
+  "hregen_notable2": {
+    "name": "Everliving",
+    "pos": [
+      905,
+      562
+    ],
+    "tier": "notable",
+    "cost": 2,
+    "color": [
+      90,
+      230,
+      90
+    ],
+    "bonuses": {
+      "health_regen": 5.0,
+      "max_health": 50
+    },
+    "edges": [
+      "hregen_d"
+    ]
+  },
+  "hybrid_regen_a": {
+    "name": "Equilibrium",
+    "pos": [
+      432,
+      470
+    ],
+    "tier": "minor",
+    "cost": 1,
+    "color": [
+      150,
+      220,
+      180
+    ],
+    "bonuses": {
+      "health_regen": 1.5,
+      "mana_regen": 0.8
+    },
+    "edges": [
+      "crit_2"
+    ]
+  },
+  "hybrid_regen_b": {
+    "name": "Lifeforce",
+    "pos": [
+      392,
+      500
+    ],
+    "tier": "minor",
+    "cost": 1,
+    "color": [
+      150,
+      220,
+      180
+    ],
+    "bonuses": {
+      "max_health": 40,
+      "max_mana": 40
+    },
+    "edges": [
+      "hybrid_regen_a"
+    ]
+  },
+  "hybrid_regen_c": {
+    "name": "Vital Spring",
+    "pos": [
+      432,
+      522
+    ],
+    "tier": "minor",
+    "cost": 1,
+    "color": [
+      150,
+      220,
+      180
+    ],
+    "bonuses": {
+      "health_regen": 2.0,
+      "mana_regen": 1.0
+    },
+    "edges": [
+      "hybrid_regen_b"
+    ]
+  },
+  "hybrid_regen_notable": {
+    "name": "Ascetic",
+    "pos": [
+      372,
+      546
+    ],
+    "tier": "notable",
+    "cost": 2,
+    "color": [
+      120,
+      220,
+      170
+    ],
+    "bonuses": {
+      "health_regen": 3.0,
+      "mana_regen": 1.5,
+      "max_health": 30
+    },
+    "edges": [
+      "hybrid_regen_c"
+    ]
+  }
+}

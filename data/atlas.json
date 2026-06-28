@@ -1,0 +1,10 @@
+{
+  "atlas_start":    { "label": "Rift Mastery",    "cost": 0, "edges": [],               "effect": {} },
+  "atlas_elites":   { "label": "Elite Hunter",    "cost": 1, "edges": ["atlas_start"],  "effect": { "elite_density": 0.15 } },
+  "atlas_loot":     { "label": "Treasure Sense",  "cost": 1, "edges": ["atlas_start"],  "effect": { "loot_quality": 0.20 } },
+  "atlas_events":   { "label": "Anomalies",       "cost": 1, "edges": ["atlas_start"],  "effect": { "event_rate": 0.5 } },
+  "atlas_bosses":   { "label": "Boss Rush",       "cost": 1, "edges": ["atlas_start"],  "effect": { "boss_frequency": 0.2 } },
+  "atlas_elites2":  { "label": "Pack Leader",     "cost": 1, "edges": ["atlas_elites"], "effect": { "elite_density": 0.2 } },
+  "atlas_loot2":    { "label": "Golden Touch",    "cost": 1, "edges": ["atlas_loot"],   "effect": { "loot_quality": 0.25 } },
+  "atlas_fire":     { "label": "Infernal Pull",   "cost": 1, "edges": ["atlas_start"],  "effect": { "biome_weight": { "burning_hellscape": 2.5, "celestial_fracture": 1.5 } } }
+}

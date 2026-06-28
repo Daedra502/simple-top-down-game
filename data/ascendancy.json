@@ -1,0 +1,38 @@
+{
+  "elementalist": {
+    "name": "Elementalist", "unlock_level": 20,
+    "nodes": [
+      { "id": "em_core",    "label": "Elemental Core",  "cost": 1, "edges": [],          "bonuses": { "burn_damage_increase": 0.2, "shock_chain_bonus": 1 } },
+      { "id": "em_burn",    "label": "Burn Mastery",     "cost": 1, "edges": ["em_core"], "bonuses": { "burn_damage_increase": 0.4 } },
+      { "id": "em_freeze",  "label": "Freeze Mastery",   "cost": 1, "edges": ["em_core"], "bonuses": { "freeze_duration_bonus": 0.8, "freeze_threshold_reduction": 1 } },
+      { "id": "em_eternal", "label": "Eternal Flame",    "cost": 1, "edges": ["em_burn"], "keystone": "eternal_flame" }
+    ]
+  },
+  "berserker": {
+    "name": "Berserker", "unlock_level": 20,
+    "nodes": [
+      { "id": "bs_core",  "label": "Rage",          "cost": 1, "edges": [],          "bonuses": { "attack_speed": 0.15, "damage": 8 } },
+      { "id": "bs_speed", "label": "Frenzy",        "cost": 1, "edges": ["bs_core"], "bonuses": { "attack_speed": 0.2 } },
+      { "id": "bs_leech", "label": "Life Leech",    "cost": 1, "edges": ["bs_core"], "bonuses": { "life_leech": 0.08 } },
+      { "id": "bs_glass", "label": "Glass Cannon",  "cost": 1, "edges": ["bs_speed"], "keystone": "glass_cannon" }
+    ]
+  },
+  "necromancer": {
+    "name": "Necromancer", "unlock_level": 20,
+    "nodes": [
+      { "id": "nc_core",   "label": "Death Magic",     "cost": 1, "edges": [],          "bonuses": { "minion_damage_increase": 0.3, "damage": 5 } },
+      { "id": "nc_minion", "label": "Bone Legion",     "cost": 1, "edges": ["nc_core"], "bonuses": { "minion_damage_increase": 0.5 } },
+      { "id": "nc_chaos",  "label": "Corpse Bloom",    "cost": 1, "edges": ["nc_core"], "bonuses": { "burn_damage_increase": 0.3, "crit_chance": 0.05 } },
+      { "id": "nc_army",   "label": "Endless Horde",   "cost": 1, "edges": ["nc_minion"], "bonuses": { "minion_damage_increase": 0.6, "max_health": 80 } }
+    ]
+  },
+  "riftwalker": {
+    "name": "Riftwalker", "unlock_level": 20,
+    "nodes": [
+      { "id": "rw_core",  "label": "Void Step",        "cost": 1, "edges": [],          "bonuses": { "move_speed_increase": 0.1, "cooldown_reduction": 0.08 } },
+      { "id": "rw_void",  "label": "Void Damage",      "cost": 1, "edges": ["rw_core"], "bonuses": { "damage": 12, "crit_damage": 0.3 } },
+      { "id": "rw_haste", "label": "Phase Haste",      "cost": 1, "edges": ["rw_core"], "bonuses": { "attack_speed": 0.18, "move_speed_increase": 0.1 } },
+      { "id": "rw_charge","label": "Overcharged",      "cost": 1, "edges": ["rw_void"], "keystone": "overcharged" }
+    ]
+  }
+}

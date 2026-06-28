@@ -1,0 +1,19 @@
+{
+  "added_projectiles": { "label": "Added Projectiles", "modifier_type": "projectile", "rarity": "magic",  "effects": { "add_projectiles": 2 } },
+  "pierce":            { "label": "Piercing",          "modifier_type": "projectile", "rarity": "magic",  "effects": { "pierce": 2 } },
+  "fork":              { "label": "Forking",           "modifier_type": "projectile", "rarity": "rare",   "effects": { "add_projectiles": 1, "pierce": 1 } },
+  "chain":             { "label": "Chaining",          "modifier_type": "projectile", "rarity": "rare",   "effects": { "chain": 3 } },
+  "return":            { "label": "Returning",         "modifier_type": "projectile", "rarity": "magic",  "effects": { "return": true } },
+  "boomerang":         { "label": "Boomerang",         "modifier_type": "projectile", "rarity": "rare",   "effects": { "return": true, "pierce": 1 } },
+  "larger_radius":     { "label": "Larger Radius",     "modifier_type": "area",       "rarity": "magic",  "effects": { "radius_mult": 0.5 } },
+  "lingering_ground":  { "label": "Lingering Ground",  "modifier_type": "area",       "rarity": "rare",   "effects": { "lingering": { "radius": 90, "duration": 3.0, "dps_mult": 0.3 } } },
+  "shockwave":         { "label": "Shockwave",         "modifier_type": "area",       "rarity": "rare",   "effects": { "extra_nova": 130 } },
+  "nova":              { "label": "Nova",              "modifier_type": "area",       "rarity": "magic",  "effects": { "extra_nova": 90 } },
+  "to_ice":            { "label": "Fire to Ice",       "modifier_type": "element",    "rarity": "magic",  "effects": { "convert_element": "cold" } },
+  "to_shock":          { "label": "Fire to Shock",     "modifier_type": "element",    "rarity": "magic",  "effects": { "convert_element": "lightning" } },
+  "to_poison":         { "label": "Physical to Poison","modifier_type": "element",    "rarity": "magic",  "effects": { "convert_element": "chaos" } },
+  "auto_target":       { "label": "Auto Target",       "modifier_type": "behavior",   "rarity": "magic",  "effects": { "auto_target": true } },
+  "orbit":             { "label": "Orbit Player",      "modifier_type": "behavior",   "rarity": "rare",   "effects": { "orbit": true } },
+  "cast_on_kill":      { "label": "Cast On Kill",      "modifier_type": "behavior",   "rarity": "rare",   "effects": { "cast_on_kill": true } },
+  "meteor_conversion": { "label": "Meteor Conversion", "modifier_type": "area",       "rarity": "unique", "effects": { "convert_aoe": 110, "damage_mult": 0.4 } }
+}
