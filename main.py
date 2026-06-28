@@ -1336,6 +1336,22 @@ class Game:
         elif key in (pygame.K_ESCAPE, pygame.K_n):
             self._resolve_save_confirm(False)
 
+    @staticmethod
+    def _fmt_coins(copper):
+        """Format a copper amount as diamond/gold/silver/copper for slot summaries."""
+        d, rem = divmod(int(copper), 1000)
+        g, rem = divmod(rem, 100)
+        s, c = divmod(rem, 10)
+        parts = []
+        if d:
+            parts.append(f"{d}D")
+        if g:
+            parts.append(f"{g}G")
+        if s:
+            parts.append(f"{s}S")
+        parts.append(f"{c}C")
+        return " ".join(parts)
+
     def draw_save_menu(self):
         """Save/Load overlay: one row per slot with its character summary."""
         self._save_slot_rects = []
@@ -1344,7 +1360,7 @@ class Game:
         overlay.fill((0, 0, 0))
         self.screen.blit(overlay, (0, 0))
 
-        pw, ph = 560, 460
+        pw, ph = 580, 520
         px = (self.width - pw) // 2
         py = (self.height - ph) // 2
         pygame.draw.rect(self.screen, (16, 20, 30), (px, py, pw, ph))
@@ -1354,9 +1370,11 @@ class Game:
         self.screen.blit(title, title.get_rect(center=(self.width // 2, py + 28)))
 
         slots = save_system.list_slots(self.NUM_SAVE_SLOTS)
-        y = py + 64
+        row_h, row_gap = 64, 8
+        y = py + 60
+        import time as _t
         for i, meta in enumerate(slots):
-            rect = pygame.Rect(px + 20, y, pw - 40, 56)
+            rect = pygame.Rect(px + 20, y, pw - 40, row_h)
             hover = rect.collidepoint(*pygame.mouse.get_pos())
             active = (i == self.active_save_slot)
             pygame.draw.rect(self.screen, (45, 50, 70) if hover else (28, 32, 46), rect)
@@ -1364,17 +1382,22 @@ class Game:
 
             head = f"Slot {i}" + ("   (current)" if active else "")
             self.screen.blit(self.font.render(head, True, (255, 255, 255)), (rect.x + 12, rect.y + 6))
-            if meta:
-                import time as _t
-                when = _t.strftime("%Y-%m-%d %H:%M", _t.localtime(meta["mtime"]))
-                sub = f"Level {meta['level']}   Best GR {meta['highest_gr']}   {when}"
-                col = (200, 220, 200)
+
+            if not meta:
+                self.screen.blit(self.small_font.render("< empty -- right-click to save here >",
+                                 True, (150, 150, 150)), (rect.x + 12, rect.y + 34))
+            elif meta.get("corrupt"):
+                self.screen.blit(self.small_font.render("< unreadable / corrupt save file >",
+                                 True, (235, 120, 120)), (rect.x + 12, rect.y + 34))
             else:
-                sub = "<empty>"
-                col = (150, 150, 150)
-            self.screen.blit(self.small_font.render(sub, True, col), (rect.x + 12, rect.y + 32))
+                when = _t.strftime("%Y-%m-%d %H:%M", _t.localtime(meta["mtime"]))
+                line1 = f"Level {meta['level']}   -   {meta['class_name']}   -   Best GR {meta['highest_gr']}"
+                line2 = (f"{self._fmt_coins(meta['wealth'])}   -   "
+                         f"Quests: {meta['quests_done']}   -   {when}")
+                self.screen.blit(self.small_font.render(line1, True, (210, 225, 255)), (rect.x + 12, rect.y + 28))
+                self.screen.blit(self.small_font.render(line2, True, (180, 200, 175)), (rect.x + 12, rect.y + 45))
             self._save_slot_rects.append((rect, i))
-            y += 64
+            y += row_h + row_gap
 
         instr = self.small_font.render(
             "Left-click: Load slot   |   Right-click: Save to slot   |   "
@@ -1417,8 +1440,11 @@ class Game:
         title = self.font.render(head, True, (255, 255, 255))
         self.screen.blit(title, title.get_rect(center=(self.width // 2, dy + 30)))
 
-        if meta:
-            sub = f"Slot {slot}:  Level {meta['level']}   Best GR {meta['highest_gr']}"
+        if meta and not meta.get("corrupt"):
+            sub = (f"Slot {slot}:  Level {meta['level']}  -  {meta['class_name']}"
+                   f"  -  Best GR {meta['highest_gr']}")
+        elif meta and meta.get("corrupt"):
+            sub = f"Slot {slot}:  (corrupt save)"
         else:
             sub = f"Slot {slot}"
         sub_surf = self.small_font.render(sub, True, (200, 210, 230))

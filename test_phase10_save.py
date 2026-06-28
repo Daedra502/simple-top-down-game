@@ -88,6 +88,35 @@ check("affixes survive round-trip",
       [(a["stat"], a["value"]) for a in ring_before.affixes] ==
       [(a["stat"], a["value"]) for a in ring_after.affixes])
 
+# Dual-wield weapons + dual rings + active skill restore into the EXACT slots
+gd = Game()
+weps = [ItemFactory.create_weapon(n, ItemRarity.RARE, 1) for n in ("Sword", "Axe")]
+rings = [ItemFactory.create_accessory("ring", ItemRarity.RARE, 1) for _ in range(2)]
+for it in weps + rings:
+    gd.item_manager.inventory.add_item(it)
+    gd._equip_from_inventory(it)
+gd.player.active_skill = 6
+gd.save_game(SLOT)
+gl = Game()
+gl.load_game(SLOT)
+eql = gl.item_manager.equipment.equipment
+check("off-hand weapon survives save/load",
+      eql[ItemSlot.WEAPON_1H] is not None and eql[ItemSlot.WEAPON_1H_OFF] is not None)
+check("both ring slots survive save/load",
+      eql[ItemSlot.RING_1] is not None and eql[ItemSlot.RING_2] is not None)
+check("selected active skill restored", gl.player.active_skill == 6)
+
+# Slot metadata exposes fields the UI needs to distinguish saves
+meta = save_system.peek_slot(SLOT)
+check("peek_slot exposes class/wealth/quests",
+      meta is not None and {"class_name", "wealth", "quests_done"} <= set(meta))
+
+# Corrupt save files are reported, not silently treated as empty
+with open(save_system.slot_path(SLOT), "w", encoding="utf-8") as f:
+    f.write("{ broken json")
+corrupt = save_system.peek_slot(SLOT)
+check("corrupt save reported as corrupt", corrupt is not None and corrupt.get("corrupt"))
+
 # Missing slot loads gracefully
 g3 = Game()
 check("loading an empty slot returns False", g3.load_game(31337) is False)

@@ -5,17 +5,22 @@ format because the project had no prior save seam, the schema keeps evolving, an
 JSON is trivial to inspect/debug and forward-migrate via ``version``).
 
 Serialized state: level / XP / skill points, the Stats *base* (which carries all
-per-level growth), wallet, highest GR, current HP/MP, allocated skill-tree nodes
-(by id), full inventory (incl. keystones), and equipped gear. Loading rebuilds
-the tree's allocated set, re-equips gear, then recomputes aggregated stats so a
-loaded character is identical to the saved one.
+per-level growth), wallet, highest GR, selected active skill, wand level,
+allocated skill-tree nodes (by id), active-skill levels/mastery/runes, full
+inventory (incl. keystones), equipped gear (restored into the exact slot it was
+saved in, so dual weapons and dual rings survive), the stash, quest progress, and
+ascendancy/atlas. Loading rebuilds the tree's allocated set, re-equips gear, then
+recomputes aggregated stats so a loaded character is identical to the saved one.
+
+Schema growth is backward-compatible: every new field is read with ``.get`` and a
+default, so a v1 save still loads in a v2 build.
 """
 import json
 import os
 
 from src.items.item import Item, ItemRarity, ItemSlot
 
-SAVE_VERSION = 1
+SAVE_VERSION = 2
 _SAVE_DIR = os.path.join(os.path.dirname(__file__), "..", "..", "saves")
 
 
@@ -76,6 +81,9 @@ def build_save(game):
         "wallet": {"copper": p.copper, "silver": p.silver,
                    "gold": p.gold, "diamond": p.diamond},
         "highest_gr": p.highest_gr,
+        "active_skill": getattr(p, "active_skill", 0),
+        "wand_level": getattr(p, "wand_level", 0),
+        "wand_damage_bonus": getattr(p, "wand_damage_bonus", 0),
         "allocated_nodes": [nid for nid, on in game.skill_tree.allocations.items()
                             if on and nid != game.skill_tree.ROOT_ID],
         "inventory": [item_to_dict(it) for it in game.item_manager.inventory.items],
@@ -99,6 +107,9 @@ def apply_save(game, data):
     p.skill_points = data["skill_points"]
     p.xp_to_level = data["xp_to_level"]
     p.highest_gr = data.get("highest_gr", 0)
+    p.active_skill = data.get("active_skill", getattr(p, "active_skill", 0))
+    p.wand_level = data.get("wand_level", 0)
+    p.wand_damage_bonus = data.get("wand_damage_bonus", 0)
 
     w = data["wallet"]
     p.copper, p.silver = w["copper"], w["silver"]
@@ -131,11 +142,20 @@ def apply_save(game, data):
     if hasattr(game, "quests"):
         game.quests.load_dict(data.get("quests"))
 
-    # Equipment
-    for slot in game.item_manager.equipment.equipment:
-        game.item_manager.equipment.equipment[slot] = None
+    # Equipment. Restore each item into the *exact* slot it was saved in (keyed
+    # by slot value), not by item.slot -- otherwise a secondary weapon or second
+    # ring (whose item.slot is the primary) would collide with the primary and
+    # be lost. Falls back to item.slot for unknown keys / legacy saves.
+    equipment = game.item_manager.equipment
+    for slot in equipment.equipment:
+        equipment.equipment[slot] = None
     for slot_value, item_dict in data.get("equipped", {}).items():
-        game.item_manager.equipment.equip_item(item_from_dict(item_dict))
+        item = item_from_dict(item_dict)
+        try:
+            slot = ItemSlot(slot_value)
+        except ValueError:
+            slot = item.slot
+        equipment.equip_item_to_slot(item, slot)
 
     # Active skills (Phase 13): restore levels / xp / mastery.
     if hasattr(game, "skills"):
@@ -179,22 +199,45 @@ def load_from_slot(game, slot=0):
 
 
 # --- slot browsing (Phase 17 save UI) ---------------------------------------
+def _class_name(chosen):
+    """Display name for an ascendancy class id (or 'No Class')."""
+    if not chosen:
+        return "No Class"
+    try:
+        from src.core.data_loader import load_json
+        return load_json("ascendancy.json").get(chosen, {}).get("name", chosen.title())
+    except Exception:
+        return str(chosen).title()
+
+
 def peek_slot(slot=0):
-    """Lightweight metadata for a save slot (no game mutation), or None."""
+    """Lightweight metadata for a save slot (no game mutation).
+
+    Returns a dict the save UI uses to let the player tell slots apart, a special
+    ``{"corrupt": True}`` marker if the file exists but can't be read, or None if
+    the slot is empty.
+    """
     path = slot_path(slot)
     if not os.path.exists(path):
         return None
     try:
         with open(path, "r", encoding="utf-8") as f:
             d = json.load(f)
+        w = d.get("wallet", {})
+        wealth = (w.get("copper", 0) + w.get("silver", 0) * 10
+                  + w.get("gold", 0) * 100 + w.get("diamond", 0) * 1000)
         return {
             "slot": slot,
             "level": d.get("level", 1),
             "highest_gr": d.get("highest_gr", 0),
+            "class_name": _class_name(d.get("ascendancy", {}).get("chosen")),
+            "wealth": wealth,
+            "quests_done": d.get("quests", {}).get("completed_count", 0),
             "mtime": os.path.getmtime(path),
         }
     except Exception:
-        return None
+        # File exists but is unreadable/corrupt -- surface that, don't hide it.
+        return {"slot": slot, "corrupt": True, "mtime": os.path.getmtime(path)}
 
 
 def list_slots(count=5):
