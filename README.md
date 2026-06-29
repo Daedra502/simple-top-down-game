@@ -5,7 +5,7 @@ A simple but extensible top-down action RPG game framework built with Python and
 ## Features
 
 - **Player Character**: Controllable protagonist with health, mana, and skill system
-- **Leveling System**: Max level 50 with skill points (1 per level)
+- **Leveling System**: Max level 100 with skill points (1 per level)
 - **Currency System**: 4-tier currency (Copper, Silver, Gold, Diamond)
 - **Wand Upgrades**: Increase spell damage with money
 - **Multiple Skills**: 
@@ -55,7 +55,7 @@ python main.py
 
 ## Game Features in Detail
 
-### Leveling System (Max Level 50)
+### Leveling System (Max Level 100)
 - Gain XP from defeating enemies and opening chests
 - Receive 1 skill point per level
 - Stats increase on level up (+10 health, +5 mana per level)
