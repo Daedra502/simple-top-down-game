@@ -16,7 +16,9 @@ A simple but extensible top-down action RPG game framework built with Python and
   - Original: Goblins, Orcs, Necromancers
   - New: Skeletons, Demons, Dragons, Vampires, Liches
 - **Multiple Maps**: Progress through 8 unique maps with increasing difficulty
-- **Chests**: Treasure chests with money and XP rewards on each map
+- **Chests**: Treasure chests spawn periodically as you explore, rewarding money, XP and equipment loot
+- **Map Obstacles**: Solid cover (rocks, pillars, crystals) to path around and bramble hazards to avoid
+- **Procedural Audio**: A music engine with choir, strings, FM bells, sub-drones and war-drums that swaps between field / dungeon / town / boss themes (inspired by Diablo III/IV and Path of Exile 1/2), plus eerie per-monster creature voices and distinct player-minion cues
 - **Combat System**: Projectile-based spell casting with collision detection
 - **Skill Tree**: 11 skill nodes for damage, attack speed, and special effects
 - **Attack Speed**: Increase spell casting speed from skill tree

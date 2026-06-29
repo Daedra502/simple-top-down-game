@@ -5,6 +5,7 @@ import random
 from src.entities.player import Player
 from src.entities.boss import Boss, boss_keys
 from src.entities.chest import Chest
+from src.entities.obstacle import Obstacle, OBSTACLE_TYPES
 from src.systems.world import WorldManager
 from src.systems.rift import RiftManager, NORMAL, GREATER
 from src.systems.spawn_director import SpawnDirector
@@ -120,6 +121,13 @@ class Game:
         self.minions = []
         self.aoe_effects = []   # transient AoE visuals
         self.ground_zones = []  # lingering damage zones (Lingering Ground rune)
+
+        # Treasure chests + map obstacles (spawned near the player as they roam).
+        self.chest_spawn_timer = 0.0
+        self.chest_spawn_interval = 22.0   # seconds between chest spawn attempts
+        self.max_chests = 3                # unopened chests allowed in the field
+        self.max_obstacles = 14            # obstacles kept loaded near the player
+        self._hazard_tick = 0.0            # throttles bramble contact damage
 
         # Rift / Greater Rift engine (Phase 5) + spawn director (Phase 12)
         self.rift = RiftManager()
@@ -399,6 +407,11 @@ class Game:
         # Update enemies (dt drives ailment ticks: burn DoT, freeze/slow timers)
         current_map.update(self.player, self.dt)
 
+        # Spawn/cull chests + obstacles, then resolve obstacle collisions so the
+        # player and enemies can't walk through solid cover.
+        self._update_world_features()
+        self._resolve_obstacle_collisions()
+
         # Update projectiles and handle collisions
         self.update_projectiles(current_map)
 
@@ -424,7 +437,12 @@ class Game:
                             diamond=rewards['diamond']
                         )
                         self.player.add_experience(rewards['xp'])
+                        # Loot reward: equipment drops into the world at the chest.
+                        if rewards.get('loot'):
+                            self._drop_loot(chest.x, chest.y, rewards['loot'])
+                        self.sound.play_chest_open()
                         self.quests.notify('open_chest', 1)
+                        self._set_rift_message("Chest opened! Loot and coin gained.")
 
         # Enemy attacks
         self.handle_enemy_attacks()
@@ -762,6 +780,80 @@ class Game:
         enemy.health = enemy.max_health
         enemy.damage = int(enemy.damage * self.rift.dmg_mult())
 
+    # --- treasure chests + map obstacles ---------------------------------
+    def _spawn_chest(self):
+        """Drop a reward chest in a ring around the player, scaled to depth."""
+        x, y = self._ring_spawn_point()
+        lvl = self.player.level + self.rift.gr_level
+        chest = Chest(
+            x, y,
+            copper=random.randint(20, 60) + lvl * 5,
+            silver=random.randint(0, 2) + lvl // 10,
+            gold=1 + lvl // 20 + (1 if random.random() < 0.3 else 0),
+            diamond=1 if random.random() < 0.08 + lvl * 0.002 else 0,
+            xp=int(30 + lvl * 8),
+            loot=random.randint(1, 2),
+        )
+        self.world.chests.append(chest)
+
+    def _spawn_obstacle(self):
+        """Add one obstacle just off-screen around the player."""
+        x, y = self._ring_spawn_point()
+        kind = random.choice(list(OBSTACLE_TYPES.keys()))
+        self.world.obstacles.append(Obstacle(x, y, kind, random.randint(20, 34)))
+
+    def _update_world_features(self):
+        """Spawn/cull chests + obstacles near the player and animate chests.
+
+        Both are kept "near the player" like enemies: timed chest spawns up to a
+        cap, obstacles topped up to a target density, and anything that drifts
+        far off-screen is unloaded so memory stays bounded in the endless world.
+        """
+        dt = self.dt
+        px, py = self.player.x, self.player.y
+        cull = self.width * 1.25
+
+        # Chests: spawn on a timer (only while exploring, not during a boss).
+        self.chest_spawn_timer += dt
+        unopened = sum(1 for c in self.world.chests if not c.opened)
+        if (self.chest_spawn_timer >= self.chest_spawn_interval
+                and unopened < self.max_chests and not self.rift.boss_active):
+            self.chest_spawn_timer = 0.0
+            self._spawn_chest()
+        for c in self.world.chests:
+            c.update(dt)
+        self.world.chests = [c for c in self.world.chests
+                             if math.hypot(c.x - px, c.y - py) <= cull]
+
+        # Obstacles: keep the area populated; unload distant ones.
+        self.world.obstacles = [o for o in self.world.obstacles
+                                if math.hypot(o.x - px, o.y - py) <= cull]
+        guard = 0
+        while len(self.world.obstacles) < self.max_obstacles and guard < 8:
+            self._spawn_obstacle()
+            guard += 1
+
+    def _resolve_obstacle_collisions(self):
+        """Push the player (and enemies) out of solid obstacles; apply hazards."""
+        pr = self.player.width / 2
+        for o in self.world.obstacles:
+            o.resolve_collision(self.player, pr)
+        for e in self.world.enemies:
+            er = getattr(e, 'width', 20) / 2
+            for o in self.world.obstacles:
+                o.resolve_collision(e, er)
+
+        # Hazard (bramble) contact damage, throttled to once per second.
+        self._hazard_tick -= self.dt
+        if self._hazard_tick <= 0:
+            for o in self.world.obstacles:
+                if o.contact(self.player, pr):
+                    res = max(0.1, 1.0 - self.player.get_resistance('physical') / 100.0)
+                    if self.player.take_damage(o.damage * res):
+                        self.game_over = True
+                    self._hazard_tick = 1.0
+                    break
+
     def _spawn_rift_boss(self):
         """Spawn the rift boss near the player and lock trash spawns."""
         self.rift.begin_boss()
@@ -1033,6 +1125,8 @@ class Game:
         self.player.rect.center = (int(self.town_center[0]), int(self.town_center[1]))
         # Town is a safe zone: clear the current fight and let spawns resume on return.
         self.world.enemies.clear()
+        self.world.chests.clear()
+        self.world.obstacles.clear()
         self.enemy_health_bars.clear()
         self.rift_boss = None
         self.progress_orbs.clear()
@@ -2035,6 +2129,12 @@ class Game:
             pos = (int(fx["x"] - cam[0]), int(fx["y"] - cam[1]))
             pygame.draw.circle(self.screen, fx["color"], pos, int(fx["r"]),
                                max(2, int(6 * fx["ttl"] / fx["max_ttl"])))
+
+        # Draw map obstacles (cover/hazards) then treasure chests, under actors.
+        for obstacle in self.world.obstacles:
+            obstacle.draw(self.screen, cam)
+        for chest in self.world.chests:
+            chest.draw(self.screen, cam)
 
         # Draw enemies (world-space, camera-offset)
         for enemy in self.world.enemies:

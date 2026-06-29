@@ -30,7 +30,8 @@ class WorldManager:
 
         self.chunks = {}        # (cx, cy) -> Chunk
         self.enemies = []       # global, near the player
-        self.chests = []        # reserved (per-chunk structures come later)
+        self.chests = []        # treasure chests near the player (Game-spawned)
+        self.obstacles = []     # solid/hazard map obstacles near the player
         self.biome_weights = {}  # atlas-driven biome bias (Phase 15)
         self.layout = None      # active map layout config (Phase 18)
 
