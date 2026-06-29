@@ -779,6 +779,8 @@ class Game:
                     reward_mult=self.rift.reward_mult())
         self.world.enemies.append(boss)
         self.rift_boss = boss
+        self.sound.set_theme('boss')   # swap to the driving boss-encounter theme
+        self.sound.play_monster(boss_key, 'idle')   # the boss announces itself
         self._set_rift_message(f"{boss.name} has appeared!")
 
     # --- linear rift travel + pylons (Phase 16) --------------------------
@@ -1002,8 +1004,8 @@ class Game:
         self.map_layout_id = random.choice(list(layouts.keys()))
         self.map_layout = layouts[self.map_layout_id]
         self.world.layout = self.map_layout
-        # Each fresh rift gets a newly generated music loop (modular variety).
-        self.sound.regenerate_music()
+        # Each fresh rift gets a newly generated, dungeon-themed music loop.
+        self.sound.regenerate_music('dungeon')
 
     # --- town hub (Phase 18) ---------------------------------------------
     def _init_town_stations(self):
@@ -1037,7 +1039,7 @@ class Game:
         if self.rift.boss_active:
             self.rift.boss_active = False
             self.rift.spawning_enabled = True
-        self.sound.regenerate_music()   # calmer, distinct town theme
+        self.sound.set_theme('town')    # calmer, warmer town theme
         self._set_rift_message("Town Portal: welcome to town. Press T to return.")
 
     def _leave_town(self):
@@ -1047,7 +1049,7 @@ class Game:
         if self.town_return is not None:
             self.player.x, self.player.y = self.town_return
             self.player.rect.center = (int(self.town_return[0]), int(self.town_return[1]))
-        self.sound.regenerate_music()   # fresh field track on return
+        self.sound.set_theme('dungeon')  # back into the brooding rift theme
         self._set_rift_message("Returned to the rift.")
 
     def _update_town(self):
@@ -1725,6 +1727,7 @@ class Game:
             my = self.player.y + math.sin(ang) * 40
             self.minions.append(Minion(mx, my, dmg, plan["duration"],
                                        self.player, plan.get("color", (220, 220, 200))))
+        self.sound.play_minion('summon')   # conjuration shimmer
 
     def _update_minions(self):
         for m in self.minions[:]:
@@ -1732,6 +1735,8 @@ class Game:
             if result is not None:
                 target, dmg = result
                 target._last_skill_id = "summon_skeleton"
+                if random.random() < 0.4:
+                    self.sound.play_minion('attack')   # dry bone-strike
                 if target.take_damage(dmg):
                     pass  # death hook handles rewards/XP
                 self.skills.award_damage("summon_skeleton", dmg)
@@ -1980,11 +1985,27 @@ class Game:
             if combos.get('shock_spreads_vulnerable'):
                 target.elemental_effects.apply_vulnerable(self.player)
 
+    def _monster_sound_key(self, enemy):
+        """Resolve an enemy to a creature-voice key for the SoundManager."""
+        key = getattr(enemy, 'boss_key', None)
+        if key:
+            return key
+        etype = getattr(enemy, 'enemy_type', None)
+        if etype is None:
+            return 'orc'
+        from src.entities.enemy import ENEMY_TYPE_KEYS
+        return ENEMY_TYPE_KEYS.get(etype, 'orc')
+
     def handle_enemy_attacks(self):
         """Handle enemy attacks on the player."""
         for enemy in self.world.enemies:
             if enemy.can_attack(self.player):
                 damage = enemy.attack()
+                # Eerie creature snarl on attack (throttled so a swarm doesn't
+                # drown the mix). Future per-monster attack abilities can reuse
+                # SoundManager.play_monster directly.
+                if random.random() < 0.3:
+                    self.sound.play_monster(self._monster_sound_key(enemy), 'attack')
                 # Vampiric elites heal for a portion of the hit (Phase 12).
                 lifesteal = getattr(enemy, 'behaviors', {}).get('lifesteal')
                 if lifesteal:
