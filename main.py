@@ -308,9 +308,11 @@ class Game:
                     self.gr_selected_level = max(1, self.player.highest_gr + 1)
                     self.show_gr_picker = True
                 elif event.key == pygame.K_F5:
-                    self.save_game()
+                    # Quick save/load target the slot the game is playing on, not
+                    # a hardcoded slot 0, so they round-trip the active character.
+                    self.save_game(self.active_save_slot)
                 elif event.key == pygame.K_F9:
-                    self.load_game()
+                    self.load_game(self.active_save_slot)
                 elif self.show_spell_tree and pygame.K_1 <= event.key <= pygame.K_3:
                     # While the spell-tree menu is open, 1-3 pick the spell tab.
                     self.spell_tree_selected = event.key - pygame.K_1
@@ -1701,35 +1703,50 @@ class Game:
         return " ".join(parts)
 
     def draw_save_menu(self):
-        """Save/Load overlay: one row per slot with its character summary."""
+        """Save/Load overlay: one card per slot with its character summary,
+        styled to match the game's other translucent, rounded UI panels."""
         self._save_slot_rects = []
-        overlay = pygame.Surface((self.width, self.height))
-        overlay.set_alpha(180)
-        overlay.fill((0, 0, 0))
+        overlay = pygame.Surface((self.width, self.height), pygame.SRCALPHA)
+        overlay.fill((0, 0, 0, 180))
         self.screen.blit(overlay, (0, 0))
 
         pw, ph = 580, 520
         px = (self.width - pw) // 2
         py = (self.height - ph) // 2
-        pygame.draw.rect(self.screen, (16, 20, 30), (px, py, pw, ph))
-        pygame.draw.rect(self.screen, (120, 170, 220), (px, py, pw, ph), 3)
+        panel = pygame.Surface((pw, ph), pygame.SRCALPHA)
+        panel.fill((16, 20, 30, 235))
+        self.screen.blit(panel, (px, py))
+        pygame.draw.rect(self.screen, (120, 170, 220), (px, py, pw, ph), 3, border_radius=10)
 
         title = self.large_font.render("Save / Load", True, (160, 210, 255))
         self.screen.blit(title, title.get_rect(center=(self.width // 2, py + 28)))
 
         slots = save_system.list_slots(self.NUM_SAVE_SLOTS)
+        latest = save_system.latest_slot(self.NUM_SAVE_SLOTS)
         row_h, row_gap = 64, 8
-        y = py + 60
+        y = py + 56
         import time as _t
+        mouse = pygame.mouse.get_pos()
         for i, meta in enumerate(slots):
             rect = pygame.Rect(px + 20, y, pw - 40, row_h)
-            hover = rect.collidepoint(*pygame.mouse.get_pos())
+            hover = rect.collidepoint(*mouse)
             active = (i == self.active_save_slot)
-            pygame.draw.rect(self.screen, (45, 50, 70) if hover else (28, 32, 46), rect)
-            pygame.draw.rect(self.screen, (255, 215, 120) if active else (90, 100, 130), rect, 2)
+            pygame.draw.rect(self.screen, (45, 50, 70) if hover else (28, 32, 46),
+                             rect, border_radius=6)
+            pygame.draw.rect(self.screen, (255, 215, 120) if active else (90, 100, 130),
+                             rect, 2, border_radius=6)
 
             head = f"Slot {i}" + ("   (current)" if active else "")
-            self.screen.blit(self.font.render(head, True, (255, 255, 255)), (rect.x + 12, rect.y + 6))
+            self.screen.blit(self.font.render(head, True, (255, 255, 255)),
+                             (rect.x + 12, rect.y + 6))
+
+            # "LATEST" badge marks the slot that startup + quick-load resume from.
+            if i == latest:
+                badge = self.small_font.render("LATEST", True, (20, 24, 16))
+                bw, bh = badge.get_width() + 12, badge.get_height() + 4
+                brect = pygame.Rect(rect.right - bw - 10, rect.y + 8, bw, bh)
+                pygame.draw.rect(self.screen, (150, 220, 120), brect, border_radius=4)
+                self.screen.blit(badge, (brect.x + 6, brect.y + 2))
 
             if not meta:
                 self.screen.blit(self.small_font.render("< empty -- right-click to save here >",
@@ -1749,7 +1766,7 @@ class Game:
 
         instr = self.small_font.render(
             "Left-click: Load slot   |   Right-click: Save to slot   |   "
-            "F5/F9: quick save/load   |   L: Close",
+            "F5/F9: quick save/load   |   L / Esc: Close",
             True, (200, 200, 200))
         self.screen.blit(instr, instr.get_rect(center=(self.width // 2, py + ph - 18)))
 
@@ -1770,13 +1787,12 @@ class Game:
         dx = (self.width - dw) // 2
         dy = (self.height - dh) // 2
         # Dim the menu behind the dialog.
-        shade = pygame.Surface((self.width, self.height))
-        shade.set_alpha(120)
-        shade.fill((0, 0, 0))
+        shade = pygame.Surface((self.width, self.height), pygame.SRCALPHA)
+        shade.fill((0, 0, 0, 120))
         self.screen.blit(shade, (0, 0))
-        pygame.draw.rect(self.screen, (22, 26, 38), (dx, dy, dw, dh))
+        pygame.draw.rect(self.screen, (22, 26, 38), (dx, dy, dw, dh), border_radius=10)
         accent = (255, 170, 90) if c['action'] == 'save' else (120, 200, 255)
-        pygame.draw.rect(self.screen, accent, (dx, dy, dw, dh), 3)
+        pygame.draw.rect(self.screen, accent, (dx, dy, dw, dh), 3, border_radius=10)
 
         if c['action'] == 'load':
             head = "Load this save?"
@@ -1800,18 +1816,13 @@ class Game:
         warn_surf = self.small_font.render(warn, True, (255, 200, 130))
         self.screen.blit(warn_surf, warn_surf.get_rect(center=(self.width // 2, dy + 84)))
 
-        # Yes / No buttons
-        mouse = pygame.mouse.get_pos()
-        for label, choice, bx, col in (
-            ("Yes (Enter)", 'yes', dx + 50, (80, 160, 90)),
-            ("No (Esc)", 'no', dx + dw - 50 - 160, (160, 80, 80)),
+        # Yes / No buttons (shared button style with the other menus).
+        for label, choice, bx, base, hov in (
+            ("Yes (Enter)", 'yes', dx + 50, (55, 110, 65), (75, 150, 90)),
+            ("No (Esc)", 'no', dx + dw - 50 - 160, (110, 55, 55), (150, 75, 75)),
         ):
-            rect = pygame.Rect(bx, dy + dh - 56, 160, 38)
-            hover = rect.collidepoint(mouse)
-            pygame.draw.rect(self.screen, tuple(min(255, v + (40 if hover else 0)) for v in col), rect)
-            pygame.draw.rect(self.screen, (230, 230, 230), rect, 2)
-            txt = self.font.render(label, True, (255, 255, 255))
-            self.screen.blit(txt, txt.get_rect(center=rect.center))
+            rect = self._draw_button(pygame.Rect(bx, dy + dh - 56, 160, 38),
+                                     label, base, hov)
             self._save_confirm_rects.append((rect, choice))
 
     def draw_spell_tree_overlay(self):
