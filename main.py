@@ -2397,16 +2397,45 @@ class Game:
         if self.in_town:
             self.draw_town_ground(cam)
 
-        # Draw lingering ground zones (Phase 14)
+        # Lingering ground zones (Phase 14): dashed rune ring + pulsing embers.
+        t = pygame.time.get_ticks() / 1000.0
         for zone in self.ground_zones:
-            pos = (int(zone["x"] - cam[0]), int(zone["y"] - cam[1]))
-            pygame.draw.circle(self.screen, zone["color"], pos, int(zone["r"]), 2)
+            zx = int(zone["x"] - cam[0])
+            zy = int(zone["y"] - cam[1])
+            zr = int(zone["r"])
+            col = zone["color"]
+            for deg in range(0, 360, 30):
+                a = math.radians(deg + t * 40)
+                ex = zx + int(math.cos(a) * zr)
+                ey = zy + int(math.sin(a) * zr)
+                self.screen.fill(col, (ex - 1, ey - 1, 3, 3))
+            for k in range(6):
+                a = t * 1.5 + k
+                rr = (0.3 + 0.6 * ((t * 0.7 + k * 0.16) % 1.0)) * zr
+                ex = zx + int(math.cos(a) * rr)
+                ey = zy + int(math.sin(a) * rr)
+                self.screen.fill(tuple(min(255, c + 40) for c in col), (ex, ey, 2, 2))
 
-        # Draw AoE effect rings (fading)
+        # AoE nova bursts: an expanding pixel-block ring with radiating sparks.
         for fx in self.aoe_effects:
-            pos = (int(fx["x"] - cam[0]), int(fx["y"] - cam[1]))
-            pygame.draw.circle(self.screen, fx["color"], pos, int(fx["r"]),
-                               max(2, int(6 * fx["ttl"] / fx["max_ttl"])))
+            fxx = int(fx["x"] - cam[0])
+            fxy = int(fx["y"] - cam[1])
+            frac = fx["ttl"] / fx["max_ttl"]          # 1 -> 0 as it fades
+            rr = int(fx["r"] * (1.0 - frac * 0.35))    # expands slightly outward
+            col = fx["color"]
+            for deg in range(0, 360, 24):
+                a = math.radians(deg)
+                ex = fxx + int(math.cos(a) * rr)
+                ey = fxy + int(math.sin(a) * rr)
+                sz = max(2, int(4 * frac))
+                self.screen.fill(col, (ex - sz // 2, ey - sz // 2, sz, sz))
+            # A few longer sparks shooting past the ring early in the burst.
+            if frac > 0.4:
+                for deg in range(0, 360, 45):
+                    a = math.radians(deg + 12)
+                    ex = fxx + int(math.cos(a) * rr * 1.2)
+                    ey = fxy + int(math.sin(a) * rr * 1.2)
+                    self.screen.fill(tuple(min(255, c + 60) for c in col), (ex - 1, ey - 1, 3, 3))
 
         # Draw map obstacles (cover/hazards), ritual circles, then treasure
         # chests, all under the actors.
