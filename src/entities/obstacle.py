@@ -42,10 +42,13 @@ class Obstacle:
             return False
         dx = entity.x - self.x
         dy = entity.y - self.y
-        dist = math.hypot(dx, dy)
         min_dist = self.radius + entity_radius
-        if dist >= min_dist:
+        # Squared-distance early-out avoids the sqrt on the common no-overlap
+        # case (this runs for every mover x every solid, every frame).
+        d2 = dx * dx + dy * dy
+        if d2 >= min_dist * min_dist:
             return False
+        dist = math.sqrt(d2)
         if dist == 0:                      # exactly centered: shove in a default dir
             dx, dy, dist = 1.0, 0.0, 1.0
         push = (min_dist - dist)

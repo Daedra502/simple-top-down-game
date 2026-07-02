@@ -706,10 +706,7 @@ class Game:
             dist = math.hypot(self.player.x - enemy.x, self.player.y - enemy.y)
             if dist <= nova['radius']:
                 element = nova.get('element', 'fire')
-                dmg = enemy.damage * nova['damage_mult']
-                dmg *= max(0.1, 1.0 - self.player.get_resistance(element) / 100.0)
-                if self.player.take_damage(dmg):
-                    self.game_over = True
+                self._damage_player(enemy.damage * nova['damage_mult'], element)
 
     def _roll_combat_loot(self, enemy):
         """LOOT SYSTEM (Phase 6): chance to drop an affix item into the world.
@@ -824,9 +821,15 @@ class Game:
 
     # --- spawning helpers (used by the SpawnDirector, Phase 12) -----------
     def _ring_spawn_point(self):
-        """A point in a ring around the player -- just off-screen, in world space."""
+        """A point in a ring around the player -- just off-screen, in world space.
+
+        The inner radius is the screen's half-diagonal plus a margin, so nothing
+        (chest, obstacle, enemy pack) ever materializes inside the viewport,
+        regardless of window aspect ratio.
+        """
         angle = random.uniform(0, 2 * math.pi)
-        dist = random.uniform(self.width * 0.55, self.width * 0.7)
+        half_diag = math.hypot(self.width, self.height) / 2
+        dist = random.uniform(half_diag + 60, half_diag + 320)
         return (self.player.x + math.cos(angle) * dist,
                 self.player.y + math.sin(angle) * dist)
 
@@ -855,10 +858,22 @@ class Game:
         self.world.chests.append(chest)
 
     def _spawn_obstacle(self):
-        """Add one obstacle just off-screen around the player."""
-        x, y = self._ring_spawn_point()
+        """Add one obstacle just off-screen, spaced away from other obstacles
+        and chests so nothing overlaps (which would jitter movers or make a
+        chest unreachable). Gives up after a few tries to stay O(1) amortized."""
+        radius = random.randint(20, 34)
         kind = random.choice(list(OBSTACLE_TYPES.keys()))
-        self.world.obstacles.append(Obstacle(x, y, kind, random.randint(20, 34)))
+        for _ in range(6):
+            x, y = self._ring_spawn_point()
+            clear = all(
+                math.hypot(x - o.x, y - o.y) > radius + o.radius + 10
+                for o in self.world.obstacles)
+            clear = clear and all(
+                math.hypot(x - c.x, y - c.y) > radius + 48
+                for c in self.world.chests if not c.opened)
+            if clear:
+                self.world.obstacles.append(Obstacle(x, y, kind, radius))
+                return
 
     def _update_world_features(self):
         """Spawn/cull chests + obstacles near the player and animate chests.
@@ -892,23 +907,30 @@ class Game:
             guard += 1
 
     def _resolve_obstacle_collisions(self):
-        """Push the player (and enemies) out of solid obstacles; apply hazards."""
+        """Push movers (player, enemies, minions) out of solid obstacles; apply
+        bramble hazard damage. Solid obstacles are filtered once per frame so the
+        per-mover loop skips non-solid hazards entirely."""
         pr = self.player.width / 2
-        for o in self.world.obstacles:
+        solids = [o for o in self.world.obstacles if o.solid]
+        for o in solids:
             o.resolve_collision(self.player, pr)
         for e in self.world.enemies:
             er = getattr(e, 'width', 20) / 2
-            for o in self.world.obstacles:
+            for o in solids:
                 o.resolve_collision(e, er)
+        # Minions obey solid cover like every other actor.
+        for m in self.minions:
+            mr = getattr(m, 'size', 12)
+            for o in solids:
+                o.resolve_collision(m, mr)
 
-        # Hazard (bramble) contact damage, throttled to once per second.
+        # Hazard (bramble) contact damage, throttled to once per second. Routed
+        # through the shared player-damage path so armor applies like melee.
         self._hazard_tick -= self.dt
         if self._hazard_tick <= 0:
             for o in self.world.obstacles:
                 if o.contact(self.player, pr):
-                    res = max(0.1, 1.0 - self.player.get_resistance('physical') / 100.0)
-                    if self.player.take_damage(o.damage * res):
-                        self.game_over = True
+                    self._damage_player(o.damage, 'physical')
                     self._hazard_tick = 1.0
                     break
 
@@ -2320,6 +2342,21 @@ class Game:
         from src.entities.enemy import ENEMY_TYPE_KEYS
         return ENEMY_TYPE_KEYS.get(etype, 'orc')
 
+    def _damage_player(self, amount, element='physical'):
+        """Single path for every hit against the player.
+
+        Applies armor damage reduction to physical hits, then the element's
+        resistance (at least 10% always gets through), deals the damage, and
+        flags game over on death. Used by melee, bramble hazards and elite
+        on-death novas so their mitigation stays consistent.
+        """
+        if element == 'physical':
+            amount *= (1.0 - self.player.armor_damage_reduction())
+        amount *= max(0.1, 1.0 - self.player.get_resistance(element) / 100.0)
+        if self.player.take_damage(amount):
+            self.game_over = True
+        return amount
+
     def handle_enemy_attacks(self):
         """Handle enemy attacks on the player."""
         for enemy in self.world.enemies:
@@ -2334,13 +2371,8 @@ class Game:
                 lifesteal = getattr(enemy, 'behaviors', {}).get('lifesteal')
                 if lifesteal:
                     enemy.health = min(enemy.max_health, enemy.health + damage * lifesteal)
-                # Armor + physical resistance from gear reduce incoming melee hits.
-                damage *= (1.0 - self.player.armor_damage_reduction())
-                phys_res = self.player.get_resistance('physical')
-                damage *= max(0.1, 1.0 - phys_res / 100.0)
-                is_dead = self.player.take_damage(damage)
-                if is_dead:
-                    self.game_over = True
+                # Melee is physical: armor + physical resistance both reduce it.
+                self._damage_player(damage, 'physical')
     
     def draw(self):
         """Draw the game state (camera-followed world, Phase 11)."""

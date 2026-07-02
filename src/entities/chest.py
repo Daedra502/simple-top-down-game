@@ -3,23 +3,24 @@ import math
 import pygame
 
 
-class Chest(pygame.sprite.Sprite):
+class Chest:
     """Treasure chest that can be opened for money, XP and (via the game) loot.
 
     Drawn camera-relative like the other world entities. Unopened chests pulse a
-    soft golden glow so they read as a reward beacon across the map; opened ones
-    go dark. ``radius`` is used for proximity opening and culling.
+    soft golden glow so they read as a reward beacon; opened ones go dark.
     """
+
+    # Pre-rendered aura surfaces shared by every chest, keyed by glow radius.
+    # The pulse only visits ~17 integer radii, so this caps allocations at a
+    # handful of small surfaces for the whole game instead of one per frame.
+    _AURA_CACHE = {}
 
     def __init__(self, x, y, copper=0, silver=0, gold=0, diamond=0, xp=0,
                  loot=0):
-        super().__init__()
-
         self.x = x
         self.y = y
         self.width = 30
         self.height = 30
-        self.radius = 18
 
         # Rewards
         self.copper = copper
@@ -31,13 +32,7 @@ class Chest(pygame.sprite.Sprite):
 
         self.opened = False
         self._pulse = 0.0         # animates the unopened glow
-
-        # Sprite surface (kept for MapManager compatibility / rect math).
-        self.image = pygame.Surface((self.width, self.height))
         self.color = (200, 150, 50)
-        self.image.fill(self.color)
-        self.rect = self.image.get_rect()
-        self.rect.center = (self.x, self.y)
 
     def update(self, dt):
         """Advance the idle glow animation (no-op once opened)."""
@@ -49,7 +44,6 @@ class Chest(pygame.sprite.Sprite):
         if not self.opened:
             self.opened = True
             self.color = (100, 75, 25)
-            self.image.fill(self.color)
             return {
                 'copper': self.copper,
                 'silver': self.silver,
@@ -60,17 +54,25 @@ class Chest(pygame.sprite.Sprite):
             }
         return None
 
+    @classmethod
+    def _aura(cls, glow):
+        """Return a cached golden aura surface of the given radius."""
+        surf = cls._AURA_CACHE.get(glow)
+        if surf is None:
+            surf = pygame.Surface((glow * 2, glow * 2), pygame.SRCALPHA)
+            pygame.draw.circle(surf, (255, 215, 90, 70), (glow, glow), glow)
+            cls._AURA_CACHE[glow] = surf
+        return surf
+
     def draw(self, surface, cam=(0, 0)):
         """Draw the chest at its world position, offset by the camera."""
         cx = int(self.x - cam[0])
         cy = int(self.y - cam[1])
 
         if not self.opened:
-            # Pulsing golden aura so loot is visible from a distance.
+            # Pulsing golden aura (cached per radius) so loot reads at a distance.
             glow = int(22 + 8 * math.sin(self._pulse))
-            aura = pygame.Surface((glow * 2, glow * 2), pygame.SRCALPHA)
-            pygame.draw.circle(aura, (255, 215, 90, 70), (glow, glow), glow)
-            surface.blit(aura, (cx - glow, cy - glow))
+            surface.blit(self._aura(glow), (cx - glow, cy - glow))
 
         w, h = self.width, self.height
         base = pygame.Rect(cx - w // 2, cy - h // 2, w, h)
