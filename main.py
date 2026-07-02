@@ -9,6 +9,7 @@ from src.entities.obstacle import Obstacle, OBSTACLE_TYPES
 from src.systems.world import WorldManager
 from src.systems.rift import RiftManager, NORMAL, GREATER
 from src.systems.spawn_director import SpawnDirector
+from src.systems.bounties import BountyManager
 from src.progression import AscendancyManager, AtlasManager
 from src.core import save as save_system
 from src.systems.combat import CombatSystem
@@ -166,6 +167,19 @@ class Game:
         self._stash_right_rects = []     # stash rows in the stash overlay
         self._near_station = None        # station the player can interact with (E)
 
+        # Bounty board (town activity): rotating contracts completed in the rift.
+        self.bounties = BountyManager()
+        self.show_bounty_board = False
+
+        # Ritual circles (field activity): stand in the circle while waves press
+        # in; finishing the channel pays out loot + XP.
+        self.rituals = []                    # [{x, y, progress, done, wave_timer}]
+        self.ritual_spawn_timer = 0.0
+        self.RITUAL_INTERVAL = 50.0          # seconds between circle spawns
+        self.RITUAL_TIME = 8.0               # channel time to complete
+        self.RITUAL_RADIUS = 80.0            # stand-inside radius
+        self.RITUAL_WAVE_EVERY = 2.0         # seconds between pressure waves
+
         # Save/Load slot menu (Phase 17).
         self.show_save_menu = False
         self.active_save_slot = 0
@@ -238,6 +252,18 @@ class Game:
                 if self.show_stash:
                     if event.key in (pygame.K_ESCAPE, pygame.K_e):
                         self.show_stash = False
+                    continue
+                # Bounty board captures input while open: 1-3 accept a contract.
+                if self.show_bounty_board:
+                    if event.key in (pygame.K_ESCAPE, pygame.K_e):
+                        self.show_bounty_board = False
+                    elif pygame.K_1 <= event.key <= pygame.K_3:
+                        picked = self.bounties.accept(event.key - pygame.K_1,
+                                                      self.rift.gr_level)
+                        if picked:
+                            self._set_rift_message(
+                                f"Bounty accepted: {picked['desc']} x{picked['target']}")
+                            self.show_bounty_board = False
                     continue
                 if event.key == pygame.K_ESCAPE:
                     # On the end screens Esc still exits; otherwise it opens the
@@ -413,6 +439,7 @@ class Game:
         # player and enemies can't walk through solid cover.
         self._update_world_features()
         self._resolve_obstacle_collisions()
+        self._update_rituals()
 
         # Update projectiles and handle collisions
         self.update_projectiles(current_map)
@@ -444,6 +471,7 @@ class Game:
                             self._drop_loot(chest.x, chest.y, rewards['loot'])
                         self.sound.play_chest_open()
                         self.quests.notify('open_chest', 1)
+                        self._notify_bounty('open_chest')
                         self._set_rift_message("Chest opened! Loot and coin gained.")
 
         # Enemy attacks
@@ -626,6 +654,11 @@ class Game:
         if getattr(enemy, 'is_elite', False):
             self.quests.notify('kill_elite', 1)
 
+        # Bounty progress mirrors the same events (family kills + elites).
+        self._notify_bounty('kill_family', family=getattr(enemy, 'family', None))
+        if getattr(enemy, 'is_elite', False):
+            self._notify_bounty('kill_elite')
+
         # Award skill XP to whichever skill landed the kill (Phase 13).
         killer = getattr(enemy, '_last_skill_id', None)
         if killer:
@@ -691,6 +724,8 @@ class Game:
         self.quests.notify('kill_boss', 1)
         for _ in range(self.rift.rift_cfg['boss_loot_drops']):
             self._drop_loot(boss.x, boss.y, 1)
+
+        self._notify_bounty('kill_boss')
 
         if self.rift.type == NORMAL:
             n = self.rift.rift_cfg['keystone_reward']
@@ -862,6 +897,115 @@ class Game:
                         self.game_over = True
                     self._hazard_tick = 1.0
                     break
+
+    # --- bounties (town board contracts) ----------------------------------
+    def _notify_bounty(self, event_type, family=None, amount=1):
+        """Advance the active bounty; pay out on completion."""
+        reward = self.bounties.notify(event_type, family=family, amount=amount)
+        if not reward:
+            return
+        self._grant_money({'gold': reward['gold']})
+        if reward.get('keystones'):
+            self.item_manager.add_keystone(reward['keystones'])
+        if reward.get('loot'):
+            self._drop_loot(self.player.x, self.player.y, reward['loot'])
+        ks = f" +{reward['keystones']} Keystone" if reward.get('keystones') else ""
+        self._set_rift_message(
+            f"Bounty complete: {reward['desc']}!  +{reward['gold']}g{ks} + loot")
+        self.sound.play_chest_open()
+
+    # --- ritual circles (field channel events) ----------------------------
+    def _update_rituals(self):
+        """Spawn ritual circles, run the stand-inside channel, pay out."""
+        dt = self.dt
+        px, py = self.player.x, self.player.y
+
+        # Spawn one circle at a time, off the same ring as chests/obstacles.
+        self.ritual_spawn_timer += dt
+        live = [r for r in self.rituals if not r['done']]
+        if (self.ritual_spawn_timer >= self.RITUAL_INTERVAL and not live
+                and not self.rift.boss_active):
+            self.ritual_spawn_timer = 0.0
+            x, y = self._ring_spawn_point()
+            self.rituals.append({'x': x, 'y': y, 'progress': 0.0,
+                                 'done': False, 'wave_timer': 0.0})
+            self._set_rift_message("A ritual circle has appeared nearby...")
+
+        for r in self.rituals:
+            if r['done']:
+                continue
+            inside = math.hypot(px - r['x'], py - r['y']) <= self.RITUAL_RADIUS
+            if inside:
+                r['progress'] += dt
+                # Pressure waves: the ritual fights back while channeled.
+                r['wave_timer'] -= dt
+                if r['wave_timer'] <= 0:
+                    r['wave_timer'] = self.RITUAL_WAVE_EVERY
+                    self._spawn_ritual_wave(r)
+                if r['progress'] >= self.RITUAL_TIME:
+                    r['done'] = True
+                    self._complete_ritual(r)
+            else:
+                r['progress'] = max(0.0, r['progress'] - dt * 0.7)
+
+        # Cull far-away circles like other world features.
+        cull = self.width * 1.25
+        self.rituals = [r for r in self.rituals
+                        if math.hypot(r['x'] - px, r['y'] - py) <= cull]
+
+    def _spawn_ritual_wave(self, ritual):
+        """A small pack pushes in against the channeling player."""
+        biome = self.world.current_biome(self.player)
+        pool = biome.get('enemy_pool') or ['goblin']
+        for _ in range(2):
+            enemy = self.director._make(self, random.choice(pool), 'normal', [])
+            ang = random.uniform(0, 2 * math.pi)
+            dist = self.RITUAL_RADIUS + random.uniform(120, 200)
+            enemy.x = ritual['x'] + math.cos(ang) * dist
+            enemy.y = ritual['y'] + math.sin(ang) * dist
+            enemy.rect.center = (enemy.x, enemy.y)
+            self.world.enemies.append(enemy)
+
+    def _complete_ritual(self, ritual):
+        """Channel finished: chest-tier payout at the circle."""
+        lvl = self.player.level + self.rift.gr_level
+        self.player.add_experience(int(80 + lvl * 10))
+        self._grant_money({'copper': 40 + lvl * 6, 'gold': 1 + lvl // 15})
+        self._drop_loot(ritual['x'], ritual['y'], 2)
+        self._set_rift_message("Ritual complete! The circle yields its hoard.")
+        self.sound.play_chest_open()
+
+    def draw_rituals(self, cam):
+        """Rune circles: dashed ring + rotating glyphs + channel progress arc."""
+        t = pygame.time.get_ticks() / 1000.0
+        for r in self.rituals:
+            cx = int(r['x'] - cam[0])
+            cy = int(r['y'] - cam[1])
+            if not (-150 < cx < self.width + 150 and -150 < cy < self.height + 150):
+                continue
+            radius = int(self.RITUAL_RADIUS)
+            base_col = (110, 110, 120) if r['done'] else (170, 90, 220)
+            # Dashed outer ring.
+            for deg in range(0, 360, 24):
+                a1, a2 = math.radians(deg + t * 18), math.radians(deg + 14 + t * 18)
+                p1 = (cx + math.cos(a1) * radius, cy + math.sin(a1) * radius)
+                p2 = (cx + math.cos(a2) * radius, cy + math.sin(a2) * radius)
+                pygame.draw.line(self.screen, base_col, p1, p2, 3)
+            if r['done']:
+                continue
+            # Orbiting glyph dots.
+            for k in range(5):
+                a = t * 1.4 + k * (2 * math.pi / 5)
+                gx = cx + int(math.cos(a) * radius * 0.62)
+                gy = cy + int(math.sin(a) * radius * 0.62)
+                pygame.draw.circle(self.screen, (220, 160, 255), (gx, gy), 5)
+            # Channel progress arc.
+            frac = r['progress'] / self.RITUAL_TIME
+            if frac > 0:
+                rect = pygame.Rect(cx - radius - 10, cy - radius - 10,
+                                   (radius + 10) * 2, (radius + 10) * 2)
+                pygame.draw.arc(self.screen, (255, 215, 110), rect,
+                                math.pi / 2 - frac * 2 * math.pi, math.pi / 2, 4)
 
     def _spawn_rift_boss(self):
         """Spawn the rift boss near the player and lock trash spawns."""
@@ -1041,7 +1185,7 @@ class Game:
         return (self.show_pause_menu or self.show_gr_picker or self.show_inventory
                 or self.show_skill_tree or self.show_progression
                 or self.show_character_sheet or self.show_spell_tree
-                or self.show_save_menu or self.show_stash)
+                or self.show_save_menu or self.show_stash or self.show_bounty_board)
 
     def _handle_pause_menu_keys(self, key):
         """Pause menu input: Esc resumes, Q quits the game."""
@@ -1117,6 +1261,7 @@ class Game:
             {'name': 'Merchant',      'x': cx + 170, 'y': cy - 30, 'key': 'merchant', 'color': (235, 200, 90)},
             {'name': 'Blacksmith',    'x': cx,       'y': cy + 170, 'key': 'smith',    'color': (220, 120, 90)},
             {'name': 'Return Portal', 'x': cx,       'y': cy - 180, 'key': 'portal',   'color': (180, 120, 255)},
+            {'name': 'Bounty Board',  'x': cx - 140, 'y': cy + 130, 'key': 'board',    'color': (200, 170, 110)},
         ]
 
     def _toggle_town(self):
@@ -1138,6 +1283,7 @@ class Game:
         self.world.enemies.clear()
         self.world.chests.clear()
         self.world.obstacles.clear()
+        self.rituals.clear()
         self.enemy_health_bars.clear()
         self.rift_boss = None
         self.progress_orbs.clear()
@@ -1178,6 +1324,8 @@ class Game:
             self.show_inventory = True   # upgrades happen in the inventory panel
         elif s['key'] == 'portal':
             self._leave_town()
+        elif s['key'] == 'board':
+            self.show_bounty_board = True
 
     def _sell_all_junk(self):
         """Merchant convenience: sell every Common/Uncommon backpack item."""
@@ -2146,9 +2294,11 @@ class Game:
             pygame.draw.circle(self.screen, fx["color"], pos, int(fx["r"]),
                                max(2, int(6 * fx["ttl"] / fx["max_ttl"])))
 
-        # Draw map obstacles (cover/hazards) then treasure chests, under actors.
+        # Draw map obstacles (cover/hazards), ritual circles, then treasure
+        # chests, all under the actors.
         for obstacle in self.world.obstacles:
             obstacle.draw(self.screen, cam)
+        self.draw_rituals(cam)
         for chest in self.world.chests:
             chest.draw(self.screen, cam)
 
@@ -2230,6 +2380,10 @@ class Game:
         # Draw stash transfer overlay
         if self.show_stash:
             self.draw_stash_overlay()
+
+        # Draw the bounty board overlay
+        if self.show_bounty_board:
+            self.draw_bounty_board_overlay()
         
         # Draw rift progress bar + boss callouts (Phase 5)
         self.draw_rift_bar()
@@ -2375,6 +2529,12 @@ class Game:
         self.screen.blit(q_surf, (320, 135))
         qr_surf = self.small_font.render(self.quests.reward_line(), True, (180, 180, 140))
         self.screen.blit(qr_surf, (320, 158))
+
+        # Active bounty tracker (town board contract)
+        bounty_line = self.bounties.describe_active()
+        if bounty_line:
+            b_surf = self.font.render(bounty_line, True, (210, 180, 120))
+            self.screen.blit(b_surf, (320, 176))
         
         # Instructions
         instr_text = ("WASD Move | Click/F Auto Cast | 1-8/Wheel Skill | T Town | P Tree | "
@@ -2829,6 +2989,16 @@ class Game:
                 # Forge glow in the doorway.
                 ember = 170 + int(50 * math.sin(t * 5.0))
                 pygame.draw.rect(self.screen, (ember, 70, 30), (sx - 9, sy - 40, 18, 24))
+            elif s['key'] == 'board':
+                # Wooden noticeboard with pinned contract notes.
+                pygame.draw.rect(self.screen, (96, 70, 44), (sx - 30, sy - 60, 8, 52))
+                pygame.draw.rect(self.screen, (96, 70, 44), (sx + 22, sy - 60, 8, 52))
+                pygame.draw.rect(self.screen, (74, 54, 34), (sx - 38, sy - 66, 76, 44))
+                pygame.draw.rect(self.screen, (120, 92, 58), (sx - 38, sy - 66, 76, 44), 3)
+                for k, (nx, ny) in enumerate(((-26, -58), (-4, -52), (16, -60))):
+                    tone = 225 - k * 18
+                    pygame.draw.rect(self.screen, (tone, tone, tone - 30),
+                                     (sx + nx, sy + ny, 14, 18))
             elif s['key'] == 'portal':
                 # Stone arch with a swirling return portal.
                 pygame.draw.rect(self.screen, (110, 110, 120), (sx - 34, sy - 66, 12, 66))
@@ -2867,10 +3037,51 @@ class Game:
                 'merchant': "Press E: Sell all common/uncommon loot",
                 'smith': "Press E: Open inventory to upgrade gear",
                 'portal': "Press E: Return to the rift",
+                'board': "Press E: Browse bounty contracts",
             }
             txt = prompts.get(self._near_station['key'], "Press E")
             ps = self.font.render(txt, True, (255, 235, 150))
             self.screen.blit(ps, ps.get_rect(center=(self.width // 2, self.height - 90)))
+
+    def draw_bounty_board_overlay(self):
+        """Bounty board panel: the active contract plus three offers (1-3)."""
+        overlay = pygame.Surface((self.width, self.height))
+        overlay.set_alpha(160)
+        overlay.fill((8, 6, 4))
+        self.screen.blit(overlay, (0, 0))
+
+        pw, ph = 640, 420
+        px = (self.width - pw) // 2
+        py = (self.height - ph) // 2
+        pygame.draw.rect(self.screen, (46, 34, 22), (px, py, pw, ph))
+        pygame.draw.rect(self.screen, (200, 170, 110), (px, py, pw, ph), 3)
+        title = self.large_font.render("Bounty Board", True, (235, 205, 140))
+        self.screen.blit(title, title.get_rect(center=(self.width // 2, py + 26)))
+
+        y = py + 64
+        active_line = self.bounties.describe_active()
+        cur = active_line if active_line else "No contract active."
+        self.screen.blit(self.font.render(cur, True, (255, 225, 150)), (px + 24, y))
+        y += 44
+
+        self.screen.blit(self.font.render("Contracts on offer:", True,
+                                          (210, 200, 180)), (px + 24, y))
+        y += 34
+        for i, offer in enumerate(self.bounties.offers):
+            ks = f", {offer['keystones']} keystone" if offer.get('keystones') else ""
+            line = (f"[{i + 1}]  {offer['desc']}  x{offer['target']}   "
+                    f"->  {offer['gold']}g, {offer['loot']} loot{ks}")
+            self.screen.blit(self.font.render(line, True, (225, 215, 190)),
+                             (px + 40, y))
+            y += 34
+
+        note = ("Accepting replaces your current contract." if active_line
+                else "Press 1-3 to accept a contract.")
+        self.screen.blit(self.small_font.render(note, True, (180, 170, 150)),
+                         (px + 24, y + 10))
+        instr = self.small_font.render("1-3: Accept    |    E / Esc: Close",
+                                       True, (200, 200, 200))
+        self.screen.blit(instr, instr.get_rect(center=(self.width // 2, py + ph - 18)))
 
     def draw_stash_overlay(self):
         """Stash transfer panel: backpack (left) <-> stash (right), click to move."""

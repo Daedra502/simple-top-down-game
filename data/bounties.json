@@ -1,0 +1,12 @@
+{
+ "cull_beasts":    {"desc": "Cull the beasts",        "type": "kill_family", "family": "beasts",   "target": [12, 24], "gold": 2, "loot": 1},
+ "purge_undead":   {"desc": "Purge the undead",       "type": "kill_family", "family": "undead",   "target": [12, 24], "gold": 2, "loot": 1},
+ "rout_mutants":   {"desc": "Rout the mutants",       "type": "kill_family", "family": "mutants",  "target": [10, 20], "gold": 2, "loot": 1},
+ "silence_cults":  {"desc": "Silence the cultists",   "type": "kill_family", "family": "cultists", "target": [8, 16],  "gold": 3, "loot": 1},
+ "banish_demons":  {"desc": "Banish the demons",      "type": "kill_family", "family": "demons",   "target": [6, 12],  "gold": 3, "loot": 2},
+ "fell_ancients":  {"desc": "Fell the ancients",      "type": "kill_family", "family": "ancients", "target": [4, 8],   "gold": 4, "loot": 2, "keystones": 1},
+ "still_the_void": {"desc": "Still the voidborn",     "type": "kill_family", "family": "voidborn", "target": [4, 8],   "gold": 4, "loot": 2, "keystones": 1},
+ "elite_hunt":     {"desc": "Slay empowered foes",    "type": "kill_elite",  "target": [3, 6],   "gold": 4, "loot": 2, "keystones": 1},
+ "treasure_sweep": {"desc": "Crack open chests",      "type": "open_chest",  "target": [2, 4],   "gold": 3, "loot": 2},
+ "boss_takedown":  {"desc": "Slay a rift boss",       "type": "kill_boss",   "target": [1, 2],   "gold": 6, "loot": 3, "keystones": 2}
+}

@@ -18,6 +18,9 @@ A simple but extensible top-down action RPG game framework built with Python and
 - **Multiple Maps**: Progress through 8 unique maps with increasing difficulty
 - **Chests**: Treasure chests spawn periodically as you explore, rewarding money, XP and equipment loot
 - **Map Obstacles**: Solid cover (rocks, pillars, crystals) to path around and bramble hazards to avoid
+- **Bounty Board**: Accept rotating contracts (cull enemy families, hunt elites, crack chests, slay bosses) at the town board for gold, loot and rift keystones
+- **Ritual Circles**: Field channel events -- hold your ground inside the circle while waves press in to claim the hoard
+- **Rustic Town + Atmosphere**: Embervale village hub (plaza, well, blacksmith, market, portal) and a moody per-layout ambient/vignette pass over the rift
 - **Procedural Audio**: A music engine with choir, strings, FM bells, sub-drones and war-drums that swaps between field / dungeon / town / boss themes (inspired by Diablo III/IV and Path of Exile 1/2), plus eerie per-monster creature voices and distinct player-minion cues
 - **Combat System**: Projectile-based spell casting with collision detection
 - **Passive Skill Tree**: A ~260-node PoE2-style radial web with six themed regions (Fire, Lightning, Sorcery, Alacrity, Summoning, Blood & Iron, Winter), wheels of minors around notables, ring roads between regions, and keystones at the rim

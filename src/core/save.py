@@ -97,6 +97,7 @@ def build_save(game):
         "equipped": equipped,
         "stash": [item_to_dict(it) for it in getattr(game, "stash", [])],
         "quests": game.quests.to_dict() if hasattr(game, "quests") else {},
+        "bounties": game.bounties.to_dict() if hasattr(game, "bounties") else {},
         "world_seed": getattr(game.world, "seed", None),
         "skills": game.skills.to_dict() if hasattr(game, "skills") else [],
         "ascendancy": game.ascendancy.to_dict() if hasattr(game, "ascendancy") else {},
@@ -152,6 +153,10 @@ def apply_save(game, data):
     # Quests (Phase 18): restore the active objective + progress.
     if hasattr(game, "quests"):
         game.quests.load_dict(data.get("quests"))
+
+    # Bounty board contracts: restore the active contract + offers.
+    if hasattr(game, "bounties"):
+        game.bounties.from_dict(data.get("bounties"))
 
     # Equipment. Restore each item into the *exact* slot it was saved in (keyed
     # by slot value), not by item.slot -- otherwise a secondary weapon or second
