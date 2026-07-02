@@ -14,12 +14,22 @@ import random
 
 from src.core.data_loader import load_json
 from src.systems.world.chunk import Chunk
+from src.systems.world import props as prop_art
 
 
 class WorldManager:
     CHUNK_SIZE = 768
     GEN_RADIUS = 2      # generate a (2*r+1)^2 block of chunks around the player
     UNLOAD_RADIUS = 3   # unload chunks farther than this (in chunk units)
+
+    # Biome regions: one climate cell spans REGION_CHUNKS chunks per side; each
+    # cell has a jittered center and a weighted biome, and ground is sampled by
+    # nearest center (Worley) so biomes form coherent territories instead of a
+    # per-chunk patchwork. Where the two nearest centers are almost equidistant
+    # the ground colors cross-fade, giving wide natural transition bands.
+    REGION_CHUNKS = 3
+    SUBTILE = 96        # ground sampling resolution inside a chunk (8x8)
+    EDGE_BAND = 0.22    # normalized border width where biomes blend
 
     bounded = False     # infinite world: entities don't clamp to bounds
 
@@ -34,6 +44,7 @@ class WorldManager:
         self.obstacles = []     # solid/hazard map obstacles near the player
         self.biome_weights = {}  # atlas-driven biome bias (Phase 15)
         self.layout = None      # active map layout config (Phase 18)
+        self._ground_sig = None  # (layout name, weights) the caches were built for
 
         self._ensure_started()
 
@@ -42,21 +53,64 @@ class WorldManager:
         return (int(math.floor(x / self.CHUNK_SIZE)),
                 int(math.floor(y / self.CHUNK_SIZE)))
 
-    def biome_for_chunk(self, cx, cy):
-        """Deterministic biome from (seed, cx, cy), biased by atlas weights.
+    # --- climate regions ---------------------------------------------------
+    def _region_size(self):
+        return self.REGION_CHUNKS * self.CHUNK_SIZE
 
-        Stays deterministic for a fixed (seed, weights) so streaming/saves are
-        reproducible; the atlas changes which biomes the world favors (Phase 15).
-        """
+    def _region_center(self, rx, ry):
+        """Deterministic jittered center point of a climate cell (pixels)."""
+        h = prop_art.stable_hash(self.seed, "rc", rx, ry)
+        jx = (h % 1000) / 1000.0
+        jy = ((h // 1000) % 1000) / 1000.0
+        size = self._region_size()
+        return ((rx + 0.15 + 0.7 * jx) * size, (ry + 0.15 + 0.7 * jy) * size)
+
+    def _region_biome(self, rx, ry):
+        """Weighted biome roll per climate cell (atlas bias, Phase 15)."""
         weights = [self.biome_weights.get(b, 1.0) for b in self.biome_ids]
         total = sum(weights)
-        roll = (hash((self.seed, cx, cy)) % 1_000_000) / 1_000_000 * total
+        roll = (prop_art.stable_hash(self.seed, "rb", rx, ry) % 1_000_000) / 1_000_000 * total
         acc = 0.0
         for biome, w in zip(self.biome_ids, weights):
             acc += w
             if roll < acc:
                 return biome
         return self.biome_ids[-1]
+
+    def biome_at(self, x, y):
+        """Sample the climate field at a world point.
+
+        Returns (nearest biome id, second biome id, blend) where blend rises
+        from 0 deep inside a region to ~0.5 exactly on a border.
+        """
+        size = self._region_size()
+        rx0 = int(math.floor(x / size))
+        ry0 = int(math.floor(y / size))
+        best = second = None
+        d1 = d2 = float("inf")
+        for rx in range(rx0 - 1, rx0 + 2):
+            for ry in range(ry0 - 1, ry0 + 2):
+                cx, cy = self._region_center(rx, ry)
+                d = (x - cx) ** 2 + (y - cy) ** 2
+                if d < d1:
+                    second, d2 = best, d1
+                    best, d1 = (rx, ry), d
+                elif d < d2:
+                    second, d2 = (rx, ry), d
+        b1 = self._region_biome(*best)
+        b2 = self._region_biome(*second)   # 3x3 search always yields a runner-up
+        d1, d2 = math.sqrt(d1), math.sqrt(d2)
+        edge = (d2 - d1) / (d2 + d1 + 1e-9)   # 0 on the border, ~1 at the center
+        blend = 0.0
+        if edge < self.EDGE_BAND and b2 != b1:
+            blend = 0.5 * (1.0 - edge / self.EDGE_BAND)
+        return b1, b2, blend
+
+    def biome_for_chunk(self, cx, cy):
+        """Dominant biome of a chunk: the climate field at the chunk center."""
+        x = (cx + 0.5) * self.CHUNK_SIZE
+        y = (cy + 0.5) * self.CHUNK_SIZE
+        return self.biome_at(x, y)[0]
 
     def get_chunk(self, cx, cy):
         chunk = self.chunks.get((cx, cy))
@@ -87,9 +141,12 @@ class WorldManager:
                 chunk = self.chunks.get(key) or self.generate_chunk(*key)
                 chunk.discovered = True
 
-        for key in list(self.chunks):
-            if max(abs(key[0] - pcx), abs(key[1] - pcy)) > self.UNLOAD_RADIUS:
+        for key, chunk in list(self.chunks.items()):
+            dist = max(abs(key[0] - pcx), abs(key[1] - pcy))
+            if dist > self.UNLOAD_RADIUS:
                 del self.chunks[key]
+            elif dist > self.GEN_RADIUS and chunk.surface is not None:
+                chunk.surface = None    # free off-screen ground caches
 
     def current_biome(self, player):
         cx, cy = self.chunk_coord(player.x, player.y)
@@ -116,55 +173,90 @@ class WorldManager:
         self.enemies = alive
 
     # --- rendering --------------------------------------------------------
+    def _ground_color_at(self, x, y):
+        """Blended ground color of the climate field at a world point."""
+        b1, b2, blend = self.biome_at(x, y)
+        c1 = self.biomes[b1]["ground_color"]
+        c2 = self.biomes[b2]["ground_color"]
+        return tuple(int(a + (b - a) * blend) for a, b in zip(c1, c2))
+
+    def _cache_signature(self):
+        layout_name = (self.layout or {}).get("name", "")
+        return (layout_name, tuple(sorted(self.biome_weights.items())))
+
     def draw_ground(self, surface, cam, screen_w, screen_h):
-        """Draw biome-tinted ground for every chunk overlapping the view."""
+        """Blit cached, pre-rendered chunk ground for the visible view.
+
+        Each chunk's ground (blended sub-tiles + texture speckle + biome and
+        layout props) is rendered once into a Surface and cached on the chunk;
+        per frame this is just a handful of blits. Caches are rebuilt when the
+        map layout or atlas biome weights change, and freed as chunks stream
+        out (update_world) so memory stays bounded.
+        """
+        sig = self._cache_signature()
+        if sig != self._ground_sig:
+            self._ground_sig = sig
+            for chunk in self.chunks.values():
+                chunk.surface = None
+
         cam_x, cam_y = cam
         cx0, cy0 = self.chunk_coord(cam_x, cam_y)
         cx1, cy1 = self.chunk_coord(cam_x + screen_w, cam_y + screen_h)
 
-        import pygame
         for cx in range(cx0, cx1 + 1):
             for cy in range(cy0, cy1 + 1):
                 chunk = self.get_chunk(cx, cy)
-                sx = chunk.px - cam_x
-                sy = chunk.py - cam_y
-                rect = pygame.Rect(sx, sy, self.CHUNK_SIZE, self.CHUNK_SIZE)
-                pygame.draw.rect(surface, chunk.ground_color, rect)
-                # subtle chunk border so biome transitions are visible
-                pygame.draw.rect(surface, (0, 0, 0), rect, 1)
-                self._draw_chunk_props(surface, pygame, cx, cy, sx, sy)
+                if chunk.surface is None:
+                    chunk.surface = self._render_chunk(chunk)
+                surface.blit(chunk.surface, (chunk.px - cam_x, chunk.py - cam_y))
 
-    def _draw_chunk_props(self, surface, pygame, cx, cy, sx, sy):
-        """Scatter decorative props for the active map layout (Phase 18).
+    def _render_chunk(self, chunk):
+        """Render one chunk's ground into a cached Surface (called rarely)."""
+        import pygame
+        size = self.CHUNK_SIZE
+        surf = pygame.Surface((size, size))
 
-        Props are deterministic per (seed, chunk, layout) so the world looks
-        stable as it streams, and purely cosmetic -- they give each layout a
-        distinct silhouette (rocks, pillars, crystals) without affecting paths.
-        """
+        # Blended ground sub-tiles with a touch of deterministic shade jitter.
+        sub = self.SUBTILE
+        n = size // sub
+        for ty in range(n):
+            for tx in range(n):
+                wx = chunk.px + tx * sub + sub / 2
+                wy = chunk.py + ty * sub + sub / 2
+                col = self._ground_color_at(wx, wy)
+                jitter = (prop_art.stable_hash(self.seed, "j", int(wx), int(wy)) % 7) - 3
+                col = prop_art.shade(col, jitter)
+                surf.fill(col, (tx * sub, ty * sub, sub, sub))
+
+        # Texture speckle in the biome's accent color.
+        biome = self.biomes[chunk.biome_id]
+        speck = tuple(biome.get("speckle", prop_art.shade(chunk.ground_color, 18)))
+        for i in range(70):
+            h = prop_art.stable_hash(self.seed, "spk", chunk.world_x, chunk.world_y, i)
+            x = h % size
+            y = (h // size) % size
+            surf.fill(prop_art.shade(speck, -(h % 25)), (x, y, 2, 2))
+
+        # Signature biome props, then layout props on top.
+        for spec in biome.get("props", []):
+            self._scatter_props(surf, chunk, spec["shape"], tuple(spec["color"]),
+                                spec.get("density", 2), spec.get("size", 14),
+                                salt=spec["shape"])
         layout = self.layout
-        if not layout:
-            return
-        density = layout.get("prop_density", 0.0)
-        if density <= 0:
-            return
-        count = int(density * 4)
-        color = tuple(layout.get("prop_color", [80, 80, 80]))
-        size = layout.get("prop_size", 14)
-        shape = layout.get("prop_shape", "rock")
-        layout_name = layout.get("name", "")
-        for i in range(count):
-            h = hash((self.seed, cx, cy, i, layout_name))
-            ox = (h % 1000) / 1000.0 * self.CHUNK_SIZE
-            oy = ((h // 1000) % 1000) / 1000.0 * self.CHUNK_SIZE
-            x, y = int(sx + ox), int(sy + oy)
-            shade = tuple(min(255, c + 25) for c in color)
-            if shape == "pillar":
-                pygame.draw.rect(surface, color, (x - size // 3, y - size, size // 1.5 * 1, size * 2))
-                pygame.draw.rect(surface, shade, (x - size // 3, y - size, size // 1.5 * 1, size * 2), 1)
-            elif shape == "crystal":
-                pts = [(x, y - size), (x + size // 2, y), (x, y + size), (x - size // 2, y)]
-                pygame.draw.polygon(surface, color, pts)
-                pygame.draw.polygon(surface, shade, pts, 1)
-            else:  # rock
-                pygame.draw.circle(surface, color, (x, y), size // 2)
-                pygame.draw.circle(surface, shade, (x, y), size // 2, 1)
+        if layout and layout.get("prop_density", 0) > 0:
+            self._scatter_props(surf, chunk, layout.get("prop_shape", "rock"),
+                                tuple(layout.get("prop_color", [80, 80, 80])),
+                                layout.get("prop_density", 1) * 4,
+                                layout.get("prop_size", 14),
+                                salt=layout.get("name", ""))
+        return surf
+
+    def _scatter_props(self, surf, chunk, shape, color, density, size, salt):
+        """Deterministically scatter one prop type across a chunk surface."""
+        margin = size * 2 + 4    # keep silhouettes inside the cached surface
+        span = self.CHUNK_SIZE - margin * 2
+        for i in range(int(density)):
+            h = prop_art.stable_hash(self.seed, "prop", chunk.world_x, chunk.world_y, salt, i)
+            x = margin + (h % 1000) / 1000.0 * span
+            y = margin + ((h // 1000) % 1000) / 1000.0 * span
+            prop_art.draw_prop(surf, shape, color, int(x), int(y), size, h=h)

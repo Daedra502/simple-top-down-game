@@ -62,26 +62,8 @@ class Obstacle:
         return math.hypot(entity.x - self.x, entity.y - self.y) < self.radius + entity_radius
 
     def draw(self, surface, cam=(0, 0)):
-        cx = int(self.x - cam[0])
-        cy = int(self.y - cam[1])
-        r = self.radius
-        shade = tuple(min(255, c + 35) for c in self.color)
-        if self.shape == "pillar":
-            rect = (cx - r // 2, cy - r, r, r * 2)
-            pygame.draw.rect(surface, self.color, rect)
-            pygame.draw.rect(surface, shade, rect, 2)
-        elif self.shape == "crystal":
-            pts = [(cx, cy - r), (cx + r * 2 // 3, cy), (cx, cy + r), (cx - r * 2 // 3, cy)]
-            pygame.draw.polygon(surface, self.color, pts)
-            pygame.draw.polygon(surface, shade, pts, 2)
-        elif self.shape == "bramble":
-            # A ragged hazard: a few spiky spokes around a dark core.
-            pygame.draw.circle(surface, self.color, (cx, cy), r)
-            for a in range(0, 360, 45):
-                ex = cx + int(math.cos(math.radians(a)) * r)
-                ey = cy + int(math.sin(math.radians(a)) * r)
-                pygame.draw.line(surface, (40, 70, 35), (cx, cy), (ex, ey), 2)
-        else:  # rock
-            pygame.draw.circle(surface, self.color, (cx, cy), r)
-            pygame.draw.circle(surface, shade, (cx, cy), r, 2)
-            pygame.draw.circle(surface, (40, 40, 45), (cx, cy), r, 1)
+        # Shares the world's prop painter so obstacle silhouettes match the
+        # cosmetic props scattered across the ground.
+        from src.systems.world.props import draw_prop
+        draw_prop(surface, self.shape, self.color,
+                  int(self.x - cam[0]), int(self.y - cam[1]), self.radius)

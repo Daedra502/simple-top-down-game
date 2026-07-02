@@ -1,12 +1,484 @@
 {
-  "void_wastes":        { "name": "Void Wastes",        "ground_color": [28, 20, 40],  "enemy_pool": ["lich", "necromancer"],   "spawn_density": 1.0, "loot_bonus": 0.10, "hazards": ["void_tear"],     "boss_pool": ["void_reaver"],                 "music": "void" },
-  "burning_hellscape":  { "name": "Burning Hellscape",  "ground_color": [48, 18, 14],  "enemy_pool": ["demon", "dragon"],       "spawn_density": 1.2, "loot_bonus": 0.12, "hazards": ["lava_pool"],     "boss_pool": ["ashbringer", "demon_general"], "music": "hell" },
-  "frozen_tundra":      { "name": "Frozen Tundra",      "ground_color": [30, 44, 58],  "enemy_pool": ["skeleton", "orc"],       "spawn_density": 0.9, "loot_bonus": 0.08, "hazards": ["ice_patch"],     "boss_pool": ["frost_monarch"],               "music": "tundra" },
-  "corrupted_forest":   { "name": "Corrupted Forest",   "ground_color": [22, 38, 24],  "enemy_pool": ["goblin", "vampire"],     "spawn_density": 1.1, "loot_bonus": 0.08, "hazards": ["thorns"],        "boss_pool": ["plague_lord"],                 "music": "forest" },
-  "lightning_fields":   { "name": "Lightning Fields",   "ground_color": [40, 40, 24],  "enemy_pool": ["skeleton", "orc"],       "spawn_density": 1.15,"loot_bonus": 0.10, "hazards": ["storm_strike"],  "boss_pool": ["storm_caller"],                "music": "storm" },
-  "ancient_ruins":      { "name": "Ancient Ruins",      "ground_color": [44, 40, 32],  "enemy_pool": ["skeleton", "necromancer"],"spawn_density": 1.0, "loot_bonus": 0.14, "hazards": ["collapsing_floor"], "boss_pool": ["crystal_golem"],            "music": "ruins" },
-  "blood_marsh":        { "name": "Blood Marsh",        "ground_color": [40, 16, 20],  "enemy_pool": ["vampire", "necromancer"],"spawn_density": 1.1, "loot_bonus": 0.10, "hazards": ["blood_pool"],    "boss_pool": ["blood_countess"],              "music": "marsh" },
-  "crystal_caverns":    { "name": "Crystal Caverns",    "ground_color": [20, 40, 44],  "enemy_pool": ["orc", "demon"],          "spawn_density": 1.0, "loot_bonus": 0.16, "hazards": ["crystal_shard"], "boss_pool": ["crystal_golem"],               "music": "caverns" },
-  "shadow_realm":       { "name": "Shadow Realm",       "ground_color": [16, 16, 22],  "enemy_pool": ["lich", "vampire"],       "spawn_density": 1.25,"loot_bonus": 0.12, "hazards": ["shadow_pit"],    "boss_pool": ["shadow_king"],                 "music": "shadow" },
-  "celestial_fracture": { "name": "Celestial Fracture", "ground_color": [26, 28, 52],  "enemy_pool": ["dragon", "lich"],        "spawn_density": 1.3, "loot_bonus": 0.20, "hazards": ["star_fall"],     "boss_pool": ["shadow_king", "void_reaver"],  "music": "celestial" }
+ "void_wastes": {
+  "name": "Void Wastes",
+  "ground_color": [
+   28,
+   20,
+   40
+  ],
+  "enemy_pool": [
+   "lich",
+   "necromancer"
+  ],
+  "spawn_density": 1.0,
+  "loot_bonus": 0.1,
+  "hazards": [
+   "void_tear"
+  ],
+  "boss_pool": [
+   "void_reaver"
+  ],
+  "music": "void",
+  "speckle": [
+   55,
+   40,
+   80
+  ],
+  "props": [
+   {
+    "shape": "wisp",
+    "color": [
+     120,
+     80,
+     190
+    ],
+    "density": 2,
+    "size": 10
+   },
+   {
+    "shape": "rock",
+    "color": [
+     45,
+     34,
+     62
+    ],
+    "density": 3,
+    "size": 16
+   }
+  ]
+ },
+ "burning_hellscape": {
+  "name": "Burning Hellscape",
+  "ground_color": [
+   48,
+   18,
+   14
+  ],
+  "enemy_pool": [
+   "demon",
+   "dragon"
+  ],
+  "spawn_density": 1.2,
+  "loot_bonus": 0.12,
+  "hazards": [
+   "lava_pool"
+  ],
+  "boss_pool": [
+   "ashbringer",
+   "demon_general"
+  ],
+  "music": "hell",
+  "speckle": [
+   90,
+   40,
+   20
+  ],
+  "props": [
+   {
+    "shape": "crack",
+    "color": [
+     230,
+     110,
+     30
+    ],
+    "density": 3,
+    "size": 22
+   },
+   {
+    "shape": "spike",
+    "color": [
+     70,
+     26,
+     20
+    ],
+    "density": 2,
+    "size": 18
+   }
+  ]
+ },
+ "frozen_tundra": {
+  "name": "Frozen Tundra",
+  "ground_color": [
+   30,
+   44,
+   58
+  ],
+  "enemy_pool": [
+   "skeleton",
+   "orc"
+  ],
+  "spawn_density": 0.9,
+  "loot_bonus": 0.08,
+  "hazards": [
+   "ice_patch"
+  ],
+  "boss_pool": [
+   "frost_monarch"
+  ],
+  "music": "tundra",
+  "speckle": [
+   200,
+   220,
+   235
+  ],
+  "props": [
+   {
+    "shape": "shard",
+    "color": [
+     150,
+     200,
+     235
+    ],
+    "density": 3,
+    "size": 14
+   },
+   {
+    "shape": "rock",
+    "color": [
+     60,
+     82,
+     100
+    ],
+    "density": 2,
+    "size": 14
+   }
+  ]
+ },
+ "corrupted_forest": {
+  "name": "Corrupted Forest",
+  "ground_color": [
+   22,
+   38,
+   24
+  ],
+  "enemy_pool": [
+   "goblin",
+   "vampire"
+  ],
+  "spawn_density": 1.1,
+  "loot_bonus": 0.08,
+  "hazards": [
+   "thorns"
+  ],
+  "boss_pool": [
+   "plague_lord"
+  ],
+  "music": "forest",
+  "speckle": [
+   40,
+   60,
+   40
+  ],
+  "props": [
+   {
+    "shape": "tree",
+    "color": [
+     50,
+     70,
+     48
+    ],
+    "density": 4,
+    "size": 14
+   },
+   {
+    "shape": "wisp",
+    "color": [
+     110,
+     70,
+     140
+    ],
+    "density": 1,
+    "size": 8
+   }
+  ]
+ },
+ "lightning_fields": {
+  "name": "Lightning Fields",
+  "ground_color": [
+   40,
+   40,
+   24
+  ],
+  "enemy_pool": [
+   "skeleton",
+   "orc"
+  ],
+  "spawn_density": 1.15,
+  "loot_bonus": 0.1,
+  "hazards": [
+   "storm_strike"
+  ],
+  "boss_pool": [
+   "storm_caller"
+  ],
+  "music": "storm",
+  "speckle": [
+   140,
+   140,
+   60
+  ],
+  "props": [
+   {
+    "shape": "spike",
+    "color": [
+     55,
+     52,
+     34
+    ],
+    "density": 3,
+    "size": 16
+   },
+   {
+    "shape": "star",
+    "color": [
+     235,
+     220,
+     120
+    ],
+    "density": 2,
+    "size": 8
+   }
+  ]
+ },
+ "ancient_ruins": {
+  "name": "Ancient Ruins",
+  "ground_color": [
+   44,
+   40,
+   32
+  ],
+  "enemy_pool": [
+   "skeleton",
+   "necromancer"
+  ],
+  "spawn_density": 1.0,
+  "loot_bonus": 0.14,
+  "hazards": [
+   "collapsing_floor"
+  ],
+  "boss_pool": [
+   "crystal_golem"
+  ],
+  "music": "ruins",
+  "speckle": [
+   90,
+   82,
+   64
+  ],
+  "props": [
+   {
+    "shape": "column",
+    "color": [
+     120,
+     108,
+     84
+    ],
+    "density": 3,
+    "size": 14
+   },
+   {
+    "shape": "rock",
+    "color": [
+     80,
+     72,
+     56
+    ],
+    "density": 2,
+    "size": 12
+   }
+  ]
+ },
+ "blood_marsh": {
+  "name": "Blood Marsh",
+  "ground_color": [
+   40,
+   16,
+   20
+  ],
+  "enemy_pool": [
+   "vampire",
+   "necromancer"
+  ],
+  "spawn_density": 1.1,
+  "loot_bonus": 0.1,
+  "hazards": [
+   "blood_pool"
+  ],
+  "boss_pool": [
+   "blood_countess"
+  ],
+  "music": "marsh",
+  "speckle": [
+   80,
+   30,
+   36
+  ],
+  "props": [
+   {
+    "shape": "pool",
+    "color": [
+     96,
+     22,
+     30
+    ],
+    "density": 3,
+    "size": 16
+   },
+   {
+    "shape": "tree",
+    "color": [
+     58,
+     40,
+     36
+    ],
+    "density": 2,
+    "size": 12
+   }
+  ]
+ },
+ "crystal_caverns": {
+  "name": "Crystal Caverns",
+  "ground_color": [
+   20,
+   40,
+   44
+  ],
+  "enemy_pool": [
+   "orc",
+   "demon"
+  ],
+  "spawn_density": 1.0,
+  "loot_bonus": 0.16,
+  "hazards": [
+   "crystal_shard"
+  ],
+  "boss_pool": [
+   "crystal_golem"
+  ],
+  "music": "caverns",
+  "speckle": [
+   60,
+   120,
+   130
+  ],
+  "props": [
+   {
+    "shape": "crystal",
+    "color": [
+     80,
+     200,
+     210
+    ],
+    "density": 4,
+    "size": 14
+   },
+   {
+    "shape": "rock",
+    "color": [
+     40,
+     74,
+     80
+    ],
+    "density": 2,
+    "size": 14
+   }
+  ]
+ },
+ "shadow_realm": {
+  "name": "Shadow Realm",
+  "ground_color": [
+   16,
+   16,
+   22
+  ],
+  "enemy_pool": [
+   "lich",
+   "vampire"
+  ],
+  "spawn_density": 1.25,
+  "loot_bonus": 0.12,
+  "hazards": [
+   "shadow_pit"
+  ],
+  "boss_pool": [
+   "shadow_king"
+  ],
+  "music": "shadow",
+  "speckle": [
+   40,
+   40,
+   52
+  ],
+  "props": [
+   {
+    "shape": "wisp",
+    "color": [
+     120,
+     120,
+     145
+    ],
+    "density": 3,
+    "size": 9
+   },
+   {
+    "shape": "rock",
+    "color": [
+     30,
+     30,
+     40
+    ],
+    "density": 3,
+    "size": 16
+   }
+  ]
+ },
+ "celestial_fracture": {
+  "name": "Celestial Fracture",
+  "ground_color": [
+   26,
+   28,
+   52
+  ],
+  "enemy_pool": [
+   "dragon",
+   "lich"
+  ],
+  "spawn_density": 1.3,
+  "loot_bonus": 0.2,
+  "hazards": [
+   "star_fall"
+  ],
+  "boss_pool": [
+   "shadow_king",
+   "void_reaver"
+  ],
+  "music": "celestial",
+  "speckle": [
+   120,
+   130,
+   220
+  ],
+  "props": [
+   {
+    "shape": "star",
+    "color": [
+     190,
+     200,
+     255
+    ],
+    "density": 5,
+    "size": 8
+   },
+   {
+    "shape": "crystal",
+    "color": [
+     110,
+     130,
+     235
+    ],
+    "density": 2,
+    "size": 14
+   }
+  ]
+ }
 }

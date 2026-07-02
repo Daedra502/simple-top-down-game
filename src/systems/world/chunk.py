@@ -21,6 +21,7 @@ class Chunk:
         self.py = cy * size
 
         self.tiles = None          # reserved for a future tile grid
+        self.surface = None        # cached pre-rendered ground (WorldManager)
         self.enemies = []          # director-managed globally for now
         self.events = []           # Phase 12 dynamic events
         self.portals = []
