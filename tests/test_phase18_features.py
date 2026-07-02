@@ -2,6 +2,7 @@
 
 ASCII-only output. Run: python test_phase18_features.py
 """
+import math
 import os
 os.environ.setdefault("SDL_VIDEODRIVER", "dummy")
 os.environ.setdefault("SDL_AUDIODRIVER", "dummy")
@@ -68,7 +69,9 @@ def test_phase18_features(test_slot):
     g.player.x, g.player.y = 1234, -567
     g._toggle_town()
     check("town portal enters town + stores return", g.in_town and g.town_return == (1234, -567))
-    check("player warped to town center", (g.player.x, g.player.y) == g.town_center)
+    check("player warped into the town plaza",
+          math.hypot(g.player.x - g.town_center[0],
+                     g.player.y - g.town_center[1]) <= 120)
     g._toggle_town()
     check("town portal returns to field position", (not g.in_town) and g.player.x == 1234)
 

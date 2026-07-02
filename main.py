@@ -1130,8 +1130,10 @@ class Game:
         """Open a town portal: stash the field position and warp to the hub."""
         self.town_return = (self.player.x, self.player.y)
         self.in_town = True
-        self.player.x, self.player.y = self.town_center
-        self.player.rect.center = (int(self.town_center[0]), int(self.town_center[1]))
+        # Arrive just south of the central well, not on top of it.
+        self.player.x = self.town_center[0]
+        self.player.y = self.town_center[1] + 70
+        self.player.rect.center = (int(self.player.x), int(self.player.y))
         # Town is a safe zone: clear the current fight and let spawns resume on return.
         self.world.enemies.clear()
         self.world.chests.clear()
@@ -2128,6 +2130,11 @@ class Game:
         # Draw streaming biome ground under the camera
         self.world.draw_ground(self.screen, cam, self.width, self.height)
 
+        # In town, lay the village ground (plaza/paths/well/fence) over it so
+        # every actor and station building draws on top.
+        if self.in_town:
+            self.draw_town_ground(cam)
+
         # Draw lingering ground zones (Phase 14)
         for zone in self.ground_zones:
             pos = (int(zone["x"] - cam[0]), int(zone["y"] - cam[1]))
@@ -2156,16 +2163,17 @@ class Game:
             ring = int(40 + 120 * (1.0 - b.teleport_flash / 0.45))
             pygame.draw.circle(self.screen, (200, 120, 255), pos, ring, 3)
 
+        # Draw town buildings/stations under the actors so the player always
+        # stays visible on top of the village.
+        if self.in_town:
+            self.draw_town(cam)
+
         # Draw minions
         for m in self.minions:
             m.draw(self.screen, cam)
 
         # Draw player
         self.player.draw(self.screen, cam)
-
-        # Draw town stations when in the hub.
-        if self.in_town:
-            self.draw_town(cam)
 
         # Draw dropped items + rift progress orbs + pylon shrines
         self.draw_dropped_items(cam)
@@ -2182,6 +2190,9 @@ class Game:
 
         # Draw damage numbers
         self.damage_numbers.draw(self.screen, cam)
+
+        # Atmosphere: per-layout ambient tint + vignette (warm glow in town).
+        self._draw_atmosphere()
 
         # Draw UI
         self.draw_ui()
@@ -2418,7 +2429,8 @@ class Game:
         alpha = int(255 * min(1.0, self.rift_message_time))
         surf = self.font.render(self.rift_message, True, (255, 230, 120))
         surf.set_alpha(alpha)
-        self.screen.blit(surf, surf.get_rect(center=(self.width // 2, 70)))
+        # Below the top HUD block so transient messages never overlap it.
+        self.screen.blit(surf, surf.get_rect(center=(self.width // 2, 196)))
 
     def draw_progression_overlay(self):
         """Ascendancy + Atlas overlay (Phase 15)."""
@@ -2667,22 +2679,186 @@ class Game:
         close_text = self.font.render("Press P to close skill tree | Right drag: Pan | Wheel: Zoom", True, (255, 255, 255))
         self.screen.blit(close_text, (10, self.height - 30))
     
+    # --- atmosphere (vignette + ambient tint) -----------------------------
+    def _get_vignette(self):
+        """Cached full-screen vignette: transparent center, dark edges.
+
+        Built once per window size at low resolution and smooth-scaled up, so
+        the per-frame cost is a single alpha blit.
+        """
+        if getattr(self, '_vignette', None) is not None:
+            return self._vignette
+        lw, lh = 160, 100
+        small = pygame.Surface((lw, lh), pygame.SRCALPHA)
+        cx, cy = lw / 2, lh / 2
+        max_d = math.hypot(cx, cy)
+        for yy in range(lh):
+            for xx in range(lw):
+                d = math.hypot(xx - cx, yy - cy) / max_d
+                a = int(170 * max(0.0, d - 0.55) / 0.45) if d > 0.55 else 0
+                small.set_at((xx, yy), (0, 0, 0, min(170, a)))
+        self._vignette = pygame.transform.smoothscale(small, (self.width, self.height))
+        return self._vignette
+
+    def _draw_atmosphere(self):
+        """Ambient tint + vignette: brooding in the rift, warm in town."""
+        if self.in_town:
+            tint = (46, 32, 14, 38)     # hearth-warm haze
+        else:
+            tint = tuple((self.map_layout or {}).get('ambient', (14, 14, 24, 80)))
+        cache_key = (tint, self.width, self.height)
+        if getattr(self, '_tint_key', None) != cache_key:
+            self._tint_key = cache_key
+            self._tint_surf = pygame.Surface((self.width, self.height), pygame.SRCALPHA)
+            self._tint_surf.fill(tint)
+        self.screen.blit(self._tint_surf, (0, 0))
+        self.screen.blit(self._get_vignette(), (0, 0))
+
+    def draw_town_ground(self, cam):
+        """Rustic village ground layer: cobble plaza, dirt paths, well, fence,
+        and pines. Drawn right after the world ground so actors walk on top."""
+        cx = int(self.town_center[0] - cam[0])
+        cy = int(self.town_center[1] - cam[1])
+
+        # Cobblestone plaza with a worn rim.
+        pygame.draw.circle(self.screen, (76, 70, 62), (cx, cy), 300)
+        pygame.draw.circle(self.screen, (92, 85, 74), (cx, cy), 300, 5)
+        # Deterministic cobble specks (no RNG so the plaza doesn't shimmer).
+        for i in range(110):
+            a = i * 2.399963           # golden-angle scatter
+            r = 290 * math.sqrt((i + 0.5) / 110)
+            px = cx + int(math.cos(a) * r)
+            py = cy + int(math.sin(a) * r)
+            shade = 66 + (i * 7) % 18
+            pygame.draw.circle(self.screen, (shade, shade - 4, shade - 10), (px, py), 3 + (i % 3))
+
+        # Dirt paths from the well out to each station.
+        for s in self.town_stations:
+            sx, sy = int(s['x'] - cam[0]), int(s['y'] - cam[1])
+            pygame.draw.line(self.screen, (104, 88, 62), (cx, cy), (sx, sy), 18)
+            pygame.draw.line(self.screen, (120, 102, 72), (cx, cy), (sx, sy), 10)
+
+        # Central well: stone ring, posts and a little roof.
+        pygame.draw.circle(self.screen, (98, 98, 104), (cx, cy), 26)
+        pygame.draw.circle(self.screen, (30, 36, 52), (cx, cy), 18)
+        pygame.draw.circle(self.screen, (120, 120, 126), (cx, cy), 26, 4)
+        pygame.draw.line(self.screen, (86, 62, 38), (cx - 22, cy), (cx - 22, cy - 34), 5)
+        pygame.draw.line(self.screen, (86, 62, 38), (cx + 22, cy), (cx + 22, cy - 34), 5)
+        pygame.draw.polygon(self.screen, (140, 78, 48),
+                            [(cx - 30, cy - 32), (cx + 30, cy - 32), (cx, cy - 52)])
+
+        # Fence ring with gaps where the paths leave the plaza.
+        station_angles = [math.atan2(s['y'] - self.town_center[1],
+                                     s['x'] - self.town_center[0])
+                          for s in self.town_stations]
+        for deg in range(0, 360, 9):
+            a = math.radians(deg)
+            if any(abs((a - sa + math.pi) % (2 * math.pi) - math.pi) < 0.42
+                   for sa in station_angles):
+                continue
+            fx = cx + int(math.cos(a) * 322)
+            fy = cy + int(math.sin(a) * 322)
+            pygame.draw.line(self.screen, (96, 70, 44), (fx, fy - 10), (fx, fy + 6), 4)
+            nx = cx + int(math.cos(a + math.radians(9)) * 322)
+            ny = cy + int(math.sin(a + math.radians(9)) * 322)
+            pygame.draw.line(self.screen, (110, 82, 52), (fx, fy - 4), (nx, ny - 4), 3)
+
+        # A few pines just outside the fence.
+        for a_deg, dist in ((28, 385), (108, 400), (152, 370), (206, 395),
+                            (258, 375), (338, 390)):
+            a = math.radians(a_deg)
+            tx = cx + int(math.cos(a) * dist)
+            ty = cy + int(math.sin(a) * dist)
+            pygame.draw.rect(self.screen, (86, 60, 38), (tx - 4, ty - 6, 8, 16))
+            for tier, (tw, th) in enumerate(((34, 26), (28, 22), (20, 18))):
+                base_y = ty - 4 - tier * 16
+                pygame.draw.polygon(self.screen, (34 + tier * 8, 76 + tier * 10, 40),
+                                    [(tx - tw // 2, base_y), (tx + tw // 2, base_y),
+                                     (tx, base_y - th)])
+
+    def _draw_house(self, x, y, w, h, body, roof, window_lit=True):
+        """A simple rustic building: timber body, gabled roof, door + window."""
+        t = pygame.time.get_ticks() / 1000.0
+        pygame.draw.rect(self.screen, body, (x - w // 2, y - h, w, h))
+        pygame.draw.rect(self.screen, tuple(max(0, c - 30) for c in body),
+                         (x - w // 2, y - h, w, h), 3)
+        pygame.draw.polygon(self.screen, roof,
+                            [(x - w // 2 - 8, y - h), (x + w // 2 + 8, y - h),
+                             (x, y - h - int(w * 0.45))])
+        pygame.draw.rect(self.screen, (56, 40, 26), (x - 9, y - 26, 18, 26))  # door
+        if window_lit:
+            glow = 200 + int(30 * math.sin(t * 2.1 + x * 0.05))
+            pygame.draw.rect(self.screen, (glow, glow - 60, 60),
+                             (x + w // 2 - 22, y - h + 12, 14, 14))
+            pygame.draw.rect(self.screen, (40, 30, 20),
+                             (x + w // 2 - 22, y - h + 12, 14, 14), 2)
+
     def draw_town(self, cam):
-        """Draw the town hub: station markers, labels and the interaction prompt."""
+        """Draw the town hub buildings, station markers and interaction prompt."""
+        t = pygame.time.get_ticks() / 1000.0
         for s in self.town_stations:
             sx = int(s['x'] - cam[0])
             sy = int(s['y'] - cam[1])
             near = (s is self._near_station)
-            # Building marker
-            pygame.draw.circle(self.screen, s['color'], (sx, sy), 26)
-            pygame.draw.circle(self.screen, (255, 255, 255) if near else (30, 30, 40),
-                               (sx, sy), 26, 3)
+
+            if s['key'] == 'stash':
+                self._draw_house(sx, sy - 20, 84, 62, (92, 74, 54), (60, 76, 110))
+                # Banded chest out front.
+                pygame.draw.rect(self.screen, (150, 110, 50), (sx - 14, sy - 12, 28, 18))
+                pygame.draw.rect(self.screen, (90, 60, 20), (sx - 3, sy - 12, 6, 18))
+            elif s['key'] == 'merchant':
+                # Market stall: posts + striped awning + counter.
+                pygame.draw.rect(self.screen, (96, 70, 44), (sx - 40, sy - 54, 6, 44))
+                pygame.draw.rect(self.screen, (96, 70, 44), (sx + 34, sy - 54, 6, 44))
+                for i in range(5):
+                    col = (210, 180, 90) if i % 2 == 0 else (150, 60, 50)
+                    pygame.draw.rect(self.screen, col, (sx - 46 + i * 19, sy - 66, 19, 14))
+                pygame.draw.rect(self.screen, (120, 90, 58), (sx - 40, sy - 16, 80, 10))
+            elif s['key'] == 'smith':
+                self._draw_house(sx, sy - 16, 92, 58, (84, 80, 82), (70, 56, 48))
+                # Chimney + drifting smoke puffs.
+                pygame.draw.rect(self.screen, (70, 66, 68), (sx + 22, sy - 104, 14, 34))
+                for k in range(3):
+                    ph = (t * 0.45 + k * 0.33) % 1.0
+                    px = sx + 29 + int(10 * math.sin(t + k * 2.1))
+                    py = sy - 108 - int(ph * 34)
+                    puff = pygame.Surface((26, 26), pygame.SRCALPHA)
+                    pygame.draw.circle(puff, (180, 180, 185, int(90 * (1 - ph))),
+                                       (13, 13), 5 + int(ph * 7))
+                    self.screen.blit(puff, (px - 13, py - 13))
+                # Forge glow in the doorway.
+                ember = 170 + int(50 * math.sin(t * 5.0))
+                pygame.draw.rect(self.screen, (ember, 70, 30), (sx - 9, sy - 40, 18, 24))
+            elif s['key'] == 'portal':
+                # Stone arch with a swirling return portal.
+                pygame.draw.rect(self.screen, (110, 110, 120), (sx - 34, sy - 66, 12, 66))
+                pygame.draw.rect(self.screen, (110, 110, 120), (sx + 22, sy - 66, 12, 66))
+                pygame.draw.rect(self.screen, (124, 124, 134), (sx - 40, sy - 78, 80, 14))
+                sw = 10 + int(4 * math.sin(t * 3.0))
+                pygame.draw.ellipse(self.screen, (150, 90, 235),
+                                    (sx - 18, sy - 62, 36, 56))
+                pygame.draw.ellipse(self.screen, (210, 170, 255),
+                                    (sx - sw, sy - 50 - sw // 2, sw * 2, 32 + sw))
+
+            # Lantern by each station: pole + pulsing warm glow.
+            lx, ly = sx - 52, sy + 8
+            pygame.draw.line(self.screen, (70, 56, 40), (lx, ly), (lx, ly - 34), 4)
+            pygame.draw.rect(self.screen, (240, 200, 90), (lx - 4, ly - 42, 8, 10))
+            gr = 16 + int(4 * math.sin(t * 2.4 + sx))
+            glow = pygame.Surface((gr * 2, gr * 2), pygame.SRCALPHA)
+            pygame.draw.circle(glow, (255, 190, 90, 55), (gr, gr), gr)
+            self.screen.blit(glow, (lx - gr, ly - 37 - gr))
+
+            # Interaction marker + label.
+            ring_col = (255, 255, 255) if near else (30, 30, 40)
+            pygame.draw.circle(self.screen, s['color'], (sx, sy + 22), 8)
+            pygame.draw.circle(self.screen, ring_col, (sx, sy + 22), 12, 2)
             label = self.small_font.render(s['name'], True, (235, 235, 245))
-            self.screen.blit(label, label.get_rect(center=(sx, sy - 38)))
+            self.screen.blit(label, label.get_rect(center=(sx, sy + 42)))
 
         # Town banner
-        banner = self.font.render("TOWN  -  safe haven", True, (220, 230, 255))
-        self.screen.blit(banner, banner.get_rect(center=(self.width // 2, 90)))
+        banner = self.font.render("EMBERVALE  -  safe haven", True, (235, 220, 180))
+        self.screen.blit(banner, banner.get_rect(center=(self.width // 2, 170)))
 
         # Interaction prompt for the station the player is standing on.
         if self._near_station:
