@@ -20,7 +20,7 @@ A simple but extensible top-down action RPG game framework built with Python and
 - **Map Obstacles**: Solid cover (rocks, pillars, crystals) to path around and bramble hazards to avoid
 - **Procedural Audio**: A music engine with choir, strings, FM bells, sub-drones and war-drums that swaps between field / dungeon / town / boss themes (inspired by Diablo III/IV and Path of Exile 1/2), plus eerie per-monster creature voices and distinct player-minion cues
 - **Combat System**: Projectile-based spell casting with collision detection
-- **Skill Tree**: 11 skill nodes for damage, attack speed, and special effects
+- **Passive Skill Tree**: A ~260-node PoE2-style radial web with six themed regions (Fire, Lightning, Sorcery, Alacrity, Summoning, Blood & Iron, Winter), wheels of minors around notables, ring roads between regions, and keystones at the rim
 - **Attack Speed**: Increase spell casting speed from skill tree
 - **Map Progression**: Defeat all enemies and reach the exit to progress to the next map
 - **Experience System**: Gain experience from defeating enemies and opening chests
@@ -76,13 +76,15 @@ python main.py
 - Wand level increases by 1 per upgrade
 - Damage bonus is applied multiplicatively or additively (whichever is larger)
 
-### Skill Tree
-- **11 unique skill nodes** with prerequisites
-- **Damage Nodes**: Increase Fireball, Frost Bolt, or Lightning damage
-- **Speed Nodes**: Increase attack speed (faster spell cooldowns)
-- **Effect Nodes**: Add special effects to spells (burn, freeze, chain)
-- **Stat Nodes**: Increase max health or max mana
-- Press **T** to view the skill tree
+### Passive Skill Tree
+- **~260 nodes** arranged as a PoE2-style radial web: root at the center, six
+  themed regions, wheels of minors around notables, and keystones at the rim
+- **Regions**: Fire (burn), Winter (freeze), Lightning (shock/crit), Sorcery
+  (mana/spell power/projectiles), Alacrity (attack & move speed), Summoning
+  (minions), Blood & Iron (life/armor/resistances)
+- **Allocation rule**: a node can be taken only if connected to an allocated
+  node; refunds keep the tree connected to the root
+- Press **P** to open the tree; right-drag to pan, mouse wheel to zoom
 
 ### Enemy Types & Rewards
 | Enemy | Level Range | XP | Money |
@@ -157,7 +159,9 @@ Edit `src/spells/spells.py` to create new spell classes inheriting from `Spell` 
 Edit `src/entities/enemy.py` to add new enemy types and behaviors.
 
 ### Adding New Skill Tree Nodes
-Edit `src/spells/skill_tree.py` to add new nodes in `_initialize_tree()`.
+Edit the region/wheel/cluster definitions in `tools/build_skill_tree.py`, then
+run `python tools/build_skill_tree.py` to regenerate `data/skill_tree.json`
+(the script validates connectivity, spacing, and the legacy node contract).
 
 ### Customizing Player Stats
 Modify values in `Player.__init__()` in `src/entities/player.py`:

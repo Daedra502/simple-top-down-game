@@ -178,12 +178,13 @@ class KeystoneManager:
         return None
 
 
-# Mapping of keystone IDs to skill tree node IDs
+# Mapping of keystone IDs to skill tree node IDs (see tools/build_skill_tree.py:
+# these ids are part of the generated tree's legacy contract).
 KEYSTONE_NODES = {
-    'elemental_focus': 'fire_key',      # Fire branch keystone
-    'spell_echo': 'mana_3',              # Mana fountain (not primary keystone, using as echo)
-    'omnivamp': 'dmg_3',                 # Arcane Mastery (chaos/hybrid path)
-    'projectile_mastery': 'hybrid_ld',   # Voltage Surge (lightning/damage)
+    'elemental_focus': 'fire_key',      # Fire spoke keystone
+    'spell_echo': 'mana_3',              # Sorcery mana spoke keystone
+    'omnivamp': 'dmg_3',                 # Sorcery arcane/blood spoke keystone
+    'projectile_mastery': 'hybrid_ld',   # Voltage Surge bridge (lightning/dmg)
 }
 
 # Reverse mapping

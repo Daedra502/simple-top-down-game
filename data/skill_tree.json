@@ -1,1642 +1,5451 @@
 {
-  "root": {
-    "name": "Life Force",
-    "pos": [
-      600,
-      400
-    ],
-    "tier": "minor",
-    "cost": 0,
-    "color": [
-      100,
-      255,
-      100
-    ],
-    "bonuses": {
-      "max_health": 50,
-      "max_mana": 20
-    },
-    "edges": [
-      "speed_1"
-    ]
-  },
-  "mana_1": {
-    "name": "Clarity",
-    "pos": [
-      600,
-      310
-    ],
-    "tier": "minor",
-    "cost": 1,
-    "color": [
-      120,
-      150,
-      255
-    ],
-    "bonuses": {
-      "max_mana": 25,
-      "mana_regen": 0.3
-    },
-    "edges": [
-      "mana_2",
-      "root"
-    ]
-  },
-  "mana_2": {
-    "name": "Meditation",
-    "pos": [
-      600,
-      235
-    ],
-    "tier": "minor",
-    "cost": 1,
-    "color": [
-      120,
-      150,
-      255
-    ],
-    "bonuses": {
-      "max_mana": 35,
-      "mana_regen": 0.5
-    },
-    "edges": [
-      "mana_3"
-    ]
-  },
-  "mana_3": {
-    "name": "Mana Fountain",
-    "pos": [
-      600,
-      160
-    ],
-    "tier": "keystone",
-    "cost": 1,
-    "color": [
-      100,
-      100,
-      255
-    ],
-    "bonuses": {
-      "max_mana": 50,
-      "mana_regen": 1.0
-    },
-    "edges": []
-  },
-  "dmg_1": {
-    "name": "Enhanced Spells",
-    "pos": [
-      510,
-      375
-    ],
-    "tier": "minor",
-    "cost": 1,
-    "color": [
-      230,
-      90,
-      200
-    ],
-    "bonuses": {
-      "spell_damage": 8,
-      "max_mana": 10
-    },
-    "edges": [
-      "dmg_2",
-      "hybrid_ld",
-      "root",
-      "arcane_1"
-    ]
-  },
-  "dmg_2": {
-    "name": "Spell Amplification",
-    "pos": [
-      440,
-      358
-    ],
-    "tier": "minor",
-    "cost": 1,
-    "color": [
-      230,
-      90,
-      200
-    ],
-    "bonuses": {
-      "spell_damage": 12,
-      "crit_chance": 0.02
-    },
-    "edges": [
-      "dmg_3",
-      "crit_1"
-    ]
-  },
-  "dmg_3": {
-    "name": "Arcane Mastery",
-    "pos": [
-      372,
-      342
-    ],
-    "tier": "keystone",
-    "cost": 2,
-    "color": [
-      200,
-      0,
-      200
-    ],
-    "bonuses": {
-      "spell_damage": 18,
-      "max_mana": 20
-    },
-    "edges": []
-  },
-  "arcane_1": {
-    "name": "Focus",
-    "pos": [
-      520,
-      318
-    ],
-    "tier": "minor",
-    "cost": 1,
-    "color": [
-      210,
-      120,
-      230
-    ],
-    "bonuses": {
-      "spell_damage": 8,
-      "max_mana": 15
-    },
-    "edges": [
-      "arcane_2",
-      "mana_4"
-    ]
-  },
-  "arcane_2": {
-    "name": "Channeling",
-    "pos": [
-      470,
-      295
-    ],
-    "tier": "minor",
-    "cost": 1,
-    "color": [
-      210,
-      120,
-      230
-    ],
-    "bonuses": {
-      "spell_damage": 10,
-      "mana_regen": 0.5
-    },
-    "edges": []
-  },
-  "mana_4": {
-    "name": "Insight",
-    "pos": [
-      555,
-      260
-    ],
-    "tier": "minor",
-    "cost": 1,
-    "color": [
-      120,
-      150,
-      255
-    ],
-    "bonuses": {
-      "max_mana": 30,
-      "spell_damage": 6
-    },
-    "edges": []
-  },
-  "crit_1": {
-    "name": "Precision",
-    "pos": [
-      455,
-      410
-    ],
-    "tier": "minor",
-    "cost": 1,
-    "color": [
-      255,
-      170,
-      90
-    ],
-    "bonuses": {
-      "crit_chance": 0.03,
-      "damage": 4
-    },
-    "edges": [
-      "crit_2"
-    ]
-  },
-  "crit_2": {
-    "name": "Deadly Aim",
-    "pos": [
-      400,
-      440
-    ],
-    "tier": "minor",
-    "cost": 1,
-    "color": [
-      255,
-      170,
-      90
-    ],
-    "bonuses": {
-      "crit_chance": 0.04,
-      "crit_damage": 0.15
-    },
-    "edges": [
-      "crit_notable"
-    ]
-  },
-  "crit_notable": {
-    "name": "Assassinate",
-    "pos": [
-      345,
-      468
-    ],
-    "tier": "notable",
-    "cost": 2,
-    "color": [
-      255,
-      140,
-      70
-    ],
-    "bonuses": {
-      "crit_chance": 0.05,
-      "crit_damage": 0.25
-    },
-    "edges": []
-  },
-  "fire_1": {
-    "name": "Flame Touch",
-    "pos": [
-      545,
-      335
-    ],
-    "tier": "minor",
-    "cost": 1,
-    "color": [
-      255,
-      110,
-      20
-    ],
-    "bonuses": {
-      "fireball_damage": 5,
-      "fire_damage": 4
-    },
-    "edges": [
-      "fire_2",
-      "hybrid_fs",
-      "root"
-    ]
-  },
-  "fire_2": {
-    "name": "Inferno",
-    "pos": [
-      495,
-      278
-    ],
-    "tier": "minor",
-    "cost": 1,
-    "color": [
-      255,
-      110,
-      20
-    ],
-    "bonuses": {
-      "fireball_damage": 8,
-      "fire_damage": 5
-    },
-    "edges": [
-      "fire_3",
-      "fire_cast"
-    ]
-  },
-  "fire_3": {
-    "name": "Combustion",
-    "pos": [
-      445,
-      221
-    ],
-    "tier": "minor",
-    "cost": 1,
-    "color": [
-      255,
-      60,
-      0
-    ],
-    "bonuses": {
-      "fireball_damage": 10,
-      "fire_damage": 8
-    },
-    "edges": [
-      "fire_key",
-      "ail_burn"
-    ]
-  },
-  "fire_key": {
-    "name": "Elemental Focus",
-    "pos": [
-      392,
-      170
-    ],
-    "tier": "keystone",
-    "cost": 2,
-    "color": [
-      200,
-      0,
-      200
-    ],
-    "bonuses": {
-      "spell_damage": 20,
-      "fire_damage": 15
-    },
-    "edges": []
-  },
-  "fire_cast": {
-    "name": "Pyromancy",
-    "pos": [
-      455,
-      320
-    ],
-    "tier": "minor",
-    "cost": 1,
-    "color": [
-      220,
-      200,
-      40
-    ],
-    "bonuses": {
-      "attack_speed": 0.15,
-      "fireball_damage": 5
-    },
-    "edges": [
-      "fire_4"
-    ]
-  },
-  "fire_4": {
-    "name": "Scorch",
-    "pos": [
-      415,
-      288
-    ],
-    "tier": "minor",
-    "cost": 1,
-    "color": [
-      255,
-      110,
-      20
-    ],
-    "bonuses": {
-      "fireball_damage": 8,
-      "fire_damage": 6
-    },
-    "edges": []
-  },
-  "ail_burn": {
-    "name": "Pyromania",
-    "pos": [
-      400,
-      250
-    ],
-    "tier": "notable",
-    "cost": 2,
-    "color": [
-      255,
-      120,
-      40
-    ],
-    "bonuses": {
-      "burn_damage_increase": 0.3,
-      "fire_damage": 8
-    },
-    "edges": []
-  },
-  "cold_1": {
-    "name": "Chill Aura",
-    "pos": [
-      670,
-      335
-    ],
-    "tier": "minor",
-    "cost": 1,
-    "color": [
-      80,
-      170,
-      255
-    ],
-    "bonuses": {
-      "max_health": 30,
-      "armor": 10
-    },
-    "edges": [
-      "cold_2",
-      "hybrid_cd",
-      "root"
-    ]
-  },
-  "cold_2": {
-    "name": "Frozen Path",
-    "pos": [
-      730,
-      285
-    ],
-    "tier": "minor",
-    "cost": 1,
-    "color": [
-      50,
-      150,
-      255
-    ],
-    "bonuses": {
-      "max_health": 40,
-      "armor": 15,
-      "frostbolt_damage": 5
-    },
-    "edges": [
-      "cold_3",
-      "cold_dmg",
-      "ail_freeze"
-    ]
-  },
-  "cold_3": {
-    "name": "Glacial Fortress",
-    "pos": [
-      795,
-      240
-    ],
-    "tier": "minor",
-    "cost": 1,
-    "color": [
-      0,
-      100,
-      200
-    ],
-    "bonuses": {
-      "max_health": 50,
-      "armor": 25
-    },
-    "edges": [
-      "cold_4"
-    ]
-  },
-  "cold_4": {
-    "name": "Permafrost",
-    "pos": [
-      855,
-      205
-    ],
-    "tier": "minor",
-    "cost": 1,
-    "color": [
-      80,
-      170,
-      255
-    ],
-    "bonuses": {
-      "frostbolt_damage": 8,
-      "armor": 15
-    },
-    "edges": []
-  },
-  "cold_dmg": {
-    "name": "Frostbolt Mastery",
-    "pos": [
-      690,
-      272
-    ],
-    "tier": "minor",
-    "cost": 1,
-    "color": [
-      80,
-      170,
-      255
-    ],
-    "bonuses": {
-      "frostbolt_damage": 10,
-      "spell_damage": 10
-    },
-    "edges": []
-  },
-  "ail_freeze": {
-    "name": "Deep Freeze",
-    "pos": [
-      800,
-      300
-    ],
-    "tier": "notable",
-    "cost": 2,
-    "color": [
-      120,
-      200,
-      255
-    ],
-    "bonuses": {
-      "freeze_duration_bonus": 0.6,
-      "freeze_threshold_reduction": 1
-    },
-    "edges": []
-  },
-  "hybrid_cd": {
-    "name": "Bastion",
-    "pos": [
-      700,
-      378
-    ],
-    "tier": "minor",
-    "cost": 1,
-    "color": [
-      100,
-      150,
-      200
-    ],
-    "bonuses": {
-      "frostbolt_damage": 5,
-      "armor": 20,
-      "max_health": 30
-    },
-    "edges": []
-  },
-  "def_1": {
-    "name": "Endurance",
-    "pos": [
-      690,
-      400
-    ],
-    "tier": "minor",
-    "cost": 1,
-    "color": [
-      120,
-      200,
-      120
-    ],
-    "bonuses": {
-      "max_health": 40,
-      "armor": 10
-    },
-    "edges": [
-      "def_2",
-      "hpregen_1",
-      "root",
-      "life_1"
-    ]
-  },
-  "def_2": {
-    "name": "Fortitude",
-    "pos": [
-      760,
-      422
-    ],
-    "tier": "minor",
-    "cost": 1,
-    "color": [
-      120,
-      200,
-      120
-    ],
-    "bonuses": {
-      "max_health": 60,
-      "armor": 15
-    },
-    "edges": [
-      "def_3",
-      "def_4"
-    ]
-  },
-  "def_3": {
-    "name": "Iron Skin",
-    "pos": [
-      825,
-      448
-    ],
-    "tier": "minor",
-    "cost": 1,
-    "color": [
-      50,
-      200,
-      50
-    ],
-    "bonuses": {
-      "max_health": 80,
-      "armor": 30
-    },
-    "edges": [
-      "def_5"
-    ]
-  },
-  "def_4": {
-    "name": "Bulwark",
-    "pos": [
-      770,
-      372
-    ],
-    "tier": "minor",
-    "cost": 1,
-    "color": [
-      120,
-      200,
-      120
-    ],
-    "bonuses": {
-      "max_health": 60,
-      "armor": 20
-    },
-    "edges": []
-  },
-  "def_5": {
-    "name": "Stoneskin",
-    "pos": [
-      835,
-      405
-    ],
-    "tier": "minor",
-    "cost": 1,
-    "color": [
-      120,
-      200,
-      120
-    ],
-    "bonuses": {
-      "armor": 30,
-      "health_regen": 1.5
-    },
-    "edges": []
-  },
-  "hpregen_1": {
-    "name": "Recovery",
-    "pos": [
-      700,
-      348
-    ],
-    "tier": "minor",
-    "cost": 1,
-    "color": [
-      110,
-      230,
-      110
-    ],
-    "bonuses": {
-      "health_regen": 1.5,
-      "max_health": 20
-    },
-    "edges": [
-      "hpregen_notable"
-    ]
-  },
-  "hpregen_notable": {
-    "name": "Regeneration",
-    "pos": [
-      760,
-      322
-    ],
-    "tier": "notable",
-    "cost": 2,
-    "color": [
-      90,
-      230,
-      90
-    ],
-    "bonuses": {
-      "health_regen": 4.0,
-      "max_health": 30
-    },
-    "edges": []
-  },
-  "life_1": {
-    "name": "Vitality",
-    "pos": [
-      700,
-      460
-    ],
-    "tier": "minor",
-    "cost": 1,
-    "color": [
-      110,
-      230,
-      110
-    ],
-    "bonuses": {
-      "max_health": 50,
-      "health_regen": 1.0
-    },
-    "edges": [
-      "life_notable"
-    ]
-  },
-  "life_notable": {
-    "name": "Vigor",
-    "pos": [
-      762,
-      505
-    ],
-    "tier": "notable",
-    "cost": 2,
-    "color": [
-      90,
-      230,
-      90
-    ],
-    "bonuses": {
-      "max_health": 90,
-      "health_regen": 3.0
-    },
-    "edges": []
-  },
-  "hybrid_ld": {
-    "name": "Voltage Surge",
-    "pos": [
-      662,
-      432
-    ],
-    "tier": "keystone",
-    "cost": 1,
-    "color": [
-      200,
-      200,
-      50
-    ],
-    "bonuses": {
-      "lightning_damage": 10,
-      "spell_damage": 8,
-      "attack_speed": 0.12
-    },
-    "edges": [
-      "lightning_1"
-    ]
-  },
-  "lightning_1": {
-    "name": "Spark",
-    "pos": [
-      662,
-      468
-    ],
-    "tier": "minor",
-    "cost": 1,
-    "color": [
-      255,
-      255,
-      0
-    ],
-    "bonuses": {
-      "attack_speed": 0.1,
-      "lightning_damage": 5
-    },
-    "edges": [
-      "lightning_2",
-      "root"
-    ]
-  },
-  "lightning_2": {
-    "name": "Electrocute",
-    "pos": [
-      722,
-      525
-    ],
-    "tier": "minor",
-    "cost": 1,
-    "color": [
-      255,
-      200,
-      0
-    ],
-    "bonuses": {
-      "attack_speed": 0.15,
-      "lightning_damage": 8
-    },
-    "edges": [
-      "lightning_3",
-      "ail_shock"
-    ]
-  },
-  "lightning_3": {
-    "name": "Lightning Lord",
-    "pos": [
-      782,
-      585
-    ],
-    "tier": "minor",
-    "cost": 1,
-    "color": [
-      200,
-      200,
-      0
-    ],
-    "bonuses": {
-      "lightning_damage": 15,
-      "spell_damage": 12
-    },
-    "edges": [
-      "light_4"
-    ]
-  },
-  "light_4": {
-    "name": "Static Field",
-    "pos": [
-      838,
-      620
-    ],
-    "tier": "minor",
-    "cost": 1,
-    "color": [
-      255,
-      225,
-      70
-    ],
-    "bonuses": {
-      "lightning_damage": 10,
-      "attack_speed": 0.08
-    },
-    "edges": []
-  },
-  "ail_shock": {
-    "name": "Conduction",
-    "pos": [
-      762,
-      572
-    ],
-    "tier": "notable",
-    "cost": 2,
-    "color": [
-      255,
-      230,
-      80
-    ],
-    "bonuses": {
-      "shock_chain_bonus": 1,
-      "shock_range_bonus": 40
-    },
-    "edges": []
-  },
-  "speed_1": {
-    "name": "Momentum",
-    "pos": [
-      540,
-      465
-    ],
-    "tier": "minor",
-    "cost": 1,
-    "color": [
-      245,
-      200,
-      60
-    ],
-    "bonuses": {
-      "attack_speed": 0.12,
-      "move_speed_increase": 0.03
-    },
-    "edges": [
-      "speed_2",
-      "move_1",
-      "atk_1",
-      "cdr_1"
-    ]
-  },
-  "speed_2": {
-    "name": "Haste",
-    "pos": [
-      490,
-      525
-    ],
-    "tier": "minor",
-    "cost": 1,
-    "color": [
-      255,
-      200,
-      0
-    ],
-    "bonuses": {
-      "attack_speed": 0.2,
-      "damage": 3
-    },
-    "edges": [
-      "speed_3",
-      "spd_4"
-    ]
-  },
-  "speed_3": {
-    "name": "Frenzy",
-    "pos": [
-      440,
-      585
-    ],
-    "tier": "minor",
-    "cost": 1,
-    "color": [
-      200,
-      100,
-      0
-    ],
-    "bonuses": {
-      "attack_speed": 0.3,
-      "max_health": 20
-    },
-    "edges": []
-  },
-  "spd_4": {
-    "name": "Adrenaline",
-    "pos": [
-      478,
-      562
-    ],
-    "tier": "minor",
-    "cost": 1,
-    "color": [
-      245,
-      200,
-      60
-    ],
-    "bonuses": {
-      "attack_speed": 0.12,
-      "move_speed_increase": 0.05
-    },
-    "edges": []
-  },
-  "cdr_1": {
-    "name": "Tempo",
-    "pos": [
-      575,
-      500
-    ],
-    "tier": "minor",
-    "cost": 1,
-    "color": [
-      230,
-      200,
-      120
-    ],
-    "bonuses": {
-      "cooldown_reduction": 0.06,
-      "attack_speed": 0.06
-    },
-    "edges": []
-  },
-  "hybrid_fs": {
-    "name": "Blaze Runner",
-    "pos": [
-      498,
-      440
-    ],
-    "tier": "minor",
-    "cost": 1,
-    "color": [
-      200,
-      100,
-      0
-    ],
-    "bonuses": {
-      "fireball_damage": 8,
-      "attack_speed": 0.1
-    },
-    "edges": [
-      "speed_1"
-    ]
-  },
-  "atk_1": {
-    "name": "Sharpened",
-    "pos": [
-      548,
-      520
-    ],
-    "tier": "minor",
-    "cost": 1,
-    "color": [
-      235,
-      120,
-      80
-    ],
-    "bonuses": {
-      "damage": 3,
-      "attack_speed": 0.03
-    },
-    "edges": [
-      "atk_2"
-    ]
-  },
-  "atk_2": {
-    "name": "Brutality",
-    "pos": [
-      532,
-      585
-    ],
-    "tier": "minor",
-    "cost": 1,
-    "color": [
-      235,
-      120,
-      80
-    ],
-    "bonuses": {
-      "damage": 5,
-      "crit_chance": 0.02
-    },
-    "edges": [
-      "atk_notable",
-      "proj_1"
-    ]
-  },
-  "atk_notable": {
-    "name": "Devastation",
-    "pos": [
-      518,
-      648
-    ],
-    "tier": "notable",
-    "cost": 2,
-    "color": [
-      250,
-      90,
-      60
-    ],
-    "bonuses": {
-      "damage": 10,
-      "attack_speed": 0.08
-    },
-    "edges": []
-  },
-  "proj_1": {
-    "name": "Pinpoint",
-    "pos": [
-      472,
-      618
-    ],
-    "tier": "minor",
-    "cost": 1,
-    "color": [
-      200,
-      140,
-      255
-    ],
-    "bonuses": {
-      "projectile_speed": 0.1,
-      "damage": 3
-    },
-    "edges": [
-      "proj_2"
-    ]
-  },
-  "proj_2": {
-    "name": "Barrage",
-    "pos": [
-      430,
-      660
-    ],
-    "tier": "minor",
-    "cost": 1,
-    "color": [
-      200,
-      140,
-      255
-    ],
-    "bonuses": {
-      "projectile_count": 1,
-      "spell_damage": 6
-    },
-    "edges": [
-      "proj_3",
-      "proj_multishot"
-    ]
-  },
-  "proj_3": {
-    "name": "Volley",
-    "pos": [
-      380,
-      688
-    ],
-    "tier": "minor",
-    "cost": 1,
-    "color": [
-      200,
-      140,
-      255
-    ],
-    "bonuses": {
-      "projectile_count": 1,
-      "projectile_speed": 0.1
-    },
-    "edges": [
-      "proj_velocity"
-    ]
-  },
-  "proj_velocity": {
-    "name": "Velocity",
-    "pos": [
-      328,
-      700
-    ],
-    "tier": "notable",
-    "cost": 2,
-    "color": [
-      170,
-      110,
-      235
-    ],
-    "bonuses": {
-      "projectile_speed": 0.25,
-      "attack_speed": 0.06
-    },
-    "edges": []
-  },
-  "proj_multishot": {
-    "name": "Multishot",
-    "pos": [
-      458,
-      705
-    ],
-    "tier": "notable",
-    "cost": 2,
-    "color": [
-      170,
-      110,
-      235
-    ],
-    "bonuses": {
-      "projectile_count": 1,
-      "projectile_speed": 0.12,
-      "spell_damage": 8
-    },
-    "edges": []
-  },
-  "move_1": {
-    "name": "Fleet Footed",
-    "pos": [
-      612,
-      492
-    ],
-    "tier": "minor",
-    "cost": 1,
-    "color": [
-      110,
-      220,
-      170
-    ],
-    "bonuses": {
-      "move_speed_increase": 0.06,
-      "attack_speed": 0.03
-    },
-    "edges": [
-      "move_2"
-    ]
-  },
-  "move_2": {
-    "name": "Swiftness",
-    "pos": [
-      628,
-      560
-    ],
-    "tier": "minor",
-    "cost": 1,
-    "color": [
-      110,
-      220,
-      170
-    ],
-    "bonuses": {
-      "move_speed_increase": 0.08,
-      "max_health": 15
-    },
-    "edges": [
-      "move_notable"
-    ]
-  },
-  "move_notable": {
-    "name": "Windrunner",
-    "pos": [
-      644,
-      628
-    ],
-    "tier": "notable",
-    "cost": 2,
-    "color": [
-      80,
-      240,
-      180
-    ],
-    "bonuses": {
-      "move_speed_increase": 0.15,
-      "attack_speed": 0.05
-    },
-    "edges": []
-  },
-  "mregen_a": {
-    "name": "Focus Flow",
-    "pos": [
-      540,
-      180
-    ],
-    "tier": "minor",
-    "cost": 1,
-    "color": [
-      120,
-      150,
-      255
-    ],
-    "bonuses": {
-      "mana_regen": 0.5,
-      "max_mana": 20
-    },
-    "edges": [
-      "mana_2"
-    ]
-  },
-  "mregen_b": {
-    "name": "Attunement",
-    "pos": [
-      485,
-      150
-    ],
-    "tier": "minor",
-    "cost": 1,
-    "color": [
-      120,
-      150,
-      255
-    ],
-    "bonuses": {
-      "mana_regen": 0.8,
-      "max_mana": 25
-    },
-    "edges": [
-      "mregen_a"
-    ]
-  },
-  "mregen_c": {
-    "name": "Mana Stream",
-    "pos": [
-      540,
-      120
-    ],
-    "tier": "minor",
-    "cost": 1,
-    "color": [
-      120,
-      150,
-      255
-    ],
-    "bonuses": {
-      "mana_regen": 1.0,
-      "max_mana": 30
-    },
-    "edges": [
-      "mregen_b"
-    ]
-  },
-  "mregen_d": {
-    "name": "Spring of Mana",
-    "pos": [
-      600,
-      100
-    ],
-    "tier": "minor",
-    "cost": 1,
-    "color": [
-      120,
-      150,
-      255
-    ],
-    "bonuses": {
-      "mana_regen": 1.5,
-      "max_mana": 20
-    },
-    "edges": [
-      "mana_3"
-    ]
-  },
-  "mpool_a": {
-    "name": "Deep Well",
-    "pos": [
-      660,
-      150
-    ],
-    "tier": "minor",
-    "cost": 1,
-    "color": [
-      120,
-      150,
-      255
-    ],
-    "bonuses": {
-      "max_mana": 40,
-      "mana_regen": 0.5
-    },
-    "edges": [
-      "mana_3"
-    ]
-  },
-  "mpool_b": {
-    "name": "Reservoir",
-    "pos": [
-      705,
-      118
-    ],
-    "tier": "minor",
-    "cost": 1,
-    "color": [
-      120,
-      150,
-      255
-    ],
-    "bonuses": {
-      "max_mana": 60,
-      "mana_regen": 0.5
-    },
-    "edges": [
-      "mpool_a"
-    ]
-  },
-  "mpool_c": {
-    "name": "Arcane Ocean",
-    "pos": [
-      660,
-      88
-    ],
-    "tier": "minor",
-    "cost": 1,
-    "color": [
-      120,
-      150,
-      255
-    ],
-    "bonuses": {
-      "max_mana": 80,
-      "mana_regen": 1.0
-    },
-    "edges": [
-      "mpool_b"
-    ]
-  },
-  "mregen_notable": {
-    "name": "Transcendence",
-    "pos": [
-      600,
-      52
-    ],
-    "tier": "notable",
-    "cost": 2,
-    "color": [
-      150,
-      150,
-      255
-    ],
-    "bonuses": {
-      "mana_regen": 2.5,
-      "max_mana": 60
-    },
-    "edges": [
-      "mregen_d"
-    ]
-  },
-  "hregen_a": {
-    "name": "Renewal",
-    "pos": [
-      820,
-      360
-    ],
-    "tier": "minor",
-    "cost": 1,
-    "color": [
-      110,
-      230,
-      110
-    ],
-    "bonuses": {
-      "health_regen": 1.5,
-      "max_health": 20
-    },
-    "edges": [
-      "hpregen_notable"
-    ]
-  },
-  "hregen_b": {
-    "name": "Mending",
-    "pos": [
-      875,
-      385
-    ],
-    "tier": "minor",
-    "cost": 1,
-    "color": [
-      110,
-      230,
-      110
-    ],
-    "bonuses": {
-      "health_regen": 2.0,
-      "max_health": 25
-    },
-    "edges": [
-      "hregen_a"
-    ]
-  },
-  "hregen_c": {
-    "name": "Bloodflow",
-    "pos": [
-      905,
-      432
-    ],
-    "tier": "minor",
-    "cost": 1,
-    "color": [
-      110,
-      230,
-      110
-    ],
-    "bonuses": {
-      "health_regen": 2.5,
-      "max_health": 30
-    },
-    "edges": [
-      "hregen_b"
-    ]
-  },
-  "hregen_d": {
-    "name": "Lifebloom",
-    "pos": [
-      832,
-      470
-    ],
-    "tier": "minor",
-    "cost": 1,
-    "color": [
-      110,
-      230,
-      110
-    ],
-    "bonuses": {
-      "health_regen": 3.0,
-      "armor": 10
-    },
-    "edges": [
-      "life_notable"
-    ]
-  },
-  "hpool_a": {
-    "name": "Hearty",
-    "pos": [
-      882,
-      500
-    ],
-    "tier": "minor",
-    "cost": 1,
-    "color": [
-      110,
-      230,
-      110
-    ],
-    "bonuses": {
-      "max_health": 60,
-      "health_regen": 1.0
-    },
-    "edges": [
-      "life_notable"
-    ]
-  },
-  "hpool_b": {
-    "name": "Robust",
-    "pos": [
-      922,
-      475
-    ],
-    "tier": "minor",
-    "cost": 1,
-    "color": [
-      110,
-      230,
-      110
-    ],
-    "bonuses": {
-      "max_health": 80,
-      "health_regen": 1.0
-    },
-    "edges": [
-      "hpool_a"
-    ]
-  },
-  "hpool_c": {
-    "name": "Titan Blood",
-    "pos": [
-      942,
-      520
-    ],
-    "tier": "minor",
-    "cost": 1,
-    "color": [
-      110,
-      230,
-      110
-    ],
-    "bonuses": {
-      "max_health": 100,
-      "health_regen": 1.5
-    },
-    "edges": [
-      "hpool_b"
-    ]
-  },
-  "hregen_notable2": {
-    "name": "Everliving",
-    "pos": [
-      905,
-      562
-    ],
-    "tier": "notable",
-    "cost": 2,
-    "color": [
-      90,
-      230,
-      90
-    ],
-    "bonuses": {
-      "health_regen": 5.0,
-      "max_health": 50
-    },
-    "edges": [
-      "hregen_d"
-    ]
-  },
-  "hybrid_regen_a": {
-    "name": "Equilibrium",
-    "pos": [
-      432,
-      470
-    ],
-    "tier": "minor",
-    "cost": 1,
-    "color": [
-      150,
-      220,
-      180
-    ],
-    "bonuses": {
-      "health_regen": 1.5,
-      "mana_regen": 0.8
-    },
-    "edges": [
-      "crit_2"
-    ]
-  },
-  "hybrid_regen_b": {
-    "name": "Lifeforce",
-    "pos": [
-      392,
-      500
-    ],
-    "tier": "minor",
-    "cost": 1,
-    "color": [
-      150,
-      220,
-      180
-    ],
-    "bonuses": {
-      "max_health": 40,
-      "max_mana": 40
-    },
-    "edges": [
-      "hybrid_regen_a"
-    ]
-  },
-  "hybrid_regen_c": {
-    "name": "Vital Spring",
-    "pos": [
-      432,
-      522
-    ],
-    "tier": "minor",
-    "cost": 1,
-    "color": [
-      150,
-      220,
-      180
-    ],
-    "bonuses": {
-      "health_regen": 2.0,
-      "mana_regen": 1.0
-    },
-    "edges": [
-      "hybrid_regen_b"
-    ]
-  },
-  "hybrid_regen_notable": {
-    "name": "Ascetic",
-    "pos": [
-      372,
-      546
-    ],
-    "tier": "notable",
-    "cost": 2,
-    "color": [
-      120,
-      220,
-      170
-    ],
-    "bonuses": {
-      "health_regen": 3.0,
-      "mana_regen": 1.5,
-      "max_health": 30
-    },
-    "edges": [
-      "hybrid_regen_c"
-    ]
-  }
+ "root": {
+  "name": "Life Force",
+  "pos": [
+   600.0,
+   400.0
+  ],
+  "tier": "minor",
+  "cost": 0,
+  "color": [
+   100,
+   255,
+   100
+  ],
+  "bonuses": {
+   "max_health": 50,
+   "max_mana": 20
+  },
+  "edges": [
+   "fire_1",
+   "lightning_1",
+   "dmg_1",
+   "mana_1",
+   "speed_1",
+   "minion_1",
+   "blood_1",
+   "cold_1"
+  ]
+ },
+ "fire_1": {
+  "name": "Ember",
+  "pos": [
+   600.0,
+   290.0
+  ],
+  "tier": "minor",
+  "cost": 1,
+  "color": [
+   235,
+   95,
+   60
+  ],
+  "bonuses": {
+   "fire_damage": 5
+  },
+  "edges": [
+   "fire_2",
+   "fire_c0"
+  ]
+ },
+ "fire_2": {
+  "name": "Kindling",
+  "pos": [
+   600.0,
+   190.0
+  ],
+  "tier": "minor",
+  "cost": 1,
+  "color": [
+   235,
+   95,
+   60
+  ],
+  "bonuses": {
+   "fire_damage": 5,
+   "burn_damage_increase": 0.05
+  },
+  "edges": [
+   "fire_3"
+  ]
+ },
+ "fire_3": {
+  "name": "Blaze",
+  "pos": [
+   600.0,
+   90.0
+  ],
+  "tier": "minor",
+  "cost": 1,
+  "color": [
+   235,
+   95,
+   60
+  ],
+  "bonuses": {
+   "fire_damage": 6,
+   "spell_damage": 3
+  },
+  "edges": [
+   "fire_key",
+   "fire_wa_m0",
+   "ring_i_0_1"
+  ]
+ },
+ "fire_key": {
+  "name": "Elemental Focus",
+  "pos": [
+   600.0,
+   -70.0
+  ],
+  "tier": "keystone",
+  "cost": 1,
+  "color": [
+   235,
+   95,
+   60
+  ],
+  "bonuses": {
+   "spell_damage": 12,
+   "fire_damage": 10,
+   "max_mana": 20
+  },
+  "edges": [
+   "fire_lord"
+  ]
+ },
+ "fire_lord": {
+  "name": "Infernal Lord",
+  "pos": [
+   600.0,
+   -150.0
+  ],
+  "tier": "notable",
+  "cost": 1,
+  "color": [
+   235,
+   95,
+   60
+  ],
+  "bonuses": {
+   "fire_damage": 18,
+   "fireball_damage": 15,
+   "burn_damage_increase": 0.15
+  },
+  "edges": [
+   "fire_wb_m0",
+   "ring_o_0_1"
+  ]
+ },
+ "fire_wa_m0": {
+  "name": "Fire",
+  "pos": [
+   565.8,
+   74.6
+  ],
+  "tier": "minor",
+  "cost": 1,
+  "color": [
+   235,
+   95,
+   60
+  ],
+  "bonuses": {
+   "fire_damage": 5
+  },
+  "edges": [
+   "fire_wa_m1"
+  ]
+ },
+ "fire_wa_m1": {
+  "name": "Fire",
+  "pos": [
+   521.0,
+   103.8
+  ],
+  "tier": "minor",
+  "cost": 1,
+  "color": [
+   235,
+   95,
+   60
+  ],
+  "bonuses": {
+   "fire_damage": 5
+  },
+  "edges": [
+   "fire_wa_m2"
+  ]
+ },
+ "fire_wa_m2": {
+  "name": "Fire",
+  "pos": [
+   487.1,
+   100.1
+  ],
+  "tier": "minor",
+  "cost": 1,
+  "color": [
+   235,
+   95,
+   60
+  ],
+  "bonuses": {
+   "fire_damage": 5
+  },
+  "edges": [
+   "fire_wa_m3"
+  ]
+ },
+ "fire_wa_m3": {
+  "name": "Fire",
+  "pos": [
+   458.6,
+   71.2
+  ],
+  "tier": "minor",
+  "cost": 1,
+  "color": [
+   235,
+   95,
+   60
+  ],
+  "bonuses": {
+   "fire_damage": 5
+  },
+  "edges": [
+   "fire_wa_nb"
+  ]
+ },
+ "fire_wa_nb": {
+  "name": "Pyromancer",
+  "pos": [
+   460.0,
+   26.8
+  ],
+  "tier": "notable",
+  "cost": 1,
+  "color": [
+   235,
+   95,
+   60
+  ],
+  "bonuses": {
+   "fire_damage": 14,
+   "fireball_damage": 10,
+   "spell_damage": 5
+  },
+  "edges": [
+   "fire_wa_m5"
+  ]
+ },
+ "fire_wa_m5": {
+  "name": "Fire",
+  "pos": [
+   492.4,
+   -3.6
+  ],
+  "tier": "minor",
+  "cost": 1,
+  "color": [
+   235,
+   95,
+   60
+  ],
+  "bonuses": {
+   "fire_damage": 5
+  },
+  "edges": [
+   "fire_wa_m6"
+  ]
+ },
+ "fire_wa_m6": {
+  "name": "Fire",
+  "pos": [
+   536.8,
+   -2.2
+  ],
+  "tier": "minor",
+  "cost": 1,
+  "color": [
+   235,
+   95,
+   60
+  ],
+  "bonuses": {
+   "fire_damage": 5
+  },
+  "edges": [
+   "fire_wa_m7"
+  ]
+ },
+ "fire_wa_m7": {
+  "name": "Fire",
+  "pos": [
+   567.2,
+   30.2
+  ],
+  "tier": "minor",
+  "cost": 1,
+  "color": [
+   235,
+   95,
+   60
+  ],
+  "bonuses": {
+   "fire_damage": 5
+  },
+  "edges": [
+   "fire_wa_m0"
+  ]
+ },
+ "fire_wb_m0": {
+  "name": "Fire",
+  "pos": [
+   669.3,
+   -101.7
+  ],
+  "tier": "minor",
+  "cost": 1,
+  "color": [
+   235,
+   95,
+   60
+  ],
+  "bonuses": {
+   "burn_damage_increase": 0.05,
+   "fire_damage": 3
+  },
+  "edges": [
+   "fire_wb_m1"
+  ]
+ },
+ "fire_wb_m1": {
+  "name": "Fire",
+  "pos": [
+   705.6,
+   -132.0
+  ],
+  "tier": "minor",
+  "cost": 1,
+  "color": [
+   235,
+   95,
+   60
+  ],
+  "bonuses": {
+   "burn_damage_increase": 0.05,
+   "fire_damage": 3
+  },
+  "edges": [
+   "fire_wb_m2"
+  ]
+ },
+ "fire_wb_m2": {
+  "name": "Fire",
+  "pos": [
+   752.8,
+   -129.1
+  ],
+  "tier": "minor",
+  "cost": 1,
+  "color": [
+   235,
+   95,
+   60
+  ],
+  "bonuses": {
+   "burn_damage_increase": 0.05,
+   "fire_damage": 3
+  },
+  "edges": [
+   "fire_wb_m3"
+  ]
+ },
+ "fire_wb_m3": {
+  "name": "Fire",
+  "pos": [
+   771.8,
+   -91.1
+  ],
+  "tier": "minor",
+  "cost": 1,
+  "color": [
+   235,
+   95,
+   60
+  ],
+  "bonuses": {
+   "burn_damage_increase": 0.05,
+   "fire_damage": 3
+  },
+  "edges": [
+   "fire_wb_nb"
+  ]
+ },
+ "fire_wb_nb": {
+  "name": "Wildfire",
+  "pos": [
+   767.6,
+   -44.5
+  ],
+  "tier": "notable",
+  "cost": 1,
+  "color": [
+   235,
+   95,
+   60
+  ],
+  "bonuses": {
+   "burn_damage_increase": 0.18,
+   "fire_damage": 8,
+   "status_radius": 0.1
+  },
+  "edges": [
+   "fire_wb_m5"
+  ]
+ },
+ "fire_wb_m5": {
+  "name": "Fire",
+  "pos": [
+   731.4,
+   -18.8
+  ],
+  "tier": "minor",
+  "cost": 1,
+  "color": [
+   235,
+   95,
+   60
+  ],
+  "bonuses": {
+   "burn_damage_increase": 0.05,
+   "fire_damage": 3
+  },
+  "edges": [
+   "fire_wb_m6"
+  ]
+ },
+ "fire_wb_m6": {
+  "name": "Fire",
+  "pos": [
+   687.6,
+   -26.3
+  ],
+  "tier": "minor",
+  "cost": 1,
+  "color": [
+   235,
+   95,
+   60
+  ],
+  "bonuses": {
+   "burn_damage_increase": 0.05,
+   "fire_damage": 3
+  },
+  "edges": [
+   "fire_wb_m7"
+  ]
+ },
+ "fire_wb_m7": {
+  "name": "Fire",
+  "pos": [
+   661.9,
+   -62.5
+  ],
+  "tier": "minor",
+  "cost": 1,
+  "color": [
+   235,
+   95,
+   60
+  ],
+  "bonuses": {
+   "burn_damage_increase": 0.05,
+   "fire_damage": 3
+  },
+  "edges": [
+   "fire_wb_m0"
+  ]
+ },
+ "lightning_1": {
+  "name": "Spark",
+  "pos": [
+   677.8,
+   322.2
+  ],
+  "tier": "minor",
+  "cost": 1,
+  "color": [
+   250,
+   220,
+   90
+  ],
+  "bonuses": {
+   "lightning_damage": 5
+  },
+  "edges": [
+   "ln_t1"
+  ]
+ },
+ "ln_t1": {
+  "name": "Static",
+  "pos": [
+   741.4,
+   258.6
+  ],
+  "tier": "minor",
+  "cost": 1,
+  "color": [
+   250,
+   220,
+   90
+  ],
+  "bonuses": {
+   "lightning_damage": 5,
+   "crit_chance": 0.005
+  },
+  "edges": [
+   "ln_t2"
+  ]
+ },
+ "ln_t2": {
+  "name": "Charge",
+  "pos": [
+   790.9,
+   209.1
+  ],
+  "tier": "minor",
+  "cost": 1,
+  "color": [
+   250,
+   220,
+   90
+  ],
+  "bonuses": {
+   "lightning_damage": 6
+  },
+  "edges": [
+   "ln_t3",
+   "ln_wa_m0",
+   "ring_i_1_1"
+  ]
+ },
+ "ln_t3": {
+  "name": "Ion Trail",
+  "pos": [
+   868.7,
+   131.3
+  ],
+  "tier": "minor",
+  "cost": 1,
+  "color": [
+   250,
+   220,
+   90
+  ],
+  "bonuses": {
+   "lightning_damage": 6,
+   "crit_chance": 0.005
+  },
+  "edges": [
+   "ln_rt"
+  ]
+ },
+ "ln_rt": {
+  "name": "Conduction",
+  "pos": [
+   932.3,
+   67.7
+  ],
+  "tier": "minor",
+  "cost": 1,
+  "color": [
+   250,
+   220,
+   90
+  ],
+  "bonuses": {
+   "lightning_damage": 7,
+   "shock_range_bonus": 0.05
+  },
+  "edges": [
+   "storm_rim",
+   "ln_wb_m0",
+   "ring_o_1_1"
+  ]
+ },
+ "storm_rim": {
+  "name": "Thunderhead",
+  "pos": [
+   988.9,
+   11.1
+  ],
+  "tier": "notable",
+  "cost": 1,
+  "color": [
+   250,
+   220,
+   90
+  ],
+  "bonuses": {
+   "lightning_damage": 16,
+   "shock_chain_bonus": 1,
+   "crit_chance": 0.02
+  },
+  "edges": [
+   "ks_storm"
+  ]
+ },
+ "ks_storm": {
+  "name": "Stormcaller",
+  "pos": [
+   1041.9,
+   -41.9
+  ],
+  "tier": "keystone",
+  "cost": 1,
+  "color": [
+   250,
+   220,
+   90
+  ],
+  "bonuses": {
+   "lightning_damage": 20,
+   "shock_chain_bonus": 2,
+   "shock_range_bonus": 0.25
+  },
+  "edges": []
+ },
+ "ln_wa_m0": {
+  "name": "Lightning",
+  "pos": [
+   788.1,
+   149.3
+  ],
+  "tier": "minor",
+  "cost": 1,
+  "color": [
+   250,
+   220,
+   90
+  ],
+  "bonuses": {
+   "lightning_damage": 5
+  },
+  "edges": [
+   "ln_wa_m1"
+  ]
+ },
+ "ln_wa_m1": {
+  "name": "Lightning",
+  "pos": [
+   746.3,
+   134.3
+  ],
+  "tier": "minor",
+  "cost": 1,
+  "color": [
+   250,
+   220,
+   90
+  ],
+  "bonuses": {
+   "lightning_damage": 5
+  },
+  "edges": [
+   "ln_wa_m2"
+  ]
+ },
+ "ln_wa_m2": {
+  "name": "Lightning",
+  "pos": [
+   727.5,
+   94.1
+  ],
+  "tier": "minor",
+  "cost": 1,
+  "color": [
+   250,
+   220,
+   90
+  ],
+  "bonuses": {
+   "lightning_damage": 5
+  },
+  "edges": [
+   "ln_wa_m3"
+  ]
+ },
+ "ln_wa_m3": {
+  "name": "Lightning",
+  "pos": [
+   742.5,
+   52.3
+  ],
+  "tier": "minor",
+  "cost": 1,
+  "color": [
+   250,
+   220,
+   90
+  ],
+  "bonuses": {
+   "lightning_damage": 5
+  },
+  "edges": [
+   "ln_wa_nb"
+  ]
+ },
+ "ln_wa_nb": {
+  "name": "Overload",
+  "pos": [
+   782.7,
+   33.5
+  ],
+  "tier": "notable",
+  "cost": 1,
+  "color": [
+   250,
+   220,
+   90
+  ],
+  "bonuses": {
+   "lightning_damage": 14,
+   "shock_range_bonus": 0.1,
+   "crit_damage": 0.15
+  },
+  "edges": [
+   "ln_wa_m5"
+  ]
+ },
+ "ln_wa_m5": {
+  "name": "Lightning",
+  "pos": [
+   824.5,
+   48.5
+  ],
+  "tier": "minor",
+  "cost": 1,
+  "color": [
+   250,
+   220,
+   90
+  ],
+  "bonuses": {
+   "lightning_damage": 5
+  },
+  "edges": [
+   "ln_wa_m6"
+  ]
+ },
+ "ln_wa_m6": {
+  "name": "Lightning",
+  "pos": [
+   843.3,
+   88.7
+  ],
+  "tier": "minor",
+  "cost": 1,
+  "color": [
+   250,
+   220,
+   90
+  ],
+  "bonuses": {
+   "lightning_damage": 5
+  },
+  "edges": [
+   "ln_wa_m7"
+  ]
+ },
+ "ln_wa_m7": {
+  "name": "Lightning",
+  "pos": [
+   828.3,
+   130.5
+  ],
+  "tier": "minor",
+  "cost": 1,
+  "color": [
+   250,
+   220,
+   90
+  ],
+  "bonuses": {
+   "lightning_damage": 5
+  },
+  "edges": [
+   "ln_wa_m0"
+  ]
+ },
+ "ln_wb_m0": {
+  "name": "Lightning",
+  "pos": [
+   985.7,
+   95.4
+  ],
+  "tier": "minor",
+  "cost": 1,
+  "color": [
+   250,
+   220,
+   90
+  ],
+  "bonuses": {
+   "lightning_damage": 3,
+   "crit_chance": 0.004
+  },
+  "edges": [
+   "ln_wb_m1"
+  ]
+ },
+ "ln_wb_m1": {
+  "name": "Lightning",
+  "pos": [
+   1019.5,
+   89.2
+  ],
+  "tier": "minor",
+  "cost": 1,
+  "color": [
+   250,
+   220,
+   90
+  ],
+  "bonuses": {
+   "lightning_damage": 3,
+   "crit_chance": 0.004
+  },
+  "edges": [
+   "ln_wb_m2"
+  ]
+ },
+ "ln_wb_m2": {
+  "name": "Lightning",
+  "pos": [
+   1059.1,
+   104.7
+  ],
+  "tier": "minor",
+  "cost": 1,
+  "color": [
+   250,
+   220,
+   90
+  ],
+  "bonuses": {
+   "lightning_damage": 3,
+   "crit_chance": 0.004
+  },
+  "edges": [
+   "ln_wb_m3"
+  ]
+ },
+ "ln_wb_m3": {
+  "name": "Lightning",
+  "pos": [
+   1077.9,
+   144.9
+  ],
+  "tier": "minor",
+  "cost": 1,
+  "color": [
+   250,
+   220,
+   90
+  ],
+  "bonuses": {
+   "lightning_damage": 3,
+   "crit_chance": 0.004
+  },
+  "edges": [
+   "ln_wb_nb"
+  ]
+ },
+ "ln_wb_nb": {
+  "name": "Tempest",
+  "pos": [
+   1062.9,
+   186.7
+  ],
+  "tier": "notable",
+  "cost": 1,
+  "color": [
+   250,
+   220,
+   90
+  ],
+  "bonuses": {
+   "lightning_damage": 10,
+   "attack_speed": 0.06,
+   "crit_chance": 0.02
+  },
+  "edges": [
+   "ln_wb_m5"
+  ]
+ },
+ "ln_wb_m5": {
+  "name": "Lightning",
+  "pos": [
+   1017.6,
+   199.1
+  ],
+  "tier": "minor",
+  "cost": 1,
+  "color": [
+   250,
+   220,
+   90
+  ],
+  "bonuses": {
+   "lightning_damage": 3,
+   "crit_chance": 0.004
+  },
+  "edges": [
+   "ln_wb_m6"
+  ]
+ },
+ "ln_wb_m6": {
+  "name": "Lightning",
+  "pos": [
+   980.9,
+   190.5
+  ],
+  "tier": "minor",
+  "cost": 1,
+  "color": [
+   250,
+   220,
+   90
+  ],
+  "bonuses": {
+   "lightning_damage": 3,
+   "crit_chance": 0.004
+  },
+  "edges": [
+   "ln_wb_m7"
+  ]
+ },
+ "ln_wb_m7": {
+  "name": "Lightning",
+  "pos": [
+   961.7,
+   156.1
+  ],
+  "tier": "minor",
+  "cost": 1,
+  "color": [
+   250,
+   220,
+   90
+  ],
+  "bonuses": {
+   "lightning_damage": 3,
+   "crit_chance": 0.004
+  },
+  "edges": [
+   "ln_wb_m0"
+  ]
+ },
+ "dmg_1": {
+  "name": "Arcane Bite",
+  "pos": [
+   709.6,
+   390.4
+  ],
+  "tier": "minor",
+  "cost": 1,
+  "color": [
+   175,
+   120,
+   250
+  ],
+  "bonuses": {
+   "spell_damage": 4,
+   "damage": 2
+  },
+  "edges": [
+   "dmg_2",
+   "dmg_c0"
+  ]
+ },
+ "dmg_2": {
+  "name": "Arcane Hunger",
+  "pos": [
+   839.1,
+   379.1
+  ],
+  "tier": "minor",
+  "cost": 1,
+  "color": [
+   175,
+   120,
+   250
+  ],
+  "bonuses": {
+   "spell_damage": 5,
+   "damage": 3
+  },
+  "edges": [
+   "dmg_3",
+   "dmg_wa_m0",
+   "dmg_wb_m0",
+   "ring_i_2_1"
+  ]
+ },
+ "dmg_3": {
+  "name": "Omnivamp",
+  "pos": [
+   978.6,
+   366.9
+  ],
+  "tier": "keystone",
+  "cost": 1,
+  "color": [
+   175,
+   120,
+   250
+  ],
+  "bonuses": {
+   "spell_damage": 10,
+   "max_health": 40,
+   "life_leech": 0.05
+  },
+  "edges": []
+ },
+ "dmg_wa_m0": {
+  "name": "Arcana",
+  "pos": [
+   898.4,
+   322.8
+  ],
+  "tier": "minor",
+  "cost": 1,
+  "color": [
+   175,
+   120,
+   250
+  ],
+  "bonuses": {
+   "spell_damage": 4,
+   "damage": 2
+  },
+  "edges": [
+   "dmg_wa_m1"
+  ]
+ },
+ "dmg_wa_m1": {
+  "name": "Arcana",
+  "pos": [
+   882.4,
+   281.3
+  ],
+  "tier": "minor",
+  "cost": 1,
+  "color": [
+   175,
+   120,
+   250
+  ],
+  "bonuses": {
+   "spell_damage": 4,
+   "damage": 2
+  },
+  "edges": [
+   "dmg_wa_m2"
+  ]
+ },
+ "dmg_wa_m2": {
+  "name": "Arcana",
+  "pos": [
+   900.4,
+   240.8
+  ],
+  "tier": "minor",
+  "cost": 1,
+  "color": [
+   175,
+   120,
+   250
+  ],
+  "bonuses": {
+   "spell_damage": 4,
+   "damage": 2
+  },
+  "edges": [
+   "dmg_wa_m3"
+  ]
+ },
+ "dmg_wa_m3": {
+  "name": "Arcana",
+  "pos": [
+   941.9,
+   224.8
+  ],
+  "tier": "minor",
+  "cost": 1,
+  "color": [
+   175,
+   120,
+   250
+  ],
+  "bonuses": {
+   "spell_damage": 4,
+   "damage": 2
+  },
+  "edges": [
+   "dmg_wa_nb"
+  ]
+ },
+ "dmg_wa_nb": {
+  "name": "Battle Mage",
+  "pos": [
+   982.4,
+   242.8
+  ],
+  "tier": "notable",
+  "cost": 1,
+  "color": [
+   175,
+   120,
+   250
+  ],
+  "bonuses": {
+   "spell_damage": 12,
+   "damage": 8,
+   "crit_damage": 0.2
+  },
+  "edges": [
+   "dmg_wa_m5"
+  ]
+ },
+ "dmg_wa_m5": {
+  "name": "Arcana",
+  "pos": [
+   998.4,
+   284.3
+  ],
+  "tier": "minor",
+  "cost": 1,
+  "color": [
+   175,
+   120,
+   250
+  ],
+  "bonuses": {
+   "spell_damage": 4,
+   "damage": 2
+  },
+  "edges": [
+   "dmg_wa_m6"
+  ]
+ },
+ "dmg_wa_m6": {
+  "name": "Arcana",
+  "pos": [
+   980.4,
+   324.8
+  ],
+  "tier": "minor",
+  "cost": 1,
+  "color": [
+   175,
+   120,
+   250
+  ],
+  "bonuses": {
+   "spell_damage": 4,
+   "damage": 2
+  },
+  "edges": [
+   "dmg_wa_m7"
+  ]
+ },
+ "dmg_wa_m7": {
+  "name": "Arcana",
+  "pos": [
+   938.9,
+   340.8
+  ],
+  "tier": "minor",
+  "cost": 1,
+  "color": [
+   175,
+   120,
+   250
+  ],
+  "bonuses": {
+   "spell_damage": 4,
+   "damage": 2
+  },
+  "edges": [
+   "dmg_wa_m0"
+  ]
+ },
+ "dmg_wb_m0": {
+  "name": "Arcana",
+  "pos": [
+   1030.1,
+   455.2
+  ],
+  "tier": "minor",
+  "cost": 1,
+  "color": [
+   175,
+   120,
+   250
+  ],
+  "bonuses": {
+   "spell_damage": 3,
+   "max_health": 8
+  },
+  "edges": [
+   "dmg_wb_m1"
+  ]
+ },
+ "dmg_wb_m1": {
+  "name": "Arcana",
+  "pos": [
+   1059.2,
+   427.5
+  ],
+  "tier": "minor",
+  "cost": 1,
+  "color": [
+   175,
+   120,
+   250
+  ],
+  "bonuses": {
+   "spell_damage": 3,
+   "max_health": 8
+  },
+  "edges": [
+   "dmg_wb_m2"
+  ]
+ },
+ "dmg_wb_m2": {
+  "name": "Arcana",
+  "pos": [
+   1105.5,
+   422.8
+  ],
+  "tier": "minor",
+  "cost": 1,
+  "color": [
+   175,
+   120,
+   250
+  ],
+  "bonuses": {
+   "spell_damage": 3,
+   "max_health": 8
+  },
+  "edges": [
+   "dmg_wb_m3"
+  ]
+ },
+ "dmg_wb_m3": {
+  "name": "Arcana",
+  "pos": [
+   1137.3,
+   453.8
+  ],
+  "tier": "minor",
+  "cost": 1,
+  "color": [
+   175,
+   120,
+   250
+  ],
+  "bonuses": {
+   "spell_damage": 3,
+   "max_health": 8
+  },
+  "edges": [
+   "dmg_wb_nb"
+  ]
+ },
+ "dmg_wb_nb": {
+  "name": "Blood Scholar",
+  "pos": [
+   1137.9,
+   498.2
+  ],
+  "tier": "notable",
+  "cost": 1,
+  "color": [
+   175,
+   120,
+   250
+  ],
+  "bonuses": {
+   "spell_damage": 10,
+   "life_leech": 0.03,
+   "max_health": 25
+  },
+  "edges": [
+   "dmg_wb_m5"
+  ]
+ },
+ "dmg_wb_m5": {
+  "name": "Arcana",
+  "pos": [
+   1106.9,
+   530.0
+  ],
+  "tier": "minor",
+  "cost": 1,
+  "color": [
+   175,
+   120,
+   250
+  ],
+  "bonuses": {
+   "spell_damage": 3,
+   "max_health": 8
+  },
+  "edges": [
+   "dmg_wb_m6"
+  ]
+ },
+ "dmg_wb_m6": {
+  "name": "Arcana",
+  "pos": [
+   1073.2,
+   542.1
+  ],
+  "tier": "minor",
+  "cost": 1,
+  "color": [
+   175,
+   120,
+   250
+  ],
+  "bonuses": {
+   "spell_damage": 3,
+   "max_health": 8
+  },
+  "edges": [
+   "dmg_wb_m7"
+  ]
+ },
+ "dmg_wb_m7": {
+  "name": "Arcana",
+  "pos": [
+   1024.0,
+   493.7
+  ],
+  "tier": "minor",
+  "cost": 1,
+  "color": [
+   175,
+   120,
+   250
+  ],
+  "bonuses": {
+   "spell_damage": 3,
+   "max_health": 8
+  },
+  "edges": [
+   "dmg_wb_m0"
+  ]
+ },
+ "hybrid_ld": {
+  "name": "Voltage Surge",
+  "pos": [
+   772.2,
+   319.7
+  ],
+  "tier": "keystone",
+  "cost": 1,
+  "color": [
+   250,
+   220,
+   90
+  ],
+  "bonuses": {
+   "lightning_damage": 10,
+   "spell_damage": 8,
+   "projectile_speed": 0.15
+  },
+  "edges": [
+   "lightning_1",
+   "dmg_1"
+  ]
+ },
+ "mana_1": {
+  "name": "Clarity",
+  "pos": [
+   690.1,
+   463.1
+  ],
+  "tier": "minor",
+  "cost": 1,
+  "color": [
+   175,
+   120,
+   250
+  ],
+  "bonuses": {
+   "max_mana": 25,
+   "mana_regen": 0.3
+  },
+  "edges": [
+   "mana_2",
+   "mana_c0"
+  ]
+ },
+ "mana_2": {
+  "name": "Meditation",
+  "pos": [
+   796.6,
+   537.7
+  ],
+  "tier": "minor",
+  "cost": 1,
+  "color": [
+   175,
+   120,
+   250
+  ],
+  "bonuses": {
+   "max_mana": 35,
+   "mana_regen": 0.5
+  },
+  "edges": [
+   "mana_3",
+   "mana_wa_m0",
+   "mana_wb_m0",
+   "ring_i_3_1"
+  ]
+ },
+ "mana_3": {
+  "name": "Spell Echo",
+  "pos": [
+   911.3,
+   618.0
+  ],
+  "tier": "keystone",
+  "cost": 1,
+  "color": [
+   175,
+   120,
+   250
+  ],
+  "bonuses": {
+   "max_mana": 60,
+   "mana_regen": 1.0,
+   "cooldown_reduction": 0.05
+  },
+  "edges": []
+ },
+ "mana_wa_m0": {
+  "name": "Sorcery",
+  "pos": [
+   878.2,
+   532.6
+  ],
+  "tier": "minor",
+  "cost": 1,
+  "color": [
+   175,
+   120,
+   250
+  ],
+  "bonuses": {
+   "max_mana": 15,
+   "mana_regen": 0.3
+  },
+  "edges": [
+   "mana_wa_m1"
+  ]
+ },
+ "mana_wa_m1": {
+  "name": "Sorcery",
+  "pos": [
+   892.6,
+   490.6
+  ],
+  "tier": "minor",
+  "cost": 1,
+  "color": [
+   175,
+   120,
+   250
+  ],
+  "bonuses": {
+   "max_mana": 15,
+   "mana_regen": 0.3
+  },
+  "edges": [
+   "mana_wa_m2"
+  ]
+ },
+ "mana_wa_m2": {
+  "name": "Sorcery",
+  "pos": [
+   932.5,
+   471.1
+  ],
+  "tier": "minor",
+  "cost": 1,
+  "color": [
+   175,
+   120,
+   250
+  ],
+  "bonuses": {
+   "max_mana": 15,
+   "mana_regen": 0.3
+  },
+  "edges": [
+   "mana_wa_m3"
+  ]
+ },
+ "mana_wa_m3": {
+  "name": "Sorcery",
+  "pos": [
+   974.5,
+   485.5
+  ],
+  "tier": "minor",
+  "cost": 1,
+  "color": [
+   175,
+   120,
+   250
+  ],
+  "bonuses": {
+   "max_mana": 15,
+   "mana_regen": 0.3
+  },
+  "edges": [
+   "mana_wa_nb"
+  ]
+ },
+ "mana_wa_nb": {
+  "name": "Archmage",
+  "pos": [
+   994.0,
+   525.4
+  ],
+  "tier": "notable",
+  "cost": 1,
+  "color": [
+   175,
+   120,
+   250
+  ],
+  "bonuses": {
+   "max_mana": 50,
+   "spell_damage": 10,
+   "mana_regen": 1.0
+  },
+  "edges": [
+   "mana_wa_m5"
+  ]
+ },
+ "mana_wa_m5": {
+  "name": "Sorcery",
+  "pos": [
+   979.6,
+   567.4
+  ],
+  "tier": "minor",
+  "cost": 1,
+  "color": [
+   175,
+   120,
+   250
+  ],
+  "bonuses": {
+   "max_mana": 15,
+   "mana_regen": 0.3
+  },
+  "edges": [
+   "mana_wa_m6"
+  ]
+ },
+ "mana_wa_m6": {
+  "name": "Sorcery",
+  "pos": [
+   939.7,
+   586.9
+  ],
+  "tier": "minor",
+  "cost": 1,
+  "color": [
+   175,
+   120,
+   250
+  ],
+  "bonuses": {
+   "max_mana": 15,
+   "mana_regen": 0.3
+  },
+  "edges": [
+   "mana_wa_m7"
+  ]
+ },
+ "mana_wa_m7": {
+  "name": "Sorcery",
+  "pos": [
+   897.7,
+   572.5
+  ],
+  "tier": "minor",
+  "cost": 1,
+  "color": [
+   175,
+   120,
+   250
+  ],
+  "bonuses": {
+   "max_mana": 15,
+   "mana_regen": 0.3
+  },
+  "edges": [
+   "mana_wa_m0"
+  ]
+ },
+ "mana_wb_m0": {
+  "name": "Sorcery",
+  "pos": [
+   878.1,
+   712.0
+  ],
+  "tier": "minor",
+  "cost": 1,
+  "color": [
+   175,
+   120,
+   250
+  ],
+  "bonuses": {
+   "projectile_speed": 0.04,
+   "spell_damage": 2
+  },
+  "edges": [
+   "mana_wb_m1"
+  ]
+ },
+ "mana_wb_m1": {
+  "name": "Sorcery",
+  "pos": [
+   945.6,
+   718.3
+  ],
+  "tier": "minor",
+  "cost": 1,
+  "color": [
+   175,
+   120,
+   250
+  ],
+  "bonuses": {
+   "projectile_speed": 0.04,
+   "spell_damage": 2
+  },
+  "edges": [
+   "mana_wb_m2"
+  ]
+ },
+ "mana_wb_m2": {
+  "name": "Sorcery",
+  "pos": [
+   966.2,
+   746.5
+  ],
+  "tier": "minor",
+  "cost": 1,
+  "color": [
+   175,
+   120,
+   250
+  ],
+  "bonuses": {
+   "projectile_speed": 0.04,
+   "spell_damage": 2
+  },
+  "edges": [
+   "mana_wb_m3"
+  ]
+ },
+ "mana_wb_m3": {
+  "name": "Sorcery",
+  "pos": [
+   971.9,
+   781.0
+  ],
+  "tier": "minor",
+  "cost": 1,
+  "color": [
+   175,
+   120,
+   250
+  ],
+  "bonuses": {
+   "projectile_speed": 0.04,
+   "spell_damage": 2
+  },
+  "edges": [
+   "mana_wb_nb"
+  ]
+ },
+ "mana_wb_nb": {
+  "name": "Prism Weaver",
+  "pos": [
+   947.9,
+   834.8
+  ],
+  "tier": "notable",
+  "cost": 1,
+  "color": [
+   175,
+   120,
+   250
+  ],
+  "bonuses": {
+   "projectile_count": 1,
+   "projectile_speed": 0.1,
+   "spell_damage": 6
+  },
+  "edges": [
+   "mana_wb_m5"
+  ]
+ },
+ "mana_wb_m5": {
+  "name": "Sorcery",
+  "pos": [
+   899.4,
+   834.9
+  ],
+  "tier": "minor",
+  "cost": 1,
+  "color": [
+   175,
+   120,
+   250
+  ],
+  "bonuses": {
+   "projectile_speed": 0.04,
+   "spell_damage": 2
+  },
+  "edges": [
+   "mana_wb_m6"
+  ]
+ },
+ "mana_wb_m6": {
+  "name": "Sorcery",
+  "pos": [
+   863.2,
+   804.0
+  ],
+  "tier": "minor",
+  "cost": 1,
+  "color": [
+   175,
+   120,
+   250
+  ],
+  "bonuses": {
+   "projectile_speed": 0.04,
+   "spell_damage": 2
+  },
+  "edges": [
+   "mana_wb_m7"
+  ]
+ },
+ "mana_wb_m7": {
+  "name": "Sorcery",
+  "pos": [
+   847.6,
+   753.9
+  ],
+  "tier": "minor",
+  "cost": 1,
+  "color": [
+   175,
+   120,
+   250
+  ],
+  "bonuses": {
+   "projectile_speed": 0.04,
+   "spell_damage": 2
+  },
+  "edges": [
+   "mana_wb_m0"
+  ]
+ },
+ "speed_1": {
+  "name": "Momentum",
+  "pos": [
+   628.5,
+   506.3
+  ],
+  "tier": "minor",
+  "cost": 1,
+  "color": [
+   110,
+   235,
+   170
+  ],
+  "bonuses": {
+   "attack_speed": 0.04,
+   "move_speed_increase": 0.02
+  },
+  "edges": [
+   "atk_1",
+   "move_1",
+   "spd_c0"
+  ]
+ },
+ "atk_1": {
+  "name": "Quick Hands",
+  "pos": [
+   697.0,
+   574.9
+  ],
+  "tier": "minor",
+  "cost": 1,
+  "color": [
+   110,
+   235,
+   170
+  ],
+  "bonuses": {
+   "attack_speed": 0.04,
+   "damage": 3
+  },
+  "edges": [
+   "atk_2"
+  ]
+ },
+ "atk_2": {
+  "name": "Fluid Casting",
+  "pos": [
+   730.9,
+   636.1
+  ],
+  "tier": "minor",
+  "cost": 1,
+  "color": [
+   110,
+   235,
+   170
+  ],
+  "bonuses": {
+   "attack_speed": 0.05,
+   "damage": 3
+  },
+  "edges": [
+   "atk_notable",
+   "ring_i_4_1"
+  ]
+ },
+ "atk_notable": {
+  "name": "Battle Tempo",
+  "pos": [
+   784.2,
+   732.4
+  ],
+  "tier": "notable",
+  "cost": 1,
+  "color": [
+   110,
+   235,
+   170
+  ],
+  "bonuses": {
+   "attack_speed": 0.12,
+   "damage": 8,
+   "crit_chance": 0.01
+  },
+  "edges": [
+   "spd_rt",
+   "spd_wa_m0"
+  ]
+ },
+ "move_1": {
+  "name": "Fleet Foot",
+  "pos": [
+   603.5,
+   600.0
+  ],
+  "tier": "minor",
+  "cost": 1,
+  "color": [
+   110,
+   235,
+   170
+  ],
+  "bonuses": {
+   "move_speed_increase": 0.04
+  },
+  "edges": [
+   "move_2"
+  ]
+ },
+ "move_2": {
+  "name": "Wind Runner",
+  "pos": [
+   604.7,
+   670.0
+  ],
+  "tier": "minor",
+  "cost": 1,
+  "color": [
+   110,
+   235,
+   170
+  ],
+  "bonuses": {
+   "move_speed_increase": 0.04
+  },
+  "edges": [
+   "move_notable",
+   "ring_i_5_1"
+  ]
+ },
+ "move_notable": {
+  "name": "Slipstream",
+  "pos": [
+   606.6,
+   779.9
+  ],
+  "tier": "notable",
+  "cost": 1,
+  "color": [
+   110,
+   235,
+   170
+  ],
+  "bonuses": {
+   "move_speed_increase": 0.1,
+   "attack_speed": 0.05
+  },
+  "edges": [
+   "spd_rt",
+   "spd_wb_m0"
+  ]
+ },
+ "spd_rt": {
+  "name": "Tailwind",
+  "pos": [
+   721.6,
+   854.0
+  ],
+  "tier": "minor",
+  "cost": 1,
+  "color": [
+   110,
+   235,
+   170
+  ],
+  "bonuses": {
+   "attack_speed": 0.04,
+   "move_speed_increase": 0.02
+  },
+  "edges": [
+   "ks_zephyr",
+   "ring_o_2_1"
+  ]
+ },
+ "ks_zephyr": {
+  "name": "Zephyr",
+  "pos": [
+   744.9,
+   940.9
+  ],
+  "tier": "keystone",
+  "cost": 1,
+  "color": [
+   110,
+   235,
+   170
+  ],
+  "bonuses": {
+   "attack_speed": 0.15,
+   "move_speed_increase": 0.1,
+   "cooldown_reduction": 0.08
+  },
+  "edges": []
+ },
+ "spd_wa_m0": {
+  "name": "Alacrity",
+  "pos": [
+   894.3,
+   742.3
+  ],
+  "tier": "minor",
+  "cost": 1,
+  "color": [
+   110,
+   235,
+   170
+  ],
+  "bonuses": {
+   "attack_speed": 0.03
+  },
+  "edges": [
+   "spd_wa_m1"
+  ]
+ },
+ "spd_wa_m1": {
+  "name": "Alacrity",
+  "pos": [
+   910.2,
+   699.2
+  ],
+  "tier": "minor",
+  "cost": 1,
+  "color": [
+   110,
+   235,
+   170
+  ],
+  "bonuses": {
+   "attack_speed": 0.03
+  },
+  "edges": [
+   "spd_wa_m2"
+  ]
+ },
+ "spd_wa_m2": {
+  "name": "Alacrity",
+  "pos": [
+   942.9,
+   683.4
+  ],
+  "tier": "minor",
+  "cost": 1,
+  "color": [
+   110,
+   235,
+   170
+  ],
+  "bonuses": {
+   "attack_speed": 0.03
+  },
+  "edges": [
+   "spd_wa_m3"
+  ]
+ },
+ "spd_wa_m3": {
+  "name": "Alacrity",
+  "pos": [
+   985.7,
+   718.0
+  ],
+  "tier": "minor",
+  "cost": 1,
+  "color": [
+   110,
+   235,
+   170
+  ],
+  "bonuses": {
+   "attack_speed": 0.03
+  },
+  "edges": [
+   "spd_wa_nb"
+  ]
+ },
+ "spd_wa_nb": {
+  "name": "Frenzy",
+  "pos": [
+   1001.7,
+   763.1
+  ],
+  "tier": "notable",
+  "cost": 1,
+  "color": [
+   110,
+   235,
+   170
+  ],
+  "bonuses": {
+   "attack_speed": 0.1,
+   "crit_chance": 0.02,
+   "projectile_speed": 0.1
+  },
+  "edges": [
+   "spd_wa_m5"
+  ]
+ },
+ "spd_wa_m5": {
+  "name": "Alacrity",
+  "pos": [
+   976.6,
+   814.7
+  ],
+  "tier": "minor",
+  "cost": 1,
+  "color": [
+   110,
+   235,
+   170
+  ],
+  "bonuses": {
+   "attack_speed": 0.03
+  },
+  "edges": [
+   "spd_wa_m6"
+  ]
+ },
+ "spd_wa_m6": {
+  "name": "Alacrity",
+  "pos": [
+   931.9,
+   804.4
+  ],
+  "tier": "minor",
+  "cost": 1,
+  "color": [
+   110,
+   235,
+   170
+  ],
+  "bonuses": {
+   "attack_speed": 0.03
+  },
+  "edges": [
+   "spd_wa_m7"
+  ]
+ },
+ "spd_wa_m7": {
+  "name": "Alacrity",
+  "pos": [
+   897.5,
+   800.0
+  ],
+  "tier": "minor",
+  "cost": 1,
+  "color": [
+   110,
+   235,
+   170
+  ],
+  "bonuses": {
+   "attack_speed": 0.03
+  },
+  "edges": [
+   "spd_wa_m0"
+  ]
+ },
+ "spd_wb_m0": {
+  "name": "Alacrity",
+  "pos": [
+   533.8,
+   831.3
+  ],
+  "tier": "minor",
+  "cost": 1,
+  "color": [
+   110,
+   235,
+   170
+  ],
+  "bonuses": {
+   "move_speed_increase": 0.02,
+   "cooldown_reduction": 0.005
+  },
+  "edges": [
+   "spd_wb_m1"
+  ]
+ },
+ "spd_wb_m1": {
+  "name": "Alacrity",
+  "pos": [
+   554.3,
+   892.5
+  ],
+  "tier": "minor",
+  "cost": 1,
+  "color": [
+   110,
+   235,
+   170
+  ],
+  "bonuses": {
+   "move_speed_increase": 0.02,
+   "cooldown_reduction": 0.005
+  },
+  "edges": [
+   "spd_wb_m2"
+  ]
+ },
+ "spd_wb_m2": {
+  "name": "Alacrity",
+  "pos": [
+   527.0,
+   921.9
+  ],
+  "tier": "minor",
+  "cost": 1,
+  "color": [
+   110,
+   235,
+   170
+  ],
+  "bonuses": {
+   "move_speed_increase": 0.02,
+   "cooldown_reduction": 0.005
+  },
+  "edges": [
+   "spd_wb_m3"
+  ]
+ },
+ "spd_wb_m3": {
+  "name": "Alacrity",
+  "pos": [
+   484.6,
+   935.2
+  ],
+  "tier": "minor",
+  "cost": 1,
+  "color": [
+   110,
+   235,
+   170
+  ],
+  "bonuses": {
+   "move_speed_increase": 0.02,
+   "cooldown_reduction": 0.005
+  },
+  "edges": [
+   "spd_wb_nb"
+  ]
+ },
+ "spd_wb_nb": {
+  "name": "Phase Dancer",
+  "pos": [
+   445.3,
+   914.6
+  ],
+  "tier": "notable",
+  "cost": 1,
+  "color": [
+   110,
+   235,
+   170
+  ],
+  "bonuses": {
+   "move_speed_increase": 0.08,
+   "cooldown_reduction": 0.04,
+   "max_mana": 20
+  },
+  "edges": [
+   "spd_wb_m5"
+  ]
+ },
+ "spd_wb_m5": {
+  "name": "Alacrity",
+  "pos": [
+   432.0,
+   872.2
+  ],
+  "tier": "minor",
+  "cost": 1,
+  "color": [
+   110,
+   235,
+   170
+  ],
+  "bonuses": {
+   "move_speed_increase": 0.02,
+   "cooldown_reduction": 0.005
+  },
+  "edges": [
+   "spd_wb_m6"
+  ]
+ },
+ "spd_wb_m6": {
+  "name": "Alacrity",
+  "pos": [
+   453.1,
+   831.9
+  ],
+  "tier": "minor",
+  "cost": 1,
+  "color": [
+   110,
+   235,
+   170
+  ],
+  "bonuses": {
+   "move_speed_increase": 0.02,
+   "cooldown_reduction": 0.005
+  },
+  "edges": [
+   "spd_wb_m7"
+  ]
+ },
+ "spd_wb_m7": {
+  "name": "Alacrity",
+  "pos": [
+   494.4,
+   823.2
+  ],
+  "tier": "minor",
+  "cost": 1,
+  "color": [
+   110,
+   235,
+   170
+  ],
+  "bonuses": {
+   "move_speed_increase": 0.02,
+   "cooldown_reduction": 0.005
+  },
+  "edges": [
+   "spd_wb_m0"
+  ]
+ },
+ "minion_1": {
+  "name": "Dark Pact",
+  "pos": [
+   545.0,
+   495.3
+  ],
+  "tier": "minor",
+  "cost": 1,
+  "color": [
+   150,
+   210,
+   120
+  ],
+  "bonuses": {
+   "minion_damage_increase": 0.06
+  },
+  "edges": [
+   "mn_t1",
+   "mn_c0"
+  ]
+ },
+ "mn_t1": {
+  "name": "Grave Call",
+  "pos": [
+   500.0,
+   573.2
+  ],
+  "tier": "minor",
+  "cost": 1,
+  "color": [
+   150,
+   210,
+   120
+  ],
+  "bonuses": {
+   "minion_damage_increase": 0.06
+  },
+  "edges": [
+   "mn_t2"
+  ]
+ },
+ "mn_t2": {
+  "name": "Bone Binding",
+  "pos": [
+   465.0,
+   633.8
+  ],
+  "tier": "minor",
+  "cost": 1,
+  "color": [
+   150,
+   210,
+   120
+  ],
+  "bonuses": {
+   "minion_damage_increase": 0.07,
+   "max_health": 10
+  },
+  "edges": [
+   "mn_t3",
+   "mn_wa_m0",
+   "ring_i_6_1"
+  ]
+ },
+ "mn_t3": {
+  "name": "Soul Harvest",
+  "pos": [
+   410.0,
+   729.1
+  ],
+  "tier": "minor",
+  "cost": 1,
+  "color": [
+   150,
+   210,
+   120
+  ],
+  "bonuses": {
+   "minion_damage_increase": 0.07,
+   "life_leech": 0.01
+  },
+  "edges": [
+   "mn_rt"
+  ]
+ },
+ "mn_rt": {
+  "name": "Death March",
+  "pos": [
+   365.0,
+   807.0
+  ],
+  "tier": "minor",
+  "cost": 1,
+  "color": [
+   150,
+   210,
+   120
+  ],
+  "bonuses": {
+   "minion_damage_increase": 0.08
+  },
+  "edges": [
+   "necro_rim",
+   "mn_wb_m0",
+   "ring_o_3_1"
+  ]
+ },
+ "necro_rim": {
+  "name": "Bone Sovereign",
+  "pos": [
+   325.0,
+   876.3
+  ],
+  "tier": "notable",
+  "cost": 1,
+  "color": [
+   150,
+   210,
+   120
+  ],
+  "bonuses": {
+   "minion_damage_increase": 0.2,
+   "max_health": 25,
+   "damage": 5
+  },
+  "edges": [
+   "ks_deadlord"
+  ]
+ },
+ "ks_deadlord": {
+  "name": "Lord of the Dead",
+  "pos": [
+   287.5,
+   941.3
+  ],
+  "tier": "keystone",
+  "cost": 1,
+  "color": [
+   150,
+   210,
+   120
+  ],
+  "bonuses": {
+   "minion_damage_increase": 0.4,
+   "max_health": 40
+  },
+  "edges": []
+ },
+ "mn_wa_m0": {
+  "name": "Necromancy",
+  "pos": [
+   483.2,
+   690.8
+  ],
+  "tier": "minor",
+  "cost": 1,
+  "color": [
+   150,
+   210,
+   120
+  ],
+  "bonuses": {
+   "minion_damage_increase": 0.05
+  },
+  "edges": [
+   "mn_wa_m1"
+  ]
+ },
+ "mn_wa_m1": {
+  "name": "Necromancy",
+  "pos": [
+   526.9,
+   698.5
+  ],
+  "tier": "minor",
+  "cost": 1,
+  "color": [
+   150,
+   210,
+   120
+  ],
+  "bonuses": {
+   "minion_damage_increase": 0.05
+  },
+  "edges": [
+   "mn_wa_m2"
+  ]
+ },
+ "mn_wa_m2": {
+  "name": "Necromancy",
+  "pos": [
+   556.1,
+   728.5
+  ],
+  "tier": "minor",
+  "cost": 1,
+  "color": [
+   150,
+   210,
+   120
+  ],
+  "bonuses": {
+   "minion_damage_increase": 0.05
+  },
+  "edges": [
+   "mn_wa_m3"
+  ]
+ },
+ "mn_wa_m3": {
+  "name": "Necromancy",
+  "pos": [
+   552.3,
+   772.7
+  ],
+  "tier": "minor",
+  "cost": 1,
+  "color": [
+   150,
+   210,
+   120
+  ],
+  "bonuses": {
+   "minion_damage_increase": 0.05
+  },
+  "edges": [
+   "mn_wa_nb"
+  ]
+ },
+ "mn_wa_nb": {
+  "name": "Corpse Tender",
+  "pos": [
+   520.2,
+   799.1
+  ],
+  "tier": "notable",
+  "cost": 1,
+  "color": [
+   150,
+   210,
+   120
+  ],
+  "bonuses": {
+   "minion_damage_increase": 0.15,
+   "health_regen": 1.0
+  },
+  "edges": [
+   "mn_wa_m5"
+  ]
+ },
+ "mn_wa_m5": {
+  "name": "Necromancy",
+  "pos": [
+   472.7,
+   795.7
+  ],
+  "tier": "minor",
+  "cost": 1,
+  "color": [
+   150,
+   210,
+   120
+  ],
+  "bonuses": {
+   "minion_damage_increase": 0.05
+  },
+  "edges": [
+   "mn_wa_m6"
+  ]
+ },
+ "mn_wa_m6": {
+  "name": "Necromancy",
+  "pos": [
+   445.5,
+   763.7
+  ],
+  "tier": "minor",
+  "cost": 1,
+  "color": [
+   150,
+   210,
+   120
+  ],
+  "bonuses": {
+   "minion_damage_increase": 0.05
+  },
+  "edges": [
+   "mn_wa_m7"
+  ]
+ },
+ "mn_wa_m7": {
+  "name": "Necromancy",
+  "pos": [
+   449.3,
+   719.5
+  ],
+  "tier": "minor",
+  "cost": 1,
+  "color": [
+   150,
+   210,
+   120
+  ],
+  "bonuses": {
+   "minion_damage_increase": 0.05
+  },
+  "edges": [
+   "mn_wa_m0"
+  ]
+ },
+ "mn_wb_m0": {
+  "name": "Necromancy",
+  "pos": [
+   310.1,
+   796.3
+  ],
+  "tier": "minor",
+  "cost": 1,
+  "color": [
+   150,
+   210,
+   120
+  ],
+  "bonuses": {
+   "minion_damage_increase": 0.04,
+   "max_health": 6
+  },
+  "edges": [
+   "mn_wb_m1"
+  ]
+ },
+ "mn_wb_m1": {
+  "name": "Necromancy",
+  "pos": [
+   277.2,
+   807.8
+  ],
+  "tier": "minor",
+  "cost": 1,
+  "color": [
+   150,
+   210,
+   120
+  ],
+  "bonuses": {
+   "minion_damage_increase": 0.04,
+   "max_health": 6
+  },
+  "edges": [
+   "mn_wb_m2"
+  ]
+ },
+ "mn_wb_m2": {
+  "name": "Necromancy",
+  "pos": [
+   233.0,
+   804.0
+  ],
+  "tier": "minor",
+  "cost": 1,
+  "color": [
+   150,
+   210,
+   120
+  ],
+  "bonuses": {
+   "minion_damage_increase": 0.04,
+   "max_health": 6
+  },
+  "edges": [
+   "mn_wb_m3"
+  ]
+ },
+ "mn_wb_m3": {
+  "name": "Necromancy",
+  "pos": [
+   204.3,
+   770.1
+  ],
+  "tier": "minor",
+  "cost": 1,
+  "color": [
+   150,
+   210,
+   120
+  ],
+  "bonuses": {
+   "minion_damage_increase": 0.04,
+   "max_health": 6
+  },
+  "edges": [
+   "mn_wb_nb"
+  ]
+ },
+ "mn_wb_nb": {
+  "name": "Grave Herald",
+  "pos": [
+   208.1,
+   725.9
+  ],
+  "tier": "notable",
+  "cost": 1,
+  "color": [
+   150,
+   210,
+   120
+  ],
+  "bonuses": {
+   "minion_damage_increase": 0.12,
+   "max_health": 20,
+   "mana_regen": 0.5
+  },
+  "edges": [
+   "mn_wb_m5"
+  ]
+ },
+ "mn_wb_m5": {
+  "name": "Necromancy",
+  "pos": [
+   244.6,
+   699.4
+  ],
+  "tier": "minor",
+  "cost": 1,
+  "color": [
+   150,
+   210,
+   120
+  ],
+  "bonuses": {
+   "minion_damage_increase": 0.04,
+   "max_health": 6
+  },
+  "edges": [
+   "mn_wb_m6"
+  ]
+ },
+ "mn_wb_m6": {
+  "name": "Necromancy",
+  "pos": [
+   286.2,
+   701.0
+  ],
+  "tier": "minor",
+  "cost": 1,
+  "color": [
+   150,
+   210,
+   120
+  ],
+  "bonuses": {
+   "minion_damage_increase": 0.04,
+   "max_health": 6
+  },
+  "edges": [
+   "mn_wb_m7"
+  ]
+ },
+ "mn_wb_m7": {
+  "name": "Necromancy",
+  "pos": [
+   315.7,
+   727.4
+  ],
+  "tier": "minor",
+  "cost": 1,
+  "color": [
+   150,
+   210,
+   120
+  ],
+  "bonuses": {
+   "minion_damage_increase": 0.04,
+   "max_health": 6
+  },
+  "edges": [
+   "mn_wb_m0"
+  ]
+ },
+ "blood_1": {
+  "name": "Vigor",
+  "pos": [
+   490.4,
+   409.6
+  ],
+  "tier": "minor",
+  "cost": 1,
+  "color": [
+   215,
+   85,
+   85
+  ],
+  "bonuses": {
+   "max_health": 15
+  },
+  "edges": [
+   "bl_t1",
+   "bl_c0"
+  ]
+ },
+ "bl_t1": {
+  "name": "Stone Skin",
+  "pos": [
+   400.8,
+   417.4
+  ],
+  "tier": "minor",
+  "cost": 1,
+  "color": [
+   215,
+   85,
+   85
+  ],
+  "bonuses": {
+   "armor": 4,
+   "max_health": 10
+  },
+  "edges": [
+   "bl_t2"
+  ]
+ },
+ "bl_t2": {
+  "name": "Iron Will",
+  "pos": [
+   331.0,
+   423.5
+  ],
+  "tier": "minor",
+  "cost": 1,
+  "color": [
+   215,
+   85,
+   85
+  ],
+  "bonuses": {
+   "armor": 5,
+   "max_health": 12
+  },
+  "edges": [
+   "bl_t3",
+   "bl_wa_m0",
+   "ring_i_7_1"
+  ]
+ },
+ "bl_t3": {
+  "name": "Bulwark Stance",
+  "pos": [
+   221.4,
+   433.1
+  ],
+  "tier": "minor",
+  "cost": 1,
+  "color": [
+   215,
+   85,
+   85
+  ],
+  "bonuses": {
+   "armor": 6,
+   "max_health": 12
+  },
+  "edges": [
+   "bl_rt"
+  ]
+ },
+ "bl_rt": {
+  "name": "Last Bastion",
+  "pos": [
+   131.8,
+   441.0
+  ],
+  "tier": "minor",
+  "cost": 1,
+  "color": [
+   215,
+   85,
+   85
+  ],
+  "bonuses": {
+   "armor": 6,
+   "health_regen": 0.5
+  },
+  "edges": [
+   "bl_rim",
+   "bl_wb_m0",
+   "ring_o_4_1"
+  ]
+ },
+ "bl_rim": {
+  "name": "Bulwark",
+  "pos": [
+   52.1,
+   447.9
+  ],
+  "tier": "notable",
+  "cost": 1,
+  "color": [
+   215,
+   85,
+   85
+  ],
+  "bonuses": {
+   "armor": 15,
+   "max_health": 40,
+   "physical_resistance": 8
+  },
+  "edges": [
+   "ks_juggernaut"
+  ]
+ },
+ "ks_juggernaut": {
+  "name": "Juggernaut",
+  "pos": [
+   -22.6,
+   454.5
+  ],
+  "tier": "keystone",
+  "cost": 1,
+  "color": [
+   215,
+   85,
+   85
+  ],
+  "bonuses": {
+   "max_health_increase": 0.15,
+   "armor": 20,
+   "health_regen": 2.0
+  },
+  "edges": []
+ },
+ "bl_wa_m0": {
+  "name": "Blood",
+  "pos": [
+   294.8,
+   471.1
+  ],
+  "tier": "minor",
+  "cost": 1,
+  "color": [
+   215,
+   85,
+   85
+  ],
+  "bonuses": {
+   "health_regen": 0.4,
+   "max_health": 6
+  },
+  "edges": [
+   "bl_wa_m1"
+  ]
+ },
+ "bl_wa_m1": {
+  "name": "Blood",
+  "pos": [
+   317.1,
+   509.4
+  ],
+  "tier": "minor",
+  "cost": 1,
+  "color": [
+   215,
+   85,
+   85
+  ],
+  "bonuses": {
+   "health_regen": 0.4,
+   "max_health": 6
+  },
+  "edges": [
+   "bl_wa_m2"
+  ]
+ },
+ "bl_wa_m2": {
+  "name": "Blood",
+  "pos": [
+   305.7,
+   552.4
+  ],
+  "tier": "minor",
+  "cost": 1,
+  "color": [
+   215,
+   85,
+   85
+  ],
+  "bonuses": {
+   "health_regen": 0.4,
+   "max_health": 6
+  },
+  "edges": [
+   "bl_wa_m3"
+  ]
+ },
+ "bl_wa_m3": {
+  "name": "Blood",
+  "pos": [
+   267.4,
+   574.7
+  ],
+  "tier": "minor",
+  "cost": 1,
+  "color": [
+   215,
+   85,
+   85
+  ],
+  "bonuses": {
+   "health_regen": 0.4,
+   "max_health": 6
+  },
+  "edges": [
+   "hpregen_notable"
+  ]
+ },
+ "hpregen_notable": {
+  "name": "Font of Life",
+  "pos": [
+   224.4,
+   563.3
+  ],
+  "tier": "notable",
+  "cost": 1,
+  "color": [
+   215,
+   85,
+   85
+  ],
+  "bonuses": {
+   "health_regen": 2.5,
+   "max_health": 20
+  },
+  "edges": [
+   "bl_wa_m5"
+  ]
+ },
+ "bl_wa_m5": {
+  "name": "Blood",
+  "pos": [
+   202.1,
+   525.0
+  ],
+  "tier": "minor",
+  "cost": 1,
+  "color": [
+   215,
+   85,
+   85
+  ],
+  "bonuses": {
+   "health_regen": 0.4,
+   "max_health": 6
+  },
+  "edges": [
+   "bl_wa_m6"
+  ]
+ },
+ "bl_wa_m6": {
+  "name": "Blood",
+  "pos": [
+   213.5,
+   482.0
+  ],
+  "tier": "minor",
+  "cost": 1,
+  "color": [
+   215,
+   85,
+   85
+  ],
+  "bonuses": {
+   "health_regen": 0.4,
+   "max_health": 6
+  },
+  "edges": [
+   "bl_wa_m7"
+  ]
+ },
+ "bl_wa_m7": {
+  "name": "Blood",
+  "pos": [
+   251.8,
+   459.7
+  ],
+  "tier": "minor",
+  "cost": 1,
+  "color": [
+   215,
+   85,
+   85
+  ],
+  "bonuses": {
+   "health_regen": 0.4,
+   "max_health": 6
+  },
+  "edges": [
+   "bl_wa_m0"
+  ]
+ },
+ "bl_wb_m0": {
+  "name": "Blood",
+  "pos": [
+   114.5,
+   391.7
+  ],
+  "tier": "minor",
+  "cost": 1,
+  "color": [
+   215,
+   85,
+   85
+  ],
+  "bonuses": {
+   "fire_resistance": 3,
+   "cold_resistance": 3,
+   "lightning_resistance": 3
+  },
+  "edges": [
+   "bl_wb_m1"
+  ]
+ },
+ "bl_wb_m1": {
+  "name": "Blood",
+  "pos": [
+   80.8,
+   369.4
+  ],
+  "tier": "minor",
+  "cost": 1,
+  "color": [
+   215,
+   85,
+   85
+  ],
+  "bonuses": {
+   "fire_resistance": 3,
+   "cold_resistance": 3,
+   "lightning_resistance": 3
+  },
+  "edges": [
+   "bl_wb_m2"
+  ]
+ },
+ "bl_wb_m2": {
+  "name": "Blood",
+  "pos": [
+   58.5,
+   331.0
+  ],
+  "tier": "minor",
+  "cost": 1,
+  "color": [
+   215,
+   85,
+   85
+  ],
+  "bonuses": {
+   "fire_resistance": 3,
+   "cold_resistance": 3,
+   "lightning_resistance": 3
+  },
+  "edges": [
+   "bl_wb_m3"
+  ]
+ },
+ "bl_wb_m3": {
+  "name": "Blood",
+  "pos": [
+   69.9,
+   288.1
+  ],
+  "tier": "minor",
+  "cost": 1,
+  "color": [
+   215,
+   85,
+   85
+  ],
+  "bonuses": {
+   "fire_resistance": 3,
+   "cold_resistance": 3,
+   "lightning_resistance": 3
+  },
+  "edges": [
+   "bl_wb_nb"
+  ]
+ },
+ "bl_wb_nb": {
+  "name": "Elements Ward",
+  "pos": [
+   108.3,
+   265.8
+  ],
+  "tier": "notable",
+  "cost": 1,
+  "color": [
+   215,
+   85,
+   85
+  ],
+  "bonuses": {
+   "fire_resistance": 10,
+   "cold_resistance": 10,
+   "lightning_resistance": 10
+  },
+  "edges": [
+   "bl_wb_m5"
+  ]
+ },
+ "bl_wb_m5": {
+  "name": "Blood",
+  "pos": [
+   152.1,
+   274.9
+  ],
+  "tier": "minor",
+  "cost": 1,
+  "color": [
+   215,
+   85,
+   85
+  ],
+  "bonuses": {
+   "fire_resistance": 3,
+   "cold_resistance": 3,
+   "lightning_resistance": 3
+  },
+  "edges": [
+   "bl_wb_m6"
+  ]
+ },
+ "bl_wb_m6": {
+  "name": "Blood",
+  "pos": [
+   173.5,
+   315.6
+  ],
+  "tier": "minor",
+  "cost": 1,
+  "color": [
+   215,
+   85,
+   85
+  ],
+  "bonuses": {
+   "fire_resistance": 3,
+   "cold_resistance": 3,
+   "lightning_resistance": 3
+  },
+  "edges": [
+   "bl_wb_m7"
+  ]
+ },
+ "bl_wb_m7": {
+  "name": "Blood",
+  "pos": [
+   168.3,
+   357.2
+  ],
+  "tier": "minor",
+  "cost": 1,
+  "color": [
+   215,
+   85,
+   85
+  ],
+  "bonuses": {
+   "fire_resistance": 3,
+   "cold_resistance": 3,
+   "lightning_resistance": 3
+  },
+  "edges": [
+   "bl_wb_m0"
+  ]
+ },
+ "cold_1": {
+  "name": "Chill",
+  "pos": [
+   522.2,
+   322.2
+  ],
+  "tier": "minor",
+  "cost": 1,
+  "color": [
+   115,
+   190,
+   240
+  ],
+  "bonuses": {
+   "cold_damage": 5
+  },
+  "edges": [
+   "cd_t1",
+   "cd_c0"
+  ]
+ },
+ "cd_t1": {
+  "name": "Frostbite",
+  "pos": [
+   458.6,
+   258.6
+  ],
+  "tier": "minor",
+  "cost": 1,
+  "color": [
+   115,
+   190,
+   240
+  ],
+  "bonuses": {
+   "cold_damage": 5,
+   "freeze_duration_bonus": 0.03
+  },
+  "edges": [
+   "cd_t2"
+  ]
+ },
+ "cd_t2": {
+  "name": "Rime",
+  "pos": [
+   409.1,
+   209.1
+  ],
+  "tier": "minor",
+  "cost": 1,
+  "color": [
+   115,
+   190,
+   240
+  ],
+  "bonuses": {
+   "cold_damage": 6
+  },
+  "edges": [
+   "cd_t3",
+   "cd_wa_m0",
+   "ring_i_8_1"
+  ]
+ },
+ "cd_t3": {
+  "name": "Deep Winter",
+  "pos": [
+   331.3,
+   131.3
+  ],
+  "tier": "minor",
+  "cost": 1,
+  "color": [
+   115,
+   190,
+   240
+  ],
+  "bonuses": {
+   "cold_damage": 6,
+   "freeze_threshold_reduction": 0.03
+  },
+  "edges": [
+   "cd_rt"
+  ]
+ },
+ "cd_rt": {
+  "name": "Whiteout",
+  "pos": [
+   267.7,
+   67.7
+  ],
+  "tier": "minor",
+  "cost": 1,
+  "color": [
+   115,
+   190,
+   240
+  ],
+  "bonuses": {
+   "cold_damage": 7
+  },
+  "edges": [
+   "cd_rim",
+   "cd_wb_m0",
+   "ring_o_5_1"
+  ]
+ },
+ "cd_rim": {
+  "name": "Glacier",
+  "pos": [
+   211.1,
+   11.1
+  ],
+  "tier": "notable",
+  "cost": 1,
+  "color": [
+   115,
+   190,
+   240
+  ],
+  "bonuses": {
+   "cold_damage": 16,
+   "frostbolt_damage": 12,
+   "freeze_duration_bonus": 0.1
+  },
+  "edges": [
+   "ks_winterheart"
+  ]
+ },
+ "ks_winterheart": {
+  "name": "Winterheart",
+  "pos": [
+   158.1,
+   -41.9
+  ],
+  "tier": "keystone",
+  "cost": 1,
+  "color": [
+   115,
+   190,
+   240
+  ],
+  "bonuses": {
+   "cold_damage": 20,
+   "freeze_threshold_reduction": 0.2,
+   "freeze_duration_bonus": 0.2
+  },
+  "edges": []
+ },
+ "cd_wa_m0": {
+  "name": "Cold",
+  "pos": [
+   349.3,
+   211.9
+  ],
+  "tier": "minor",
+  "cost": 1,
+  "color": [
+   115,
+   190,
+   240
+  ],
+  "bonuses": {
+   "cold_damage": 5
+  },
+  "edges": [
+   "cd_wa_m1"
+  ]
+ },
+ "cd_wa_m1": {
+  "name": "Cold",
+  "pos": [
+   334.3,
+   253.7
+  ],
+  "tier": "minor",
+  "cost": 1,
+  "color": [
+   115,
+   190,
+   240
+  ],
+  "bonuses": {
+   "cold_damage": 5
+  },
+  "edges": [
+   "cd_wa_m2"
+  ]
+ },
+ "cd_wa_m2": {
+  "name": "Cold",
+  "pos": [
+   294.1,
+   272.5
+  ],
+  "tier": "minor",
+  "cost": 1,
+  "color": [
+   115,
+   190,
+   240
+  ],
+  "bonuses": {
+   "cold_damage": 5
+  },
+  "edges": [
+   "cd_wa_m3"
+  ]
+ },
+ "cd_wa_m3": {
+  "name": "Cold",
+  "pos": [
+   252.3,
+   257.5
+  ],
+  "tier": "minor",
+  "cost": 1,
+  "color": [
+   115,
+   190,
+   240
+  ],
+  "bonuses": {
+   "cold_damage": 5
+  },
+  "edges": [
+   "cd_wa_nb"
+  ]
+ },
+ "cd_wa_nb": {
+  "name": "Shatter",
+  "pos": [
+   233.5,
+   217.3
+  ],
+  "tier": "notable",
+  "cost": 1,
+  "color": [
+   115,
+   190,
+   240
+  ],
+  "bonuses": {
+   "cold_damage": 14,
+   "frostbolt_damage": 10,
+   "crit_damage": 0.2
+  },
+  "edges": [
+   "cd_wa_m5"
+  ]
+ },
+ "cd_wa_m5": {
+  "name": "Cold",
+  "pos": [
+   248.5,
+   175.5
+  ],
+  "tier": "minor",
+  "cost": 1,
+  "color": [
+   115,
+   190,
+   240
+  ],
+  "bonuses": {
+   "cold_damage": 5
+  },
+  "edges": [
+   "cd_wa_m6"
+  ]
+ },
+ "cd_wa_m6": {
+  "name": "Cold",
+  "pos": [
+   288.7,
+   156.7
+  ],
+  "tier": "minor",
+  "cost": 1,
+  "color": [
+   115,
+   190,
+   240
+  ],
+  "bonuses": {
+   "cold_damage": 5
+  },
+  "edges": [
+   "cd_wa_m7"
+  ]
+ },
+ "cd_wa_m7": {
+  "name": "Cold",
+  "pos": [
+   330.5,
+   171.7
+  ],
+  "tier": "minor",
+  "cost": 1,
+  "color": [
+   115,
+   190,
+   240
+  ],
+  "bonuses": {
+   "cold_damage": 5
+  },
+  "edges": [
+   "cd_wa_m0"
+  ]
+ },
+ "cd_wb_m0": {
+  "name": "Cold",
+  "pos": [
+   315.3,
+   39.2
+  ],
+  "tier": "minor",
+  "cost": 1,
+  "color": [
+   115,
+   190,
+   240
+  ],
+  "bonuses": {
+   "freeze_duration_bonus": 0.04,
+   "cold_damage": 3
+  },
+  "edges": [
+   "cd_wb_m1"
+  ]
+ },
+ "cd_wb_m1": {
+  "name": "Cold",
+  "pos": [
+   286.4,
+   -23.7
+  ],
+  "tier": "minor",
+  "cost": 1,
+  "color": [
+   115,
+   190,
+   240
+  ],
+  "bonuses": {
+   "freeze_duration_bonus": 0.04,
+   "cold_damage": 3
+  },
+  "edges": [
+   "cd_wb_m2"
+  ]
+ },
+ "cd_wb_m2": {
+  "name": "Cold",
+  "pos": [
+   304.7,
+   -59.1
+  ],
+  "tier": "minor",
+  "cost": 1,
+  "color": [
+   115,
+   190,
+   240
+  ],
+  "bonuses": {
+   "freeze_duration_bonus": 0.04,
+   "cold_damage": 3
+  },
+  "edges": [
+   "cd_wb_m3"
+  ]
+ },
+ "cd_wb_m3": {
+  "name": "Cold",
+  "pos": [
+   344.9,
+   -77.9
+  ],
+  "tier": "minor",
+  "cost": 1,
+  "color": [
+   115,
+   190,
+   240
+  ],
+  "bonuses": {
+   "freeze_duration_bonus": 0.04,
+   "cold_damage": 3
+  },
+  "edges": [
+   "cd_wb_nb"
+  ]
+ },
+ "cd_wb_nb": {
+  "name": "Permafrost",
+  "pos": [
+   379.8,
+   -59.8
+  ],
+  "tier": "notable",
+  "cost": 1,
+  "color": [
+   115,
+   190,
+   240
+  ],
+  "bonuses": {
+   "freeze_duration_bonus": 0.15,
+   "freeze_threshold_reduction": 0.1,
+   "cold_damage": 8
+  },
+  "edges": [
+   "cd_wb_m5"
+  ]
+ },
+ "cd_wb_m5": {
+  "name": "Cold",
+  "pos": [
+   405.5,
+   -22.7
+  ],
+  "tier": "minor",
+  "cost": 1,
+  "color": [
+   115,
+   190,
+   240
+  ],
+  "bonuses": {
+   "freeze_duration_bonus": 0.04,
+   "cold_damage": 3
+  },
+  "edges": [
+   "cd_wb_m6"
+  ]
+ },
+ "cd_wb_m6": {
+  "name": "Cold",
+  "pos": [
+   390.5,
+   19.1
+  ],
+  "tier": "minor",
+  "cost": 1,
+  "color": [
+   115,
+   190,
+   240
+  ],
+  "bonuses": {
+   "freeze_duration_bonus": 0.04,
+   "cold_damage": 3
+  },
+  "edges": [
+   "cd_wb_m7"
+  ]
+ },
+ "cd_wb_m7": {
+  "name": "Cold",
+  "pos": [
+   350.3,
+   37.9
+  ],
+  "tier": "minor",
+  "cost": 1,
+  "color": [
+   115,
+   190,
+   240
+  ],
+  "bonuses": {
+   "freeze_duration_bonus": 0.04,
+   "cold_damage": 3
+  },
+  "edges": [
+   "cd_wb_m0"
+  ]
+ },
+ "fire_c0": {
+  "name": "Warmth",
+  "pos": [
+   658.1,
+   256.3
+  ],
+  "tier": "minor",
+  "cost": 1,
+  "color": [
+   235,
+   95,
+   60
+  ],
+  "bonuses": {
+   "max_health": 12,
+   "fire_damage": 2
+  },
+  "edges": [
+   "fire_c1"
+  ]
+ },
+ "fire_c1": {
+  "name": "Warmth",
+  "pos": [
+   674.9,
+   214.6
+  ],
+  "tier": "minor",
+  "cost": 1,
+  "color": [
+   235,
+   95,
+   60
+  ],
+  "bonuses": {
+   "max_health": 12,
+   "fire_damage": 2
+  },
+  "edges": [
+   "fire_c2"
+  ]
+ },
+ "fire_c2": {
+  "name": "Warmth",
+  "pos": [
+   691.8,
+   172.8
+  ],
+  "tier": "minor",
+  "cost": 1,
+  "color": [
+   235,
+   95,
+   60
+  ],
+  "bonuses": {
+   "max_health": 12,
+   "fire_damage": 2
+  },
+  "edges": []
+ },
+ "dmg_c0": {
+  "name": "Focus",
+  "pos": [
+   749.7,
+   440.1
+  ],
+  "tier": "minor",
+  "cost": 1,
+  "color": [
+   175,
+   120,
+   250
+  ],
+  "bonuses": {
+   "spell_damage": 2,
+   "max_mana": 8
+  },
+  "edges": [
+   "dmg_c1"
+  ]
+ },
+ "dmg_c1": {
+  "name": "Focus",
+  "pos": [
+   793.2,
+   451.8
+  ],
+  "tier": "minor",
+  "cost": 1,
+  "color": [
+   175,
+   120,
+   250
+  ],
+  "bonuses": {
+   "spell_damage": 2,
+   "max_mana": 8
+  },
+  "edges": [
+   "dmg_c2"
+  ]
+ },
+ "dmg_c2": {
+  "name": "Focus",
+  "pos": [
+   839.5,
+   464.0
+  ],
+  "tier": "minor",
+  "cost": 1,
+  "color": [
+   175,
+   120,
+   250
+  ],
+  "bonuses": {
+   "spell_damage": 2,
+   "max_mana": 8
+  },
+  "edges": []
+ },
+ "mana_c0": {
+  "name": "Insight",
+  "pos": [
+   703.7,
+   515.2
+  ],
+  "tier": "minor",
+  "cost": 1,
+  "color": [
+   175,
+   120,
+   250
+  ],
+  "bonuses": {
+   "max_mana": 12,
+   "cooldown_reduction": 0.005
+  },
+  "edges": [
+   "mana_c1"
+  ]
+ },
+ "mana_c1": {
+  "name": "Insight",
+  "pos": [
+   733.0,
+   547.7
+  ],
+  "tier": "minor",
+  "cost": 1,
+  "color": [
+   175,
+   120,
+   250
+  ],
+  "bonuses": {
+   "max_mana": 12,
+   "cooldown_reduction": 0.005
+  },
+  "edges": [
+   "mana_c2"
+  ]
+ },
+ "mana_c2": {
+  "name": "Insight",
+  "pos": [
+   755.9,
+   573.3
+  ],
+  "tier": "minor",
+  "cost": 1,
+  "color": [
+   175,
+   120,
+   250
+  ],
+  "bonuses": {
+   "max_mana": 12,
+   "cooldown_reduction": 0.005
+  },
+  "edges": []
+ },
+ "spd_c0": {
+  "name": "Agility",
+  "pos": [
+   562.5,
+   550.4
+  ],
+  "tier": "minor",
+  "cost": 1,
+  "color": [
+   110,
+   235,
+   170
+  ],
+  "bonuses": {
+   "move_speed_increase": 0.015,
+   "attack_speed": 0.015
+  },
+  "edges": [
+   "spd_c1"
+  ]
+ },
+ "spd_c1": {
+  "name": "Agility",
+  "pos": [
+   551.6,
+   594.1
+  ],
+  "tier": "minor",
+  "cost": 1,
+  "color": [
+   110,
+   235,
+   170
+  ],
+  "bonuses": {
+   "move_speed_increase": 0.015,
+   "attack_speed": 0.015
+  },
+  "edges": [
+   "spd_c2"
+  ]
+ },
+ "spd_c2": {
+  "name": "Agility",
+  "pos": [
+   542.9,
+   631.5
+  ],
+  "tier": "minor",
+  "cost": 1,
+  "color": [
+   110,
+   235,
+   170
+  ],
+  "bonuses": {
+   "move_speed_increase": 0.015,
+   "attack_speed": 0.015
+  },
+  "edges": []
+ },
+ "mn_c0": {
+  "name": "Ritual",
+  "pos": [
+   470.0,
+   484.4
+  ],
+  "tier": "minor",
+  "cost": 1,
+  "color": [
+   150,
+   210,
+   120
+  ],
+  "bonuses": {
+   "minion_damage_increase": 0.03,
+   "max_mana": 6
+  },
+  "edges": [
+   "mn_c1"
+  ]
+ },
+ "mn_c1": {
+  "name": "Ritual",
+  "pos": [
+   432.3,
+   508.9
+  ],
+  "tier": "minor",
+  "cost": 1,
+  "color": [
+   150,
+   210,
+   120
+  ],
+  "bonuses": {
+   "minion_damage_increase": 0.03,
+   "max_mana": 6
+  },
+  "edges": [
+   "mn_c2"
+  ]
+ },
+ "mn_c2": {
+  "name": "Ritual",
+  "pos": [
+   398.9,
+   531.1
+  ],
+  "tier": "minor",
+  "cost": 1,
+  "color": [
+   150,
+   210,
+   120
+  ],
+  "bonuses": {
+   "minion_damage_increase": 0.03,
+   "max_mana": 6
+  },
+  "edges": []
+ },
+ "bl_c0": {
+  "name": "Toughness",
+  "pos": [
+   454.3,
+   347.0
+  ],
+  "tier": "minor",
+  "cost": 1,
+  "color": [
+   215,
+   85,
+   85
+  ],
+  "bonuses": {
+   "max_health": 10,
+   "armor": 2
+  },
+  "edges": [
+   "bl_c1"
+  ]
+ },
+ "bl_c1": {
+  "name": "Toughness",
+  "pos": [
+   412.1,
+   331.6
+  ],
+  "tier": "minor",
+  "cost": 1,
+  "color": [
+   215,
+   85,
+   85
+  ],
+  "bonuses": {
+   "max_health": 10,
+   "armor": 2
+  },
+  "edges": [
+   "bl_c2"
+  ]
+ },
+ "bl_c2": {
+  "name": "Toughness",
+  "pos": [
+   374.5,
+   317.9
+  ],
+  "tier": "minor",
+  "cost": 1,
+  "color": [
+   215,
+   85,
+   85
+  ],
+  "bonuses": {
+   "max_health": 10,
+   "armor": 2
+  },
+  "edges": []
+ },
+ "cd_c0": {
+  "name": "Insulation",
+  "pos": [
+   539.4,
+   257.3
+  ],
+  "tier": "minor",
+  "cost": 1,
+  "color": [
+   115,
+   190,
+   240
+  ],
+  "bonuses": {
+   "max_health": 8,
+   "cold_damage": 2
+  },
+  "edges": [
+   "cd_c1"
+  ]
+ },
+ "cd_c1": {
+  "name": "Insulation",
+  "pos": [
+   521.9,
+   215.9
+  ],
+  "tier": "minor",
+  "cost": 1,
+  "color": [
+   115,
+   190,
+   240
+  ],
+  "bonuses": {
+   "max_health": 8,
+   "cold_damage": 2
+  },
+  "edges": [
+   "cd_c2"
+  ]
+ },
+ "cd_c2": {
+  "name": "Insulation",
+  "pos": [
+   504.3,
+   174.5
+  ],
+  "tier": "minor",
+  "cost": 1,
+  "color": [
+   115,
+   190,
+   240
+  ],
+  "bonuses": {
+   "max_health": 8,
+   "cold_damage": 2
+  },
+  "edges": []
+ },
+ "ring_i_0_1": {
+  "name": "Wayfare",
+  "pos": [
+   658.5,
+   105.8
+  ],
+  "tier": "minor",
+  "cost": 1,
+  "color": [
+   150,
+   150,
+   150
+  ],
+  "bonuses": {
+   "max_health": 8,
+   "max_mana": 6
+  },
+  "edges": [
+   "ring_i_0_2"
+  ]
+ },
+ "ring_i_0_2": {
+  "name": "Crossroads",
+  "pos": [
+   711.0,
+   132.1
+  ],
+  "tier": "notable",
+  "cost": 1,
+  "color": [
+   150,
+   150,
+   150
+  ],
+  "bonuses": {
+   "max_health": 20,
+   "max_mana": 15,
+   "damage": 4
+  },
+  "edges": [
+   "ring_i_0_3"
+  ]
+ },
+ "ring_i_0_3": {
+  "name": "Wayfare",
+  "pos": [
+   755.6,
+   167.2
+  ],
+  "tier": "minor",
+  "cost": 1,
+  "color": [
+   150,
+   150,
+   150
+  ],
+  "bonuses": {
+   "max_health": 8,
+   "max_mana": 6
+  },
+  "edges": [
+   "ln_t2"
+  ]
+ },
+ "ring_i_1_1": {
+  "name": "Wayfare",
+  "pos": [
+   821.3,
+   263.5
+  ],
+  "tier": "minor",
+  "cost": 1,
+  "color": [
+   150,
+   150,
+   150
+  ],
+  "bonuses": {
+   "max_health": 8,
+   "max_mana": 6
+  },
+  "edges": [
+   "ring_i_1_2"
+  ]
+ },
+ "ring_i_1_2": {
+  "name": "Wayfare",
+  "pos": [
+   837.3,
+   321.4
+  ],
+  "tier": "minor",
+  "cost": 1,
+  "color": [
+   150,
+   150,
+   150
+  ],
+  "bonuses": {
+   "max_health": 8,
+   "max_mana": 6
+  },
+  "edges": [
+   "dmg_2"
+  ]
+ },
+ "ring_i_2_1": {
+  "name": "Wayfare",
+  "pos": [
+   837.5,
+   429.7
+  ],
+  "tier": "minor",
+  "cost": 1,
+  "color": [
+   150,
+   150,
+   150
+  ],
+  "bonuses": {
+   "max_health": 8,
+   "max_mana": 6
+  },
+  "edges": [
+   "ring_i_2_2"
+  ]
+ },
+ "ring_i_2_2": {
+  "name": "Wayfare",
+  "pos": [
+   820.2,
+   493.1
+  ],
+  "tier": "minor",
+  "cost": 1,
+  "color": [
+   150,
+   150,
+   150
+  ],
+  "bonuses": {
+   "max_health": 8,
+   "max_mana": 6
+  },
+  "edges": [
+   "mana_2"
+  ]
+ },
+ "ring_i_3_1": {
+  "name": "Wayfare",
+  "pos": [
+   779.4,
+   599.2
+  ],
+  "tier": "minor",
+  "cost": 1,
+  "color": [
+   150,
+   150,
+   150
+  ],
+  "bonuses": {
+   "max_health": 8,
+   "max_mana": 6
+  },
+  "edges": [
+   "atk_2"
+  ]
+ },
+ "ring_i_4_1": {
+  "name": "Wayfare",
+  "pos": [
+   669.9,
+   660.8
+  ],
+  "tier": "minor",
+  "cost": 1,
+  "color": [
+   150,
+   150,
+   150
+  ],
+  "bonuses": {
+   "max_health": 8,
+   "max_mana": 6
+  },
+  "edges": [
+   "move_2"
+  ]
+ },
+ "ring_i_5_1": {
+  "name": "Wayfare",
+  "pos": [
+   530.6,
+   663.7
+  ],
+  "tier": "minor",
+  "cost": 1,
+  "color": [
+   150,
+   150,
+   150
+  ],
+  "bonuses": {
+   "max_health": 8,
+   "max_mana": 6
+  },
+  "edges": [
+   "mn_t2"
+  ]
+ },
+ "ring_i_6_1": {
+  "name": "Wayfare",
+  "pos": [
+   413.3,
+   595.0
+  ],
+  "tier": "minor",
+  "cost": 1,
+  "color": [
+   150,
+   150,
+   150
+  ],
+  "bonuses": {
+   "max_health": 8,
+   "max_mana": 6
+  },
+  "edges": [
+   "ring_i_6_2"
+  ]
+ },
+ "ring_i_6_2": {
+  "name": "Crossroads",
+  "pos": [
+   367.9,
+   547.4
+  ],
+  "tier": "notable",
+  "cost": 1,
+  "color": [
+   150,
+   150,
+   150
+  ],
+  "bonuses": {
+   "max_health": 20,
+   "max_mana": 15,
+   "damage": 4
+  },
+  "edges": [
+   "ring_i_6_3"
+  ]
+ },
+ "ring_i_6_3": {
+  "name": "Wayfare",
+  "pos": [
+   344.3,
+   486.8
+  ],
+  "tier": "minor",
+  "cost": 1,
+  "color": [
+   150,
+   150,
+   150
+  ],
+  "bonuses": {
+   "max_health": 8,
+   "max_mana": 6
+  },
+  "edges": [
+   "bl_t2"
+  ]
+ },
+ "ring_i_7_1": {
+  "name": "Wayfare",
+  "pos": [
+   332.3,
+   364.8
+  ],
+  "tier": "minor",
+  "cost": 1,
+  "color": [
+   150,
+   150,
+   150
+  ],
+  "bonuses": {
+   "max_health": 8,
+   "max_mana": 6
+  },
+  "edges": [
+   "ring_i_7_2"
+  ]
+ },
+ "ring_i_7_2": {
+  "name": "Crossroads",
+  "pos": [
+   341.6,
+   306.0
+  ],
+  "tier": "notable",
+  "cost": 1,
+  "color": [
+   150,
+   150,
+   150
+  ],
+  "bonuses": {
+   "max_health": 20,
+   "max_mana": 15,
+   "damage": 4
+  },
+  "edges": [
+   "ring_i_7_3"
+  ]
+ },
+ "ring_i_7_3": {
+  "name": "Wayfare",
+  "pos": [
+   372.3,
+   254.9
+  ],
+  "tier": "minor",
+  "cost": 1,
+  "color": [
+   150,
+   150,
+   150
+  ],
+  "bonuses": {
+   "max_health": 8,
+   "max_mana": 6
+  },
+  "edges": [
+   "cd_t2"
+  ]
+ },
+ "ring_i_8_1": {
+  "name": "Wayfare",
+  "pos": [
+   444.4,
+   167.2
+  ],
+  "tier": "minor",
+  "cost": 1,
+  "color": [
+   150,
+   150,
+   150
+  ],
+  "bonuses": {
+   "max_health": 8,
+   "max_mana": 6
+  },
+  "edges": [
+   "ring_i_8_2"
+  ]
+ },
+ "ring_i_8_2": {
+  "name": "Crossroads",
+  "pos": [
+   489.0,
+   135.3
+  ],
+  "tier": "notable",
+  "cost": 1,
+  "color": [
+   150,
+   150,
+   150
+  ],
+  "bonuses": {
+   "max_health": 20,
+   "max_mana": 15,
+   "damage": 4
+  },
+  "edges": [
+   "ring_i_8_3"
+  ]
+ },
+ "ring_i_8_3": {
+  "name": "Wayfare",
+  "pos": [
+   555.8,
+   107.2
+  ],
+  "tier": "minor",
+  "cost": 1,
+  "color": [
+   150,
+   150,
+   150
+  ],
+  "bonuses": {
+   "max_health": 8,
+   "max_mana": 6
+  },
+  "edges": [
+   "fire_3"
+  ]
+ },
+ "ring_o_0_1": {
+  "name": "Wayfare",
+  "pos": [
+   670.1,
+   -136.7
+  ],
+  "tier": "minor",
+  "cost": 1,
+  "color": [
+   150,
+   150,
+   150
+  ],
+  "bonuses": {
+   "max_health": 10,
+   "armor": 2
+  },
+  "edges": [
+   "ring_o_0_2"
+  ]
+ },
+ "ring_o_0_2": {
+  "name": "Wayfare",
+  "pos": [
+   732.0,
+   -100.9
+  ],
+  "tier": "minor",
+  "cost": 1,
+  "color": [
+   150,
+   150,
+   150
+  ],
+  "bonuses": {
+   "max_health": 10,
+   "armor": 2
+  },
+  "edges": [
+   "ring_o_0_3"
+  ]
+ },
+ "ring_o_0_3": {
+  "name": "Wayfare",
+  "pos": [
+   798.5,
+   -68.4
+  ],
+  "tier": "minor",
+  "cost": 1,
+  "color": [
+   150,
+   150,
+   150
+  ],
+  "bonuses": {
+   "max_health": 10,
+   "armor": 2
+  },
+  "edges": [
+   "ring_o_0_4"
+  ]
+ },
+ "ring_o_0_4": {
+  "name": "Wayfare",
+  "pos": [
+   848.3,
+   -30.1
+  ],
+  "tier": "minor",
+  "cost": 1,
+  "color": [
+   150,
+   150,
+   150
+  ],
+  "bonuses": {
+   "max_health": 10,
+   "armor": 2
+  },
+  "edges": [
+   "ring_o_0_5"
+  ]
+ },
+ "ring_o_0_5": {
+  "name": "Wayfare",
+  "pos": [
+   894.2,
+   16.5
+  ],
+  "tier": "minor",
+  "cost": 1,
+  "color": [
+   150,
+   150,
+   150
+  ],
+  "bonuses": {
+   "max_health": 10,
+   "armor": 2
+  },
+  "edges": [
+   "ln_rt"
+  ]
+ },
+ "ring_o_1_1": {
+  "name": "Wayfare",
+  "pos": [
+   962.5,
+   121.7
+  ],
+  "tier": "minor",
+  "cost": 1,
+  "color": [
+   150,
+   150,
+   150
+  ],
+  "bonuses": {
+   "max_health": 10,
+   "armor": 2
+  },
+  "edges": [
+   "ring_o_1_2"
+  ]
+ },
+ "ring_o_1_2": {
+  "name": "Wayfare",
+  "pos": [
+   1007.0,
+   165.0
+  ],
+  "tier": "minor",
+  "cost": 1,
+  "color": [
+   150,
+   150,
+   150
+  ],
+  "bonuses": {
+   "max_health": 10,
+   "armor": 2
+  },
+  "edges": [
+   "ring_o_1_3"
+  ]
+ },
+ "ring_o_1_3": {
+  "name": "Wayfare",
+  "pos": [
+   1039.3,
+   226.5
+  ],
+  "tier": "minor",
+  "cost": 1,
+  "color": [
+   150,
+   150,
+   150
+  ],
+  "bonuses": {
+   "max_health": 10,
+   "armor": 2
+  },
+  "edges": [
+   "ring_o_1_4"
+  ]
+ },
+ "ring_o_1_4": {
+  "name": "Wayfare",
+  "pos": [
+   1054.0,
+   278.4
+  ],
+  "tier": "minor",
+  "cost": 1,
+  "color": [
+   150,
+   150,
+   150
+  ],
+  "bonuses": {
+   "max_health": 10,
+   "armor": 2
+  },
+  "edges": [
+   "ring_o_1_5"
+  ]
+ },
+ "ring_o_1_5": {
+  "name": "Wayfare",
+  "pos": [
+   1066.0,
+   338.7
+  ],
+  "tier": "minor",
+  "cost": 1,
+  "color": [
+   150,
+   150,
+   150
+  ],
+  "bonuses": {
+   "max_health": 10,
+   "armor": 2
+  },
+  "edges": [
+   "ring_o_1_6"
+  ]
+ },
+ "ring_o_1_6": {
+  "name": "Wayfare",
+  "pos": [
+   1071.8,
+   395.3
+  ],
+  "tier": "minor",
+  "cost": 1,
+  "color": [
+   150,
+   150,
+   150
+  ],
+  "bonuses": {
+   "max_health": 10,
+   "armor": 2
+  },
+  "edges": [
+   "ring_o_1_7"
+  ]
+ },
+ "ring_o_1_7": {
+  "name": "Wayfare",
+  "pos": [
+   1066.1,
+   461.8
+  ],
+  "tier": "minor",
+  "cost": 1,
+  "color": [
+   150,
+   150,
+   150
+  ],
+  "bonuses": {
+   "max_health": 10,
+   "armor": 2
+  },
+  "edges": [
+   "ring_o_1_8"
+  ]
+ },
+ "ring_o_1_8": {
+  "name": "Wayfare",
+  "pos": [
+   1049.9,
+   516.0
+  ],
+  "tier": "minor",
+  "cost": 1,
+  "color": [
+   150,
+   150,
+   150
+  ],
+  "bonuses": {
+   "max_health": 10,
+   "armor": 2
+  },
+  "edges": [
+   "ring_o_1_9"
+  ]
+ },
+ "ring_o_1_9": {
+  "name": "Wayfare",
+  "pos": [
+   1034.2,
+   579.9
+  ],
+  "tier": "minor",
+  "cost": 1,
+  "color": [
+   150,
+   150,
+   150
+  ],
+  "bonuses": {
+   "max_health": 10,
+   "armor": 2
+  },
+  "edges": [
+   "ring_o_1_10"
+  ]
+ },
+ "ring_o_1_10": {
+  "name": "Wayfare",
+  "pos": [
+   1007.0,
+   635.0
+  ],
+  "tier": "minor",
+  "cost": 1,
+  "color": [
+   150,
+   150,
+   150
+  ],
+  "bonuses": {
+   "max_health": 10,
+   "armor": 2
+  },
+  "edges": [
+   "ring_o_1_11"
+  ]
+ },
+ "ring_o_1_11": {
+  "name": "Wayfare",
+  "pos": [
+   977.1,
+   684.6
+  ],
+  "tier": "minor",
+  "cost": 1,
+  "color": [
+   150,
+   150,
+   150
+  ],
+  "bonuses": {
+   "max_health": 10,
+   "armor": 2
+  },
+  "edges": [
+   "ring_o_1_12"
+  ]
+ },
+ "ring_o_1_12": {
+  "name": "Wayfare",
+  "pos": [
+   928.5,
+   747.9
+  ],
+  "tier": "minor",
+  "cost": 1,
+  "color": [
+   150,
+   150,
+   150
+  ],
+  "bonuses": {
+   "max_health": 10,
+   "armor": 2
+  },
+  "edges": [
+   "ring_o_1_13"
+  ]
+ },
+ "ring_o_1_13": {
+  "name": "Wayfare",
+  "pos": [
+   876.6,
+   772.5
+  ],
+  "tier": "minor",
+  "cost": 1,
+  "color": [
+   150,
+   150,
+   150
+  ],
+  "bonuses": {
+   "max_health": 10,
+   "armor": 2
+  },
+  "edges": [
+   "ring_o_1_14"
+  ]
+ },
+ "ring_o_1_14": {
+  "name": "Wayfare",
+  "pos": [
+   828.8,
+   808.4
+  ],
+  "tier": "minor",
+  "cost": 1,
+  "color": [
+   150,
+   150,
+   150
+  ],
+  "bonuses": {
+   "max_health": 10,
+   "armor": 2
+  },
+  "edges": [
+   "ring_o_1_15"
+  ]
+ },
+ "ring_o_1_15": {
+  "name": "Wayfare",
+  "pos": [
+   779.9,
+   834.2
+  ],
+  "tier": "minor",
+  "cost": 1,
+  "color": [
+   150,
+   150,
+   150
+  ],
+  "bonuses": {
+   "max_health": 10,
+   "armor": 2
+  },
+  "edges": [
+   "spd_rt"
+  ]
+ },
+ "ring_o_2_1": {
+  "name": "Wayfare",
+  "pos": [
+   661.3,
+   866.0
+  ],
+  "tier": "minor",
+  "cost": 1,
+  "color": [
+   150,
+   150,
+   150
+  ],
+  "bonuses": {
+   "max_health": 10,
+   "armor": 2
+  },
+  "edges": [
+   "ring_o_2_2"
+  ]
+ },
+ "ring_o_2_2": {
+  "name": "Wayfare",
+  "pos": [
+   600.0,
+   870.0
+  ],
+  "tier": "minor",
+  "cost": 1,
+  "color": [
+   150,
+   150,
+   150
+  ],
+  "bonuses": {
+   "max_health": 10,
+   "armor": 2
+  },
+  "edges": [
+   "ring_o_2_3"
+  ]
+ },
+ "ring_o_2_3": {
+  "name": "Wayfare",
+  "pos": [
+   532.7,
+   865.7
+  ],
+  "tier": "minor",
+  "cost": 1,
+  "color": [
+   150,
+   150,
+   150
+  ],
+  "bonuses": {
+   "max_health": 10,
+   "armor": 2
+  },
+  "edges": [
+   "ring_o_2_4"
+  ]
+ },
+ "ring_o_2_4": {
+  "name": "Wayfare",
+  "pos": [
+   479.5,
+   854.9
+  ],
+  "tier": "minor",
+  "cost": 1,
+  "color": [
+   150,
+   150,
+   150
+  ],
+  "bonuses": {
+   "max_health": 10,
+   "armor": 2
+  },
+  "edges": [
+   "ring_o_2_5"
+  ]
+ },
+ "ring_o_2_5": {
+  "name": "Wayfare",
+  "pos": [
+   418.6,
+   834.3
+  ],
+  "tier": "minor",
+  "cost": 1,
+  "color": [
+   150,
+   150,
+   150
+  ],
+  "bonuses": {
+   "max_health": 10,
+   "armor": 2
+  },
+  "edges": [
+   "mn_rt"
+  ]
+ },
+ "ring_o_3_1": {
+  "name": "Wayfare",
+  "pos": [
+   311.8,
+   761.4
+  ],
+  "tier": "minor",
+  "cost": 1,
+  "color": [
+   150,
+   150,
+   150
+  ],
+  "bonuses": {
+   "max_health": 10,
+   "armor": 2
+  },
+  "edges": [
+   "ring_o_3_2"
+  ]
+ },
+ "ring_o_3_2": {
+  "name": "Wayfare",
+  "pos": [
+   263.8,
+   728.7
+  ],
+  "tier": "minor",
+  "cost": 1,
+  "color": [
+   150,
+   150,
+   150
+  ],
+  "bonuses": {
+   "max_health": 10,
+   "armor": 2
+  },
+  "edges": [
+   "ring_o_3_3"
+  ]
+ },
+ "ring_o_3_3": {
+  "name": "Wayfare",
+  "pos": [
+   218.9,
+   676.5
+  ],
+  "tier": "minor",
+  "cost": 1,
+  "color": [
+   150,
+   150,
+   150
+  ],
+  "bonuses": {
+   "max_health": 10,
+   "armor": 2
+  },
+  "edges": [
+   "ring_o_3_4"
+  ]
+ },
+ "ring_o_3_4": {
+  "name": "Wayfare",
+  "pos": [
+   187.2,
+   624.8
+  ],
+  "tier": "minor",
+  "cost": 1,
+  "color": [
+   150,
+   150,
+   150
+  ],
+  "bonuses": {
+   "max_health": 10,
+   "armor": 2
+  },
+  "edges": [
+   "ring_o_3_5"
+  ]
+ },
+ "ring_o_3_5": {
+  "name": "Wayfare",
+  "pos": [
+   160.4,
+   566.2
+  ],
+  "tier": "minor",
+  "cost": 1,
+  "color": [
+   150,
+   150,
+   150
+  ],
+  "bonuses": {
+   "max_health": 10,
+   "armor": 2
+  },
+  "edges": [
+   "ring_o_3_6"
+  ]
+ },
+ "ring_o_3_6": {
+  "name": "Wayfare",
+  "pos": [
+   141.8,
+   504.6
+  ],
+  "tier": "minor",
+  "cost": 1,
+  "color": [
+   150,
+   150,
+   150
+  ],
+  "bonuses": {
+   "max_health": 10,
+   "armor": 2
+  },
+  "edges": [
+   "bl_rt"
+  ]
+ },
+ "ring_o_4_1": {
+  "name": "Wayfare",
+  "pos": [
+   133.8,
+   363.1
+  ],
+  "tier": "minor",
+  "cost": 1,
+  "color": [
+   150,
+   150,
+   150
+  ],
+  "bonuses": {
+   "max_health": 10,
+   "armor": 2
+  },
+  "edges": [
+   "ring_o_4_2"
+  ]
+ },
+ "ring_o_4_2": {
+  "name": "Wayfare",
+  "pos": [
+   138.8,
+   307.3
+  ],
+  "tier": "minor",
+  "cost": 1,
+  "color": [
+   150,
+   150,
+   150
+  ],
+  "bonuses": {
+   "max_health": 10,
+   "armor": 2
+  },
+  "edges": [
+   "ring_o_4_3"
+  ]
+ },
+ "ring_o_4_3": {
+  "name": "Wayfare",
+  "pos": [
+   158.3,
+   239.3
+  ],
+  "tier": "minor",
+  "cost": 1,
+  "color": [
+   150,
+   150,
+   150
+  ],
+  "bonuses": {
+   "max_health": 10,
+   "armor": 2
+  },
+  "edges": [
+   "ring_o_4_4"
+  ]
+ },
+ "ring_o_4_4": {
+  "name": "Wayfare",
+  "pos": [
+   186.3,
+   176.9
+  ],
+  "tier": "minor",
+  "cost": 1,
+  "color": [
+   150,
+   150,
+   150
+  ],
+  "bonuses": {
+   "max_health": 10,
+   "armor": 2
+  },
+  "edges": [
+   "ring_o_4_5"
+  ]
+ },
+ "ring_o_4_5": {
+  "name": "Wayfare",
+  "pos": [
+   223.0,
+   119.3
+  ],
+  "tier": "minor",
+  "cost": 1,
+  "color": [
+   150,
+   150,
+   150
+  ],
+  "bonuses": {
+   "max_health": 10,
+   "armor": 2
+  },
+  "edges": [
+   "cd_rt"
+  ]
+ },
+ "ring_o_5_1": {
+  "name": "Wayfare",
+  "pos": [
+   302.3,
+   6.7
+  ],
+  "tier": "minor",
+  "cost": 1,
+  "color": [
+   150,
+   150,
+   150
+  ],
+  "bonuses": {
+   "max_health": 10,
+   "armor": 2
+  },
+  "edges": [
+   "ring_o_5_2"
+  ]
+ },
+ "ring_o_5_2": {
+  "name": "Wayfare",
+  "pos": [
+   351.7,
+   -30.1
+  ],
+  "tier": "minor",
+  "cost": 1,
+  "color": [
+   150,
+   150,
+   150
+  ],
+  "bonuses": {
+   "max_health": 10,
+   "armor": 2
+  },
+  "edges": [
+   "ring_o_5_3"
+  ]
+ },
+ "ring_o_5_3": {
+  "name": "Wayfare",
+  "pos": [
+   411.7,
+   -74.3
+  ],
+  "tier": "minor",
+  "cost": 1,
+  "color": [
+   150,
+   150,
+   150
+  ],
+  "bonuses": {
+   "max_health": 10,
+   "armor": 2
+  },
+  "edges": [
+   "ring_o_5_4"
+  ]
+ },
+ "ring_o_5_4": {
+  "name": "Wayfare",
+  "pos": [
+   464.6,
+   -105.5
+  ],
+  "tier": "minor",
+  "cost": 1,
+  "color": [
+   150,
+   150,
+   150
+  ],
+  "bonuses": {
+   "max_health": 10,
+   "armor": 2
+  },
+  "edges": [
+   "ring_o_5_5"
+  ]
+ },
+ "ring_o_5_5": {
+  "name": "Wayfare",
+  "pos": [
+   530.0,
+   -132.1
+  ],
+  "tier": "minor",
+  "cost": 1,
+  "color": [
+   150,
+   150,
+   150
+  ],
+  "bonuses": {
+   "max_health": 10,
+   "armor": 2
+  },
+  "edges": [
+   "fire_lord"
+  ]
+ }
 }

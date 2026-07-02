@@ -135,7 +135,11 @@ def apply_save(game, data):
             if game.skill_tree.allocate_node(nid):
                 pending.discard(nid)
                 progressed = True
-    # (any still-pending nodes were unreachable -> silently dropped)
+    # Any still-pending ids are unknown or unreachable in the current tree
+    # (e.g. the save predates a tree redesign): drop them and refund the
+    # points so the player can re-spec instead of losing them.
+    pending = {nid for nid in pending if nid != game.skill_tree.ROOT_ID}
+    p.skill_points += len(pending)
 
     # Inventory
     inv = game.item_manager.inventory

@@ -321,6 +321,8 @@ class Game:
             elif event.type == pygame.MOUSEMOTION and self.show_skill_tree:
                 buttons = pygame.mouse.get_pressed()
                 self.skill_tree_ui.handle_mouse_motion(event.pos, buttons)
+            elif event.type == pygame.MOUSEWHEEL and self.show_skill_tree:
+                self.skill_tree_ui.handle_zoom(event.y, pygame.mouse.get_pos())
     
     def handle_input(self):
         """Handle continuous input (movement, casting)."""
@@ -526,7 +528,14 @@ class Game:
             p.stats.set_layer('pylon', {'attack_speed': 0.5, 'move_speed_increase': 0.4})
         else:
             p.stats.set_layer('pylon', {})
+        # Resistances: gear base + tree-granted '<element>_resistance' nodes
+        # (Blood & Iron region), capped at the game-wide 75%.
         p.resistances = self.item_manager.get_resistances()
+        tree_effects = self.skill_tree.get_active_effects()
+        for element in ('fire', 'cold', 'lightning', 'physical'):
+            bonus = tree_effects.get(f'{element}_resistance', 0)
+            if bonus:
+                p.resistances[element] = min(75, p.resistances.get(element, 0) + bonus)
         p.recompute()
 
         # Ascendancy keystone flags (Eternal Flame / Overcharged, Phase 15).
@@ -2655,7 +2664,7 @@ class Game:
         self.screen.blit(tree_surface, (0, 0))
         
         # Draw close instructions
-        close_text = self.font.render("Press P to close skill tree | WASD: Pan | Right drag: Pan", True, (255, 255, 255))
+        close_text = self.font.render("Press P to close skill tree | Right drag: Pan | Wheel: Zoom", True, (255, 255, 255))
         self.screen.blit(close_text, (10, self.height - 30))
     
     def draw_town(self, cam):

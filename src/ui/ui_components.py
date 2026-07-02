@@ -116,37 +116,59 @@ class SkillBarUI:
             sx += self.SLOT_SIZE + self.SLOT_GAP
 
 class SkillTreeUI:
-    """Interactive UI for the skill tree."""
-    
+    """Interactive UI for the PoE2-style radial skill tree.
+
+    World->screen transform is ``screen = node.pos * zoom + offset``; the view
+    starts centered on the root and supports right-drag panning and
+    mouse-wheel zoom (toward the cursor). Region labels come from
+    data/skill_tree_regions.json (written by tools/build_skill_tree.py).
+    """
+
+    ZOOM_MIN, ZOOM_MAX = 0.35, 1.8
+
     def __init__(self, skill_tree, width, height):
         self.skill_tree = skill_tree
         self.width = width
         self.height = height
-        self.offset_x = 0
-        self.offset_y = 0
-        self.zoom = 1.0
+        self.zoom = 0.75
+        root = skill_tree.root_node
+        self.offset_x = width / 2 - root.x * self.zoom
+        self.offset_y = height / 2 - root.y * self.zoom
         self.dragging = False
         self.drag_start = (0, 0)
         self.hovered_node = None
         self.font = pygame.font.Font(None, 16)
         self.title_font = pygame.font.Font(None, 32)
-    
+        self.region_font = pygame.font.Font(None, 26)
+        try:
+            from src.core.data_loader import load_json
+            self.regions = load_json("skill_tree_regions.json")
+        except Exception:
+            self.regions = []
+
+    def _to_screen(self, x, y):
+        return x * self.zoom + self.offset_x, y * self.zoom + self.offset_y
+
+    def handle_zoom(self, wheel_y, pos):
+        """Mouse-wheel zoom, keeping the point under the cursor fixed."""
+        old = self.zoom
+        self.zoom = max(self.ZOOM_MIN, min(self.ZOOM_MAX, old * (1.1 ** wheel_y)))
+        if self.zoom != old:
+            scale = self.zoom / old
+            self.offset_x = pos[0] - (pos[0] - self.offset_x) * scale
+            self.offset_y = pos[1] - (pos[1] - self.offset_y) * scale
+
     def handle_mouse_motion(self, pos, buttons):
         """Handle mouse motion for hovering and panning."""
         # Check for hovered nodes
         self.hovered_node = None
         for node_id, node in self.skill_tree.nodes.items():
-            screen_x = node.x + self.offset_x
-            screen_y = node.y + self.offset_y
-            
-            dx = pos[0] - screen_x
-            dy = pos[1] - screen_y
-            distance = math.sqrt(dx**2 + dy**2)
-            
-            if distance < node.radius + 5:
+            screen_x, screen_y = self._to_screen(node.x, node.y)
+            distance = math.hypot(pos[0] - screen_x, pos[1] - screen_y)
+            if distance < node.radius * self.zoom + 5:
                 self.hovered_node = node_id
                 break
-        
+
         # Pan on right click drag
         if buttons[2]:  # Right click
             if not self.dragging:
@@ -160,18 +182,13 @@ class SkillTreeUI:
                 self.drag_start = pos
         else:
             self.dragging = False
-    
+
     def handle_click(self, pos, player):
         """Handle clicking on skill nodes."""
         for node_id, node in self.skill_tree.nodes.items():
-            screen_x = node.x + self.offset_x
-            screen_y = node.y + self.offset_y
-            
-            dx = pos[0] - screen_x
-            dy = pos[1] - screen_y
-            distance = math.sqrt(dx**2 + dy**2)
-            
-            if distance < node.radius:
+            screen_x, screen_y = self._to_screen(node.x, node.y)
+            distance = math.hypot(pos[0] - screen_x, pos[1] - screen_y)
+            if distance < max(6, node.radius * self.zoom):
                 # Left click: allocate
                 if not node.allocated and node.can_allocate(self.skill_tree.allocations):
                     if player.skill_points > 0:
@@ -193,65 +210,75 @@ class SkillTreeUI:
         title_rect = title.get_rect(center=(self.width // 2, 30))
         surface.blit(title, title_rect)
         
+        # Region labels behind everything (faint, at each slice's rim).
+        for region in self.regions:
+            rx, ry = self._to_screen(region["pos"][0], region["pos"][1])
+            if -100 < rx < self.width + 100 and -40 < ry < self.height + 40:
+                col = tuple(int(c * 0.6) for c in region["color"])
+                text = self.region_font.render(region["name"], True, col)
+                surface.blit(text, text.get_rect(center=(rx, ry)))
+
         # Draw connections between nodes first
         for node_id, node in self.skill_tree.nodes.items():
             for child_id in node.children:
                 child = self.skill_tree.nodes[child_id]
-                
-                x1 = node.x + self.offset_x
-                y1 = node.y + self.offset_y
-                x2 = child.x + self.offset_x
-                y2 = child.y + self.offset_y
-                
+
+                x1, y1 = self._to_screen(node.x, node.y)
+                x2, y2 = self._to_screen(child.x, child.y)
+
                 # Connection color based on allocation status
                 if node.allocated and child.allocated:
                     color = (100, 255, 100)
-                elif node.allocated:
+                elif node.allocated or child.allocated:
                     color = (100, 150, 150)
                 else:
                     color = (50, 50, 50)
-                
+
                 pygame.draw.line(surface, color, (x1, y1), (x2, y2), 2)
-        
+
         # Draw nodes
         for node_id, node in self.skill_tree.nodes.items():
-            screen_x = node.x + self.offset_x
-            screen_y = node.y + self.offset_y
-            
+            screen_x, screen_y = self._to_screen(node.x, node.y)
+
             # Skip if off-screen
             if screen_x < -30 or screen_x > self.width + 30 or \
                screen_y < -30 or screen_y > self.height + 30:
                 continue
-            
+
+            radius = max(4, int(node.radius * self.zoom))
+
             # Draw node circle
             if node.allocated:
                 color = node.allocated_color
             else:
                 color = node.unallocated_color
-            
+
             # Highlight hovered node
             if node_id == self.hovered_node:
-                radius = node.radius + 3
-                pygame.draw.circle(surface, (255, 255, 100), (screen_x, screen_y), radius, 2)
-            
-            pygame.draw.circle(surface, color, (screen_x, screen_y), node.radius)
-            
-            # Draw node border
+                pygame.draw.circle(surface, (255, 255, 100),
+                                   (screen_x, screen_y), radius + 3, 2)
+
+            pygame.draw.circle(surface, color, (screen_x, screen_y), radius)
+
+            # Border: allocated bright; keystones get a golden double ring.
             border_color = (255, 255, 255) if node.allocated else (100, 100, 100)
-            pygame.draw.circle(surface, border_color, (screen_x, screen_y), node.radius, 2)
-            
-            # Draw node icon/text (first letter of name)
-            letter = node.name[0]
-            text = self.font.render(letter, True, (255, 255, 255))
-            text_rect = text.get_rect(center=(screen_x, screen_y))
-            surface.blit(text, text_rect)
-        
+            pygame.draw.circle(surface, border_color, (screen_x, screen_y), radius, 2)
+            if node.tier == "keystone":
+                pygame.draw.circle(surface, (230, 190, 90),
+                                   (screen_x, screen_y), radius + 4, 2)
+
+            # Name initial only when zoomed in enough to read it.
+            if self.zoom >= 0.6:
+                text = self.font.render(node.name[0], True, (255, 255, 255))
+                surface.blit(text, text.get_rect(center=(screen_x, screen_y)))
+
         # Draw info panel
         self._draw_info_panel(surface, player)
-        
+
         # Instructions
-        instr = self.font.render("Left Click: Allocate | Right Click: Deallocate | Right Drag: Pan", 
-                                True, (200, 200, 200))
+        instr = self.font.render(
+            "Left Click: Allocate | Right Click: Deallocate | Right Drag: Pan | Wheel: Zoom",
+            True, (200, 200, 200))
         surface.blit(instr, (10, self.height - 25))
     
     def _draw_info_panel(self, surface, player):
