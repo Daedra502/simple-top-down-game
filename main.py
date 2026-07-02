@@ -70,7 +70,9 @@ class Game:
         self.paused = False
         self.show_pause_menu = False  # Esc opens this menu (options + keybinds + quit)
         self.show_controls = False    # keybind reference is collapsed by default
+        self.pause_confirm_quit = False  # quit confirmation dialog in the pause menu
         self._pause_buttons = []      # [(rect, action)] rebuilt each draw
+        self._confirm_buttons = []    # [(rect, 'yes'|'no')] for the quit dialog
         self._volume_sliders = []     # [(track_rect, knob_rect, kind)]
         self._dragging_slider = None  # 'sfx' | 'music' while a knob is held
 
@@ -232,6 +234,11 @@ class Game:
             if event.type == pygame.QUIT:
                 self.running = False
             elif event.type == pygame.KEYDOWN:
+                # Centralized Escape: back out one layer at a time (submenu ->
+                # pause -> game), the standard convention. End screens still exit.
+                if event.key == pygame.K_ESCAPE and not (self.game_over or self.won):
+                    self._handle_escape()
+                    continue
                 # Pause menu captures input while open (resume / quit)
                 if self.show_pause_menu:
                     self._handle_pause_menu_keys(event.key)
@@ -1169,6 +1176,20 @@ class Game:
                 col = (120, 200, 255) if pylon["type"] == "conduit" else (120, 255, 160)
                 pygame.draw.circle(surf, col, (int(sx), int(sy)), 3)
 
+        # Treasure chests (gold diamonds) and ritual circles (violet rings).
+        for chest in self.world.chests:
+            if getattr(chest, "opened", False):
+                continue
+            sx, sy = to_map(chest.x, chest.y)
+            if 0 <= sx <= size and 0 <= sy <= size:
+                pygame.draw.circle(surf, (255, 205, 70), (int(sx), int(sy)), 3)
+        for r in self.rituals:
+            if r["done"]:
+                continue
+            sx, sy = to_map(r["x"], r["y"])
+            if 0 <= sx <= size and 0 <= sy <= size:
+                pygame.draw.circle(surf, (200, 130, 255), (int(sx), int(sy)), 4, 1)
+
         # Enemies (red dots); boss is an orange marker clamped to the edge.
         for enemy in self.world.enemies:
             sx, sy = to_map(enemy.x, enemy.y)
@@ -1194,21 +1215,64 @@ class Game:
                 or self.show_character_sheet or self.show_spell_tree
                 or self.show_save_menu or self.show_stash or self.show_bounty_board)
 
+    # Content overlays that Escape closes, highest priority first. Each name is
+    # a boolean show_* flag on the Game.
+    _ESC_OVERLAYS = ('show_gr_picker', 'show_bounty_board', 'show_stash',
+                     'show_inventory', 'show_skill_tree', 'show_spell_tree',
+                     'show_character_sheet', 'show_progression', 'show_save_menu')
+
+    def _handle_escape(self):
+        """Back out one UI layer (standard game convention)."""
+        # Cancel modal confirmation dialogs first.
+        if self.show_pause_menu and self.pause_confirm_quit:
+            self.pause_confirm_quit = False
+            return
+        if self.show_save_menu and self.save_confirm is not None:
+            self.save_confirm = None
+            return
+        # Close the topmost open content overlay.
+        for flag in self._ESC_OVERLAYS:
+            if getattr(self, flag, False):
+                setattr(self, flag, False)
+                return
+        # Otherwise toggle the pause menu (open from game, or resume from it).
+        if self.show_pause_menu:
+            self._resume_game()
+        else:
+            self.show_pause_menu = True
+            self.paused = True
+
     def _handle_pause_menu_keys(self, key):
-        """Pause menu input: Esc resumes, Q quits the game."""
-        if key in (pygame.K_ESCAPE, pygame.K_p):
-            self.show_pause_menu = False
-            self.paused = False
+        """Pause menu input: P resumes, Q asks to quit, Y/N answer the dialog."""
+        if self.pause_confirm_quit:
+            if key == pygame.K_y:
+                self.running = False
+            elif key in (pygame.K_n,):
+                self.pause_confirm_quit = False
+            return
+        if key == pygame.K_p:
+            self._resume_game()
         elif key == pygame.K_q:
-            self.running = False
+            self.pause_confirm_quit = True
 
     def _resume_game(self):
         self.show_pause_menu = False
+        self.pause_confirm_quit = False
         self.paused = False
 
     def _handle_pause_menu_click(self, pos, button):
         """Route a click in the pause menu to a button or a volume slider."""
         if button != 1:
+            return
+        # Quit-confirmation dialog owns all clicks while it is open.
+        if self.pause_confirm_quit:
+            for rect, choice in self._confirm_buttons:
+                if rect.collidepoint(pos):
+                    if choice == 'yes':
+                        self.running = False
+                    else:
+                        self.pause_confirm_quit = False
+                    return
             return
         # Slider knobs/tracks first so a click on a track grabs the drag.
         for track, _knob, kind in self._volume_sliders:
@@ -1227,7 +1291,7 @@ class Game:
                 elif action == 'controls':
                     self.show_controls = not self.show_controls
                 elif action == 'quit':
-                    self.running = False
+                    self.pause_confirm_quit = True
                 return
 
     def _drag_volume(self, pos):
@@ -2468,14 +2532,30 @@ class Game:
                     return
 
     def _draw_skill_tooltip(self, skill, pos):
-        """Compact tooltip for a skill-bar slot: name, element, level, costs."""
+        """Compact tooltip for a skill-bar slot: name, element, level, effective
+        damage (with the player's scaling applied), costs and cooldown."""
         lines = [
             (skill.name, tuple(skill.color)),
             (f"{skill.element.title()} {skill.kind.title()}   Level {skill.level}/{skill.max_level}",
              (170, 175, 190)),
-            (f"Mana Cost: {skill.mana_cost}", (110, 160, 255)),
-            (f"Cooldown: {skill.cooldown:.2f}s", (200, 200, 120)),
         ]
+
+        # Effective per-hit damage: base skill damage run through the player's
+        # spell-damage scaling (tree + gear + element), matching what a cast does.
+        stats = skill.stats()
+        base_dmg = stats.get("damage", 0)
+        if base_dmg > 0:
+            eff = int(self.player.get_spell_damage(base_dmg, skill.element, skill.id))
+            count = int(stats.get("count", 1))
+            dmg_text = f"Damage: {eff}" + (f" x{count}" if count > 1 else "")
+            lines.append((dmg_text, (255, 170, 120)))
+        elif skill.kind == "summon":
+            lines.append(("Summons an ally minion", (170, 220, 160)))
+        elif skill.kind == "blink":
+            lines.append(("Teleport a short distance", (170, 200, 255)))
+
+        lines.append((f"Mana Cost: {skill.mana_cost}", (110, 160, 255)))
+        lines.append((f"Cooldown: {skill.cooldown:.2f}s", (200, 200, 120)))
         avail = skill.mastery_points_available()
         if avail > 0:
             lines.append((f"{avail} mastery point(s) to spend (K)", (140, 230, 165)))
@@ -2496,53 +2576,72 @@ class Game:
             self.screen.blit(s, (x + 9, cy))
             cy += s.get_height() + 2
     
+    # Horizontal span of the central HUD info panel (between the character
+    # panel on the left and the minimap on the right).
+    HUD_X = 320
+
     def draw_ui(self):
-        """Draw the user interface."""
-        # XP bar
-        xp_text = f"XP: {int(self.player.experience)}/{int(self.player.xp_to_level)}"
-        xp_surf = self.font.render(xp_text, True, (255, 200, 0))
-        self.screen.blit(xp_surf, (320, 10))
-
-        # Wallet
-        wallet_text = f"Wallet: {self.player.diamond}D {self.player.gold}G {self.player.silver}S {self.player.copper}C"
-        wallet_surf = self.font.render(wallet_text, True, (255, 215, 0))
-        self.screen.blit(wallet_surf, (320, 35))
-
-        # Biome / world info (Phase 11) + active map layout (Phase 18)
+        """Draw the heads-up display: a tidy central info panel plus the
+        bottom instruction strip. Laid out on a fixed row grid inside a
+        translucent panel so nothing overlaps the rift bar or minimap."""
         info = self.world.get_info(self.player)
         layout_name = getattr(self, 'map_layout', {}).get('name', '-')
-        map_text = (f"Biome: {info['name']} | Layout: {layout_name} | "
-                    f"Enemies: {info['enemies_remaining']} | Chunks: {info['chunks_loaded']}")
-        map_surf = self.font.render(map_text, True, (255, 255, 255))
-        self.screen.blit(map_surf, (320, 60))
-        
-        # Active skill info (Phase 13)
-        skill = self.skills.slot(self.player.active_skill)
-        if skill:
-            ready = "READY" if skill.cd_remaining <= 0 else f"{skill.cd_remaining:.1f}s"
-            skills_text = (f"[{self.player.active_skill + 1}] {skill.name}  "
-                           f"Lv{skill.level}  ({ready})  |  1-8 switch")
-            skills_surf = self.font.render(skills_text, True, (255, 255, 255))
-            self.screen.blit(skills_surf, (320, 85))
-        
-        # Inventory info
         inv_items = len(self.item_manager.inventory.items)
-        inv_text = f"Inventory: {inv_items}/20 | Dropped Items: {len(self.dropped_items)} | Press I: Inventory"
-        inv_surf = self.font.render(inv_text, True, (200, 200, 255))
-        self.screen.blit(inv_surf, (320, 110))
+        cap = self.item_manager.inventory.capacity
 
-        # Quest tracker (Phase 18)
-        q_surf = self.font.render("Quest: " + self.quests.status_line(), True, (255, 225, 150))
-        self.screen.blit(q_surf, (320, 135))
-        qr_surf = self.small_font.render(self.quests.reward_line(), True, (180, 180, 140))
-        self.screen.blit(qr_surf, (320, 158))
+        # Panel geometry: right of the character panel, below the rift bar,
+        # left of the minimap.
+        x = self.HUD_X
+        y = 54
+        w = self.width - x - self.MINIMAP_SIZE - 32
+        pad = 8
+        row = 22
 
-        # Active bounty tracker (town board contract)
+        # Compose the lines up front so the panel height fits the content.
+        lines = [
+            (f"Biome: {info['name']}   |   Layout: {layout_name}", (170, 210, 255)),
+            (f"Enemies: {info['enemies_remaining']}   |   "
+             f"Inventory: {inv_items}/{cap}   |   Chunks: {info['chunks_loaded']}",
+             (200, 200, 220)),
+            (f"Wallet: {self.player.diamond}D {self.player.gold}G "
+             f"{self.player.silver}S {self.player.copper}C", (255, 215, 0)),
+            ("Quest: " + self.quests.status_line(), (255, 225, 150)),
+        ]
+        small_lines = [(self.quests.reward_line(), (180, 180, 140))]
         bounty_line = self.bounties.describe_active()
         if bounty_line:
-            b_surf = self.font.render(bounty_line, True, (210, 180, 120))
-            self.screen.blit(b_surf, (320, 176))
-        
+            small_lines.append((bounty_line, (210, 180, 120)))
+
+        h = pad * 2 + row + len(lines) * row + len(small_lines) * 18
+        panel = pygame.Surface((w, h), pygame.SRCALPHA)
+        panel.fill((10, 12, 20, 170))
+        self.screen.blit(panel, (x, y))
+        pygame.draw.rect(self.screen, (70, 84, 120), (x, y, w, h), 1)
+
+        tx = x + pad
+        ty = y + pad
+
+        # XP progress bar across the top of the panel.
+        xp_frac = 0.0
+        if self.player.xp_to_level > 0:
+            xp_frac = max(0.0, min(1.0, self.player.experience / self.player.xp_to_level))
+        bar = pygame.Rect(tx, ty, w - pad * 2, 14)
+        pygame.draw.rect(self.screen, (30, 30, 44), bar, border_radius=3)
+        pygame.draw.rect(self.screen, (240, 200, 60),
+                         (bar.x, bar.y, int(bar.width * xp_frac), 14), border_radius=3)
+        xp_lbl = self.small_font.render(
+            f"Lv {self.player.level}    XP {int(self.player.experience)}/"
+            f"{int(self.player.xp_to_level)}", True, (20, 20, 20))
+        self.screen.blit(xp_lbl, xp_lbl.get_rect(center=bar.center))
+        ty += row
+
+        for text, col in lines:
+            self.screen.blit(self.font.render(text, True, col), (tx, ty))
+            ty += row
+        for text, col in small_lines:
+            self.screen.blit(self.small_font.render(text, True, col), (tx, ty))
+            ty += 18
+
         # Instructions
         instr_text = ("WASD Move | Click/F Auto Cast | 1-8/Wheel Skill | T Town | P Tree | "
                       "K Spell Trees | I Inv | C Stats | M Map | V Ascend | G Rift | L Saves | ESC Menu")
@@ -2571,33 +2670,45 @@ class Game:
         text = self.small_font.render(label, True, (255, 255, 255))
         self.screen.blit(text, text.get_rect(center=(self.width // 2, y + bar_h // 2)))
 
-        # Keystone count + chunks traveled + hint
+        # Keystone count + best GR + hint, centered directly under the bar so it
+        # never bleeds into the character panel or the info panel below.
         ks = self.item_manager.keystone_count()
         info = self.small_font.render(
-            f"Keystones: {ks}   Best GR: {self.player.highest_gr}   "
-            f"Chunks: {self.rift.chunks_traveled}   [G] Greater Rift",
+            f"Keystones: {ks}    Best GR: {self.player.highest_gr}    [G] Greater Rift",
             True, (220, 220, 160))
-        self.screen.blit(info, (x, y + bar_h + 3))
+        self.screen.blit(info, info.get_rect(midtop=(self.width // 2, y + bar_h + 3)))
 
-        # Active pylon buffs.
+        # Active pylon buffs: a chip row centered just above the skill bar,
+        # the conventional place for temporary buffs.
         buffs = []
         if self.pylon_speed_timer > 0:
             buffs.append(("SPEED", f"{self.pylon_speed_timer:.0f}s", (120, 255, 160)))
         if self.pylon_conduit_timer > 0:
             buffs.append(("CONDUIT", f"{self.pylon_conduit_timer:.0f}s", (120, 200, 255)))
-        bx = x
-        for name, time_left, col in buffs:
-            surf = self.small_font.render(f"{name} {time_left}", True, col)
-            self.screen.blit(surf, (bx, y + bar_h + 20))
-            bx += surf.get_width() + 16
+        if buffs:
+            surfs = [self.small_font.render(f"{n} {t}", True, c) for n, t, c in buffs]
+            total = sum(s.get_width() + 16 for s in surfs) - 16
+            bx = self.width // 2 - total // 2
+            by = self.height - 108
+            for s in surfs:
+                chip = pygame.Rect(bx - 6, by - 3, s.get_width() + 12, s.get_height() + 6)
+                bg = pygame.Surface(chip.size, pygame.SRCALPHA)
+                bg.fill((14, 16, 26, 180))
+                self.screen.blit(bg, chip.topleft)
+                self.screen.blit(s, (bx, by))
+                bx += s.get_width() + 16
 
     def draw_rift_message(self):
         """Draw the transient rift event message."""
         alpha = int(255 * min(1.0, self.rift_message_time))
         surf = self.font.render(self.rift_message, True, (255, 230, 120))
         surf.set_alpha(alpha)
-        # Below the top HUD block so transient messages never overlap it.
-        self.screen.blit(surf, surf.get_rect(center=(self.width // 2, 196)))
+        # Well below the top HUD panel so transient messages never overlap it.
+        bg = pygame.Surface((surf.get_width() + 24, surf.get_height() + 10), pygame.SRCALPHA)
+        bg.fill((10, 10, 18, int(alpha * 0.6)))
+        rect = bg.get_rect(center=(self.width // 2, 250))
+        self.screen.blit(bg, rect)
+        self.screen.blit(surf, surf.get_rect(center=(self.width // 2, 250)))
 
     def draw_progression_overlay(self):
         """Ascendancy + Atlas overlay (Phase 15)."""
@@ -2831,6 +2942,39 @@ class Game:
         hint = self.small_font.render("Esc: Resume    Q: Quit    (drag sliders to set volume)",
                                       True, (190, 190, 200))
         self.screen.blit(hint, hint.get_rect(center=(cx, py + ph - 20)))
+
+        # Quit confirmation dialog on top of the pause menu.
+        if self.pause_confirm_quit:
+            self._draw_quit_confirm()
+
+    def _draw_quit_confirm(self):
+        """Modal Yes/No dialog confirming a quit from the pause menu."""
+        self._confirm_buttons = []
+        veil = pygame.Surface((self.width, self.height), pygame.SRCALPHA)
+        veil.fill((0, 0, 0, 150))
+        self.screen.blit(veil, (0, 0))
+
+        dw, dh = 380, 160
+        dx = (self.width - dw) // 2
+        dy = (self.height - dh) // 2
+        pygame.draw.rect(self.screen, (26, 20, 24), (dx, dy, dw, dh), border_radius=10)
+        pygame.draw.rect(self.screen, (200, 90, 90), (dx, dy, dw, dh), 3, border_radius=10)
+
+        q = self.font.render("Quit to desktop?", True, (255, 235, 235))
+        self.screen.blit(q, q.get_rect(center=(self.width // 2, dy + 46)))
+        sub = self.small_font.render("Unsaved progress since your last save is lost.",
+                                     True, (200, 180, 180))
+        self.screen.blit(sub, sub.get_rect(center=(self.width // 2, dy + 76)))
+
+        bw, bh = 150, 44
+        gap = 24
+        by = dy + dh - bh - 20
+        yes = pygame.Rect(self.width // 2 - bw - gap // 2, by, bw, bh)
+        no = pygame.Rect(self.width // 2 + gap // 2, by, bw, bh)
+        self._confirm_buttons.append(
+            (self._draw_button(yes, "Quit (Y)", (120, 50, 50), (160, 70, 70)), 'yes'))
+        self._confirm_buttons.append(
+            (self._draw_button(no, "Cancel (N)", (50, 70, 60), (70, 100, 85)), 'no'))
 
 
     def draw_skill_tree_overlay(self):
