@@ -29,7 +29,7 @@ class WorldManager:
     # the ground colors cross-fade, giving wide natural transition bands.
     REGION_CHUNKS = 3
     SUBTILE = 96        # ground sampling resolution inside a chunk (8x8)
-    EDGE_BAND = 0.22    # normalized border width where biomes blend
+    EDGE_BAND = 0.34    # normalized border width where biomes blend (wider = softer)
 
     bounded = False     # infinite world: entities don't clamp to bounds
 

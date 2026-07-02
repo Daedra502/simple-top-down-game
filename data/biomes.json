@@ -2,9 +2,9 @@
  "void_wastes": {
   "name": "Void Wastes",
   "ground_color": [
-   28,
-   20,
-   40
+   57,
+   45,
+   76
   ],
   "enemy_pool": [
    "lich",
@@ -50,9 +50,9 @@
  "burning_hellscape": {
   "name": "Burning Hellscape",
   "ground_color": [
-   48,
-   18,
-   14
+   88,
+   42,
+   36
   ],
   "enemy_pool": [
    "demon",
@@ -99,9 +99,9 @@
  "frozen_tundra": {
   "name": "Frozen Tundra",
   "ground_color": [
-   30,
-   44,
-   58
+   60,
+   82,
+   104
   ],
   "enemy_pool": [
    "skeleton",
@@ -147,9 +147,9 @@
  "corrupted_forest": {
   "name": "Corrupted Forest",
   "ground_color": [
-   22,
-   38,
-   24
+   48,
+   73,
+   51
   ],
   "enemy_pool": [
    "goblin",
@@ -195,9 +195,9 @@
  "lightning_fields": {
   "name": "Lightning Fields",
   "ground_color": [
-   40,
-   40,
-   24
+   76,
+   76,
+   51
   ],
   "enemy_pool": [
    "skeleton",
@@ -243,9 +243,9 @@
  "ancient_ruins": {
   "name": "Ancient Ruins",
   "ground_color": [
-   44,
-   40,
-   32
+   82,
+   76,
+   64
   ],
   "enemy_pool": [
    "skeleton",
@@ -291,9 +291,9 @@
  "blood_marsh": {
   "name": "Blood Marsh",
   "ground_color": [
-   40,
-   16,
-   20
+   76,
+   39,
+   45
   ],
   "enemy_pool": [
    "vampire",
@@ -339,9 +339,9 @@
  "crystal_caverns": {
   "name": "Crystal Caverns",
   "ground_color": [
-   20,
-   40,
-   44
+   45,
+   76,
+   82
   ],
   "enemy_pool": [
    "orc",
@@ -387,9 +387,9 @@
  "shadow_realm": {
   "name": "Shadow Realm",
   "ground_color": [
-   16,
-   16,
-   22
+   39,
+   39,
+   48
   ],
   "enemy_pool": [
    "lich",
@@ -435,9 +435,9 @@
  "celestial_fracture": {
   "name": "Celestial Fracture",
   "ground_color": [
-   26,
-   28,
-   52
+   54,
+   57,
+   95
   ],
   "enemy_pool": [
    "dragon",
