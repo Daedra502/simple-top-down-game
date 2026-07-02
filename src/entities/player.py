@@ -3,6 +3,7 @@ import math
 from src.entities.entity import Entity, Event
 from src.core.stats import Stats, effects_to_stats
 from src.systems import leveling
+from src.entities.player_sprite import PlayerSprite
 
 
 class Player(Entity):
@@ -20,11 +21,18 @@ class Player(Entity):
         self.width = 20
         self.height = 20
 
-        # Create surface
+        # Collision surface/rect (kept for physics; visuals use the sprite).
         self.image = pygame.Surface((self.width, self.height))
-        self.image.fill((0, 200, 255))  # Cyan color
+        self.image.fill((0, 200, 255))
         self.rect = self.image.get_rect()
         self.rect.center = (self.x, self.y)
+
+        # Animated hooded battle-mage sprite (procedural; no external assets).
+        self.sprite = PlayerSprite(target_size=self.height)
+        self.facing = "down"
+        self._cast_pose = 0.0     # seconds of cast pose remaining
+        self._moving = False
+        self._last_dt = 1.0 / 60.0
 
         # Movement
         self.velocity_x = 0
@@ -131,6 +139,18 @@ class Player(Entity):
 
         # Update rect position
         self.rect.center = (self.x, self.y)
+
+        # Animation state: facing follows the dominant movement axis; the cast
+        # pose lingers briefly after a spell (set via notify_cast()).
+        if self.velocity_x or self.velocity_y:
+            if abs(self.velocity_x) > abs(self.velocity_y):
+                self.facing = "right" if self.velocity_x > 0 else "left"
+            else:
+                self.facing = "down" if self.velocity_y > 0 else "up"
+        self._moving = bool(self.velocity_x or self.velocity_y)
+        if self._cast_pose > 0:
+            self._cast_pose = max(0.0, self._cast_pose - dt)
+        self._last_dt = dt
 
         # Resource regeneration (per second, dt-based -- DESIGN.md R3/Phase 2)
         if self.mana < self.max_mana:
@@ -354,10 +374,21 @@ class Player(Entity):
 
         self.clamp_pools()
     
+    def notify_cast(self, duration=0.25):
+        """Trigger the cast pose for a short time (called when a spell fires)."""
+        self._cast_pose = duration
+        # Face the way we're moving stays; casting doesn't override facing here.
+
     def draw(self, surface, cam=(0, 0)):
-        """Draw the player at its world position offset by the camera."""
-        surface.blit(self.image, (self.x - cam[0] - self.width // 2,
-                                  self.y - cam[1] - self.height // 2))
+        """Draw the animated battle-mage sprite, camera-offset and foot-anchored."""
+        frame, bob = self.sprite.frame(self.facing, self._moving,
+                                       self._cast_pose, self._last_dt)
+        fw, fh = frame.get_size()
+        # Anchor the sprite's feet near the collision center so it lines up with
+        # shadows/other actors; center horizontally, bias downward slightly.
+        sx = self.x - cam[0] - fw // 2
+        sy = self.y - cam[1] - fh + self.height // 2 + 4 + bob
+        surface.blit(frame, (int(sx), int(sy)))
     
     def get_status(self):
         """Return player status as string."""

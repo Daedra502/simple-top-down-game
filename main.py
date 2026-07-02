@@ -378,6 +378,13 @@ class Game:
         skill.start_cooldown(self.player)
         self.skills.award_cast(skill.id)
         self.sound.play_skill(skill)
+        # Face the cast target and strike the cast pose briefly.
+        dx, dy = tx - self.player.x, ty - self.player.y
+        if abs(dx) > abs(dy):
+            self.player.facing = "right" if dx > 0 else "left"
+        elif dx or dy:
+            self.player.facing = "down" if dy > 0 else "up"
+        self.player.notify_cast()
         self._execute_cast(skill.cast_plan(self.player, tx, ty), skill)
         return True
 
